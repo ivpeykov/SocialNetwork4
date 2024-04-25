@@ -35,3 +35,20 @@ bool CurrentData::doesUsernameExist(const CustomString& userName)
 	}
 	return false;
 }
+
+bool CurrentData::isLoginSuccessful(User& user)
+{
+	size_t currUsersSize = currSocialNetwork.getCurrUsers().getSize();
+
+	for (int i = 0; i < currUsersSize; i++) {
+
+		User currUser = currSocialNetwork.getCurrUsers()[i];
+
+		if (user.getUserName() == currUser.getUserName()
+			&& user.getPassword() == currUser.getPassword()) {
+			user = currUser;
+			return true;
+		}
+	}
+	return false;
+}

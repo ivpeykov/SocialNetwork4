@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "save", "save as", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "save", "save as", "exit" };
 
 void CommandsHandler::runCommands()
 {
@@ -39,6 +39,10 @@ void CommandsHandler::runCommands()
         SocialNetwork::signup();
         break;
 
+    case Login:
+        SocialNetwork::login();
+        break;
+
     case Save:
         FileHandler::saveSocialNetwork();
         break;
@@ -47,7 +51,7 @@ void CommandsHandler::runCommands()
         break;
 
     case Exit:
-        std::cout << "\nExiting program..."; //send to printhandler
+        std::cout << "\nExiting program..." << std::endl; //send to printhandler
         //SocialNetwork::exitNetwork();
 
         //Do you wish to exit application? Y/N ?

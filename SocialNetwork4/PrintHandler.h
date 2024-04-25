@@ -26,4 +26,7 @@ public:
 	static void printErrorSignupUserName();
 	static void printErrorSignupPassword();
 
+	static void printErrorLoginUserName();
+	static void printErrorLoginPassword();
+
 };

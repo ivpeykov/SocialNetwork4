@@ -46,6 +46,8 @@ void PrintHandler::printComment(Comment& comment)
 
 void PrintHandler::printCurrUsers()
 {
+	std::cout << std::endl << "Printing users..." << std::endl;
+
 	size_t usersSize = CurrentData::getCurrSocialNetwork().getCurrUsers().getSize();
 
 	for (int i = 0; i < usersSize; i++) {
@@ -55,6 +57,8 @@ void PrintHandler::printCurrUsers()
 
 void PrintHandler::printCurrTopics()
 {
+	std::cout <<  std::endl << "Printing Topics..." << std::endl;
+
 	size_t topicsSize = CurrentData::getCurrSocialNetwork().getCurrTopics().getSize();
 
 	for (int i = 0; i < topicsSize; i++) {
@@ -103,3 +107,12 @@ void PrintHandler::printErrorSignupPassword()
 	std::cerr << "\nError creating Account! Invalid Password!" << std::endl;
 }
 
+void PrintHandler::printErrorLoginUserName()
+{
+	std::cerr << "\nInvalid Username!" << std::endl;
+}
+
+void PrintHandler::printErrorLoginPassword()
+{
+	std::cerr << "\nInvalid Password!" << std::endl;
+}

@@ -19,7 +19,7 @@ public:
 	static void setChangesMadeStatus(const bool newStatus);
 
 	static bool doesUsernameExist(const CustomString& userName);
-
+	static bool isLoginSuccessful(User& user);
 private:
 
 	static SocialNetwork currSocialNetwork;

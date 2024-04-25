@@ -85,7 +85,7 @@ void SocialNetwork::signup()
 
 	//UserName
 	ConsoleInputGetter::recieveUserNameInput(newUser);
-	if (!InputValidator::isValidUserName(newUser.getUserName())) {
+	if (!InputValidator::isValidUserNameSignup(newUser.getUserName())) {
 		PrintHandler::printErrorSignupUserName();
 		return;
 	}
@@ -107,4 +107,35 @@ void SocialNetwork::signup()
 
 	CurrentData::getCurrSocialNetwork().getCurrUsers().pushBack(newUser);
 	CurrentData::setChangesMadeStatus(true);
+}
+
+void SocialNetwork::login()
+{
+	std::cout << std::endl << "Enter login data:" << std::endl;
+
+	User newUser;
+
+	//UserName
+	ConsoleInputGetter::recieveUserNameInput(newUser);
+	if (!InputValidator::isValidUserNameLogin(newUser.getUserName())) {
+		PrintHandler::printErrorLoginUserName();
+		return;
+	}
+
+	//Password
+	ConsoleInputGetter::recievePasswordInput(newUser);
+	if (!InputValidator::isValidPassword(newUser.getPassword())) {
+		PrintHandler::printErrorLoginPassword();
+		return;
+	}
+
+	if (CurrentData::isLoginSuccessful(newUser)) {
+		loggedInUser = newUser;
+		std::cout << "Login Successful!" << std::endl;
+		return;
+	}
+
+	else {
+		std::cout << "Wrong password!" << std::endl;
+	}
 }

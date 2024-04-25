@@ -30,6 +30,8 @@ public:
 
 	static void signup();
 
+	static void login();
+
 	//add other commands down here....
 
 private:

@@ -76,7 +76,7 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
     return true;
 }
 
-bool InputValidator::isValidUserName(const CustomString& userName)
+bool InputValidator::isValidUserNameSignup(const CustomString& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
@@ -84,6 +84,17 @@ bool InputValidator::isValidUserName(const CustomString& userName)
     if (CurrentData::doesUsernameExist(userName))
         return false;
         
+    return true;
+}
+
+bool InputValidator::isValidUserNameLogin(const CustomString& userName)
+{
+    if (doesStringContainNonAsciiChars(userName))
+        return false;
+
+    if (!CurrentData::doesUsernameExist(userName))
+        return false;
+
     return true;
 }
 

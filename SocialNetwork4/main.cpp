@@ -12,10 +12,11 @@ int main(){
 	}
 
 
-	//PrintHandler::printCurrUsers(); //remove
+	PrintHandler::printCurrUsers(); //remove
 
 	PrintHandler::printCurrTopics();
 
+	
 
 	return 0;
 }

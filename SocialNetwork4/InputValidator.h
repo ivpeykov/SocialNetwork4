@@ -18,7 +18,8 @@ public:
 	//User Data Validation
 	static bool isValidFirstName(const CustomString& firstName);
 	static bool isValidLastName(const CustomString& lastName);
-	static bool isValidUserName(const CustomString& userName);
+	static bool isValidUserNameSignup(const CustomString& userName);
+	static bool isValidUserNameLogin(const CustomString& userName);
 	static bool isValidPassword(const CustomString& password);
 
 

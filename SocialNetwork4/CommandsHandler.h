@@ -6,11 +6,12 @@
 
 enum Command { //don't change order!
 
-	Load = 0,
-	Signup = 1,
-	Save = 2,
-	SaveAs = 3,
-	Exit = 4,
+	Load,
+	Signup,
+	Login,
+	Save,
+	SaveAs,
+	Exit,
 
 	CommandsCount
 };
