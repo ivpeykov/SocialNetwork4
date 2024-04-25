@@ -13,13 +13,25 @@ class FileHandler
 {
 public:
 
-	//generic methods
-	// 
-	//static bool isFileEmpty(const char* fileName); not needed for now
+	static bool isFileEmpty(const char* fileName); 
 
 	static void loadSocialNetwork(const CustomString& filePath);
 
+	static void loadUsers(std::fstream& socialNetworkFile);
+
+	static void loadTopics(std::fstream& socialNetworkFile);
+
+	static void loadDiscussions(std::fstream& socialNetworkFile, Topic& topic);
+
+	static void loadComments(std::fstream& socialNetworkFile, Discussion& discussion);
+
 	static void saveSocialNetwork();
 
+	static void saveUsers(std::ofstream& socialNetworkFile);
 
+	static void saveTopics(std::ofstream& socialNetworkFile);
+
+	static void saveDiscussions(std::ofstream& socialNetworkFile, Vector<Discussion>& discussions);
+
+	static void saveComments(std::ofstream& socialNetworkFile, Vector<Comment>& comments);
 };

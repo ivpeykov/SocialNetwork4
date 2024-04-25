@@ -54,8 +54,6 @@ void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
     char input[128];
     std::cin.getline(input, 128, '\n');
 
-    //null char at end?
-
     socialNetworkDirectoryInput.setString(input);
 
     if (ConsoleInputGetter::isBufferOverfilled()) {

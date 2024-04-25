@@ -10,6 +10,10 @@ Topic::Topic(const char* title, const char* description,
     unsigned creatorId, unsigned id) :
     title(title), description(description), creatorId(creatorId), id(id), discussions() {}
 
+Topic::Topic(const char* title, const char* description, unsigned creatorId, unsigned id, Vector<Discussion>& discussions) : title(title), description(description), creatorId(creatorId), id(id), discussions(discussions)
+{
+}
+
 Topic::Topic(const Topic& other) :
     title(other.title), description(other.description), creatorId(other.creatorId),
     id(other.id), discussions(other.discussions) {}
@@ -30,15 +34,15 @@ const CustomString& Topic::getDescription() const
 
 const unsigned Topic::getCreatorId() const
 {
-    return 0;
+    return creatorId;
 }
 
 const unsigned Topic::getId() const
 {
-    return 0;
+    return id;
 }
 
-const Vector<Discussion>& Topic::getDiscussions() const
+Vector<Discussion>& Topic::getDiscussions()
 {
     return discussions;
 }

@@ -44,7 +44,7 @@ const unsigned Discussion::getId() const
 	return id;
 }
 
-const Vector<Comment>& Discussion::getComments() const
+Vector<Comment>& Discussion::getComments()
 {
 	return comments;
 }

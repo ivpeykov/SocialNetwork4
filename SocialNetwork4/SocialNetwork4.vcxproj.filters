@@ -60,9 +60,6 @@
     <ClCompile Include="ConsoleInputGetter.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
-    <ClCompile Include="Configuration.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="InputValidator.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>

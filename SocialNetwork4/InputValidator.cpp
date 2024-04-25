@@ -41,7 +41,7 @@ bool InputValidator::isValidCommandInput(const CustomString& commandInput)
     return false;
 }
 
-bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& directoryInput) // is this finished?
+bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& directoryInput)
 {
     if (doesStringContainNonAsciiChars(directoryInput)) {
         std::cout << "Invalid directory!" << std::endl;
@@ -80,12 +80,10 @@ bool InputValidator::isValidUserName(const CustomString& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
-
-    //check if username already exists   
+   
     if (CurrentData::doesUsernameExist(userName))
         return false;
         
-
     return true;
 }
 

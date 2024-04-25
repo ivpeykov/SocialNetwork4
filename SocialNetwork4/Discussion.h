@@ -27,7 +27,7 @@ public:
 	const unsigned getTopicId() const;
 	const unsigned getCreatorId() const;
 	const unsigned getId() const;
-	const Vector<Comment>& getComments() const;
+	Vector<Comment>& getComments();
 
 	void setTitle(const char* title);
 	void setTitle(CustomString& title);

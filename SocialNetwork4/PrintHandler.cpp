@@ -15,12 +15,71 @@ void PrintHandler::printUser(const User& user)
 		<< "Is moderator:" << std::boolalpha << user.getModeratorStatus() << std::endl;
 }
 
+void PrintHandler::printTopic(Topic& topic)
+{
+	std::cout << "\nTitle:" << topic.getTitle() << std::endl
+		<< "Description:" << topic.getDescription() << std::endl
+		<< "Creator Id:" << topic.getCreatorId() << std::endl
+		<< "ID:" << topic.getId() << std::endl
+		<< "Discussions:... " << std::endl;
+	printDiscussions(topic);
+}
+
+void PrintHandler::printDiscussion(Discussion& discussion)
+{
+	std::cout << "\nTitle:" << discussion.getTitle() << std::endl
+		<< "Description:" << discussion.getDescription() << std::endl
+		<< "Topic Id:" << discussion.getTopicId() << std::endl
+		<< "ID:" << discussion.getId() << std::endl
+		<< "Comments:... " << std::endl;
+	printComments(discussion);
+}
+
+void PrintHandler::printComment(Comment& comment)
+{
+	std::cout << "\nAuthor:" << comment.getAuthor() << std::endl
+		<< "Text:" << comment.getText() << std::endl
+		<< "Score:" << comment.getScore() << std::endl
+		<< "ID:" << comment.getId() << std::endl
+		<< "Discussion ID: " << comment.getDiscussionId() << std::endl;
+}
+
 void PrintHandler::printCurrUsers()
 {
 	size_t usersSize = CurrentData::getCurrSocialNetwork().getCurrUsers().getSize();
 
 	for (int i = 0; i < usersSize; i++) {
 		printUser(CurrentData::getCurrSocialNetwork().getCurrUsers()[i]);
+	}
+}
+
+void PrintHandler::printCurrTopics()
+{
+	size_t topicsSize = CurrentData::getCurrSocialNetwork().getCurrTopics().getSize();
+
+	for (int i = 0; i < topicsSize; i++) {
+		printTopic(CurrentData::getCurrSocialNetwork().getCurrTopics()[i]);
+	}
+
+}
+
+void PrintHandler::printDiscussions(Topic& topic)
+{
+	size_t discussionsSize = topic.getDiscussions().getSize();
+
+	for (int i = 0; i < discussionsSize; i++) {
+		printDiscussion(topic.getDiscussions()[i]);
+	}
+
+
+}
+
+void PrintHandler::printComments(Discussion& discussion)
+{
+	size_t commentsSize = discussion.getComments().getSize();
+
+	for (int i = 0; i < commentsSize; i++) {
+		printComment(discussion.getComments()[i]);
 	}
 }
 

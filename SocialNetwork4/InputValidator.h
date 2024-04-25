@@ -12,7 +12,7 @@ public:
 
 	static bool isValidCommandInput(const CustomString& commandInput);
 
-	static bool isValidSocialNetworkDirectoryInput(const CustomString& directoryInput); // not implemented?
+	static bool isValidSocialNetworkDirectoryInput(const CustomString& directoryInput);
 
 
 	//User Data Validation

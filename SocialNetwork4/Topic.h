@@ -16,6 +16,9 @@ public:
 	Topic(const char* title, const char* description,
 		unsigned creatorId, unsigned id);
 
+	Topic(const char* title, const char* description,
+		unsigned creatorId, unsigned id, Vector<Discussion>& discussions);
+
 	Topic(const Topic& other);
 
 
@@ -25,7 +28,7 @@ public:
 	const CustomString& getDescription() const;
 	const unsigned getCreatorId() const;
 	const unsigned getId() const;
-	const Vector<Discussion>& getDiscussions() const;
+	Vector<Discussion>& getDiscussions();
 
 	void setTitle(const char* newTitle);
 	void setTitle(CustomString& newTitle);
