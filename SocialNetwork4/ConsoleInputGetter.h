@@ -2,6 +2,7 @@
 #include "CustomString.h"
 #include "Configuration.h"
 #include "User.h"
+#include "Topic.h"
 
 class ConsoleInputGetter
 {
@@ -12,7 +13,7 @@ public:
 
 	static void recieveCommandInput();
 
-	static void recieveSocialNetworkDirectoryInput(); //not implemented?
+	static void recieveSocialNetworkDirectoryInput();
 
 	//Recieve User Input data
 	static void recieveFirstNameInput(User& newUser);
@@ -21,7 +22,8 @@ public:
 	static void recievePasswordInput(User& newUser);
 
 	//Recieve Topic Input data
-	//.....
+	static void recieveTitleInput(Topic& newTopic);
+	static void recieveDescriptionInput(Topic& newTopic);
 
 	//Recieve Discussion Input data
 	//.....

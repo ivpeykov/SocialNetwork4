@@ -69,12 +69,17 @@ void PrintHandler::printCurrTopics()
 
 void PrintHandler::printDiscussions(Topic& topic)
 {
+	std::cout << std::endl << "Printing Discussions..." << std::endl;
+
 	size_t discussionsSize = topic.getDiscussions().getSize();
+
+	if (discussionsSize == 0) {
+		return;
+	}
 
 	for (int i = 0; i < discussionsSize; i++) {
 		printDiscussion(topic.getDiscussions()[i]);
 	}
-
 
 }
 
@@ -115,4 +120,14 @@ void PrintHandler::printErrorLoginUserName()
 void PrintHandler::printErrorLoginPassword()
 {
 	std::cerr << "\nInvalid Password!" << std::endl;
+}
+
+void PrintHandler::printErrorCreateTitle()
+{
+	std::cerr << "\nError creating Topic! Invalid Title!" << std::endl;
+}
+
+void PrintHandler::printErrorCreateDescription()
+{
+	std::cerr << "\nError creating Topic! Invalid Description!" << std::endl;
 }

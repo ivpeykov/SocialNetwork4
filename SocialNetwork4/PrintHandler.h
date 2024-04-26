@@ -29,4 +29,6 @@ public:
 	static void printErrorLoginUserName();
 	static void printErrorLoginPassword();
 
+	static void printErrorCreateTitle();
+	static void printErrorCreateDescription();
 };

@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "save", "save as", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "exit" };
 
 void CommandsHandler::runCommands()
 {
@@ -43,6 +43,10 @@ void CommandsHandler::runCommands()
         SocialNetwork::login();
         break;
 
+    case Create:
+        SocialNetwork::createTopic();
+        break;
+
     case Save:
         FileHandler::saveSocialNetwork();
         break;
@@ -61,6 +65,7 @@ void CommandsHandler::runCommands()
     case 999:
         std::cout << "\nCritical Error!\n Exiting..."; //send to printhandlr
         exit(0);
+        break;
 
     default: break;
     }

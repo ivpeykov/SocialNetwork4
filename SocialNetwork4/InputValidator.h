@@ -24,7 +24,8 @@ public:
 
 
 	//Topic Data Validation
-	//...
+	static bool isValidTitle(const CustomString& title);
+	static bool isValidDescription(const CustomString& description);
 
 
 

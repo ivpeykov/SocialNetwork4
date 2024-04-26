@@ -32,6 +32,8 @@ public:
 
 	static void login();
 
+	static void createTopic();
+
 	//add other commands down here....
 
 private:

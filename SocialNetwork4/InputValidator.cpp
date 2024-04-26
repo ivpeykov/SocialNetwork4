@@ -105,3 +105,19 @@ bool InputValidator::isValidPassword(const CustomString& password)
 
     return true;
 }
+
+bool InputValidator::isValidTitle(const CustomString& title)
+{
+    if (doesStringContainNonAsciiChars(title))
+        return false;
+
+    return true;
+}
+
+bool InputValidator::isValidDescription(const CustomString& description)
+{
+    if (doesStringContainNonAsciiChars(description))
+        return false;
+
+    return true;
+}

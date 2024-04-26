@@ -139,3 +139,41 @@ void SocialNetwork::login()
 		std::cout << "Wrong password!" << std::endl;
 	}
 }
+
+void SocialNetwork::createTopic()
+{
+	//Ensure a logged in user creates the topic
+	if (SocialNetwork::getLoggedInUser().getFirstName() == nullptr) {
+		std::cout << "Only logged in users can create topics! Please login first!" << std::endl;
+		return;
+	}
+
+	//get input for all the metadata and create a topic, then add it to the currTopics vector
+	
+	Topic newTopic;
+
+	//Title
+	ConsoleInputGetter::recieveTitleInput(newTopic);
+	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
+		PrintHandler::printErrorCreateTitle();
+		return;
+	}
+
+	//Description
+	ConsoleInputGetter::recieveDescriptionInput(newTopic);
+	if (!InputValidator::isValidDescription(newTopic.getDescription())) {
+		PrintHandler::printErrorCreateDescription();
+		return;
+	}
+
+	//CreatorId
+	newTopic.setCreatorId(SocialNetwork::getLoggedInUser().getId());
+
+	//id
+	newTopic.setId(CurrentData::getCurrSocialNetwork().getCurrTopics().getSize());
+
+	CurrentData::getCurrSocialNetwork().getCurrTopics().pushBack(newTopic);
+
+	CurrentData::setChangesMadeStatus(true);
+
+}

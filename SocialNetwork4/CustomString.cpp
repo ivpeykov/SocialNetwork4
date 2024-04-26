@@ -45,6 +45,7 @@ CustomString::CustomString(const size_t size) //don't know if this is ok
 
 CustomString::~CustomString() {
 	delete[] string;
+	string = nullptr;
 }
 
 

@@ -139,6 +139,44 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
     newUser.setPassword(newPass);
 }
 
+void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
+{
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    std::cout << "\nEnter title: "; //prnthndler
+
+    char newTitle[Configuration::TOPIC_TITLE_MAX_LENGTH];
+
+    std::cin.getline(newTitle, Configuration::TOPIC_TITLE_MAX_LENGTH);
+
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    newTopic.setTitle(newTitle);
+}
+
+void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
+{
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    std::cout << "\nEnter Description: "; //prnthndler
+
+    char newDescription[Configuration::TOPIC_DESCRIPTION_MAX_LENGTH];
+
+    std::cin.getline(newDescription, Configuration::TOPIC_DESCRIPTION_MAX_LENGTH);
+
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    newTopic.setDescription(newDescription);
+}
+
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
 {
     return socialNetworkDirectoryInput;

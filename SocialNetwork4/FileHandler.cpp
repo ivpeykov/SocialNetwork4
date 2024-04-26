@@ -156,7 +156,14 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 {
 	size_t discussionsCount = 0;
 
+	
 	socialNetworkFile.read(reinterpret_cast<char*>(&discussionsCount), sizeof(discussionsCount));
+
+	if (discussionsCount == 0) {
+		socialNetworkFile.seekg(sizeof(size_t), std::ios::cur);
+		//since there are no discussions, there are no comments and we skip the comments saved size which is 0
+	}
+
 	topic.getDiscussions().resize(discussionsCount + 10);
 	//add 10 more places to save some time/resources
 
@@ -205,6 +212,9 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 	size_t commentsCount = 0;
 
 	socialNetworkFile.read(reinterpret_cast<char*>(&commentsCount), sizeof(commentsCount));
+
+	if (commentsCount == 0) return;
+
 	discussion.getComments().resize(commentsCount + 10);
 	//add 10 more places to save some time/resources
 
