@@ -22,7 +22,7 @@ void PrintHandler::printTopic(Topic& topic)
 		<< "Creator Id:" << topic.getCreatorId() << std::endl
 		<< "ID:" << topic.getId() << std::endl
 		<< "Discussions:... " << std::endl;
-	printDiscussions(topic);
+	//printDiscussions(topic);
 }
 
 void PrintHandler::printDiscussion(Discussion& discussion)

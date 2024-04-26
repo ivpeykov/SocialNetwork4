@@ -5,6 +5,8 @@
 
 int main(){
 
+	Vector<Topic> topics = CurrentData::getCurrSocialNetwork().getCurrTopics();
+
 	//Ensure a social network is loaded manually by user first !!!!
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
 		PrintHandler::printEnterCommandPrompt();

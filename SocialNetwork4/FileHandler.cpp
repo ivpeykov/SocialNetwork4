@@ -160,8 +160,7 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 	socialNetworkFile.read(reinterpret_cast<char*>(&discussionsCount), sizeof(discussionsCount));
 
 	if (discussionsCount == 0) {
-		socialNetworkFile.seekg(sizeof(size_t), std::ios::cur);
-		//since there are no discussions, there are no comments and we skip the comments saved size which is 0
+		return;
 	}
 
 	topic.getDiscussions().resize(discussionsCount + 10);
@@ -349,7 +348,7 @@ void FileHandler::saveTopics(std::ofstream& socialNetworkFile)
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 
 		//save discussions
-		saveDiscussions(socialNetworkFile, topicToSave.getDiscussions());
+		//saveDiscussions(socialNetworkFile, topicToSave.getDiscussions());
 	}
 }
 
