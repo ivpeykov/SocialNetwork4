@@ -13,7 +13,7 @@ Discussion::Discussion(const char* title, const char* description,
 
 Discussion::Discussion(const Discussion& other) :
 	title(other.title), description(other.description), topicId(other.topicId),
-	creatorId(other.creatorId), id(other.id), comments(other.comments) {} //consider handling exception from assigning comments and leaving discussion without comments but other data built
+	creatorId(other.creatorId), id(other.id), comments(other.comments) {}
 
 Discussion::~Discussion()
 {

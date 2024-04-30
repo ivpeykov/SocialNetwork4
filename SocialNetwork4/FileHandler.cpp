@@ -348,7 +348,7 @@ void FileHandler::saveTopics(std::ofstream& socialNetworkFile)
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 
 		//save discussions
-		//saveDiscussions(socialNetworkFile, topicToSave.getDiscussions());
+		saveDiscussions(socialNetworkFile, topicToSave.getDiscussions());
 	}
 }
 

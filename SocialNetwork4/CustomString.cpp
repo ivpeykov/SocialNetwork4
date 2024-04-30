@@ -38,9 +38,10 @@ CustomString::CustomString(const size_t size) //don't know if this is ok
 		throw std::out_of_range("Trying allocate CustomString with 0 size");
 	}
 
+	//delete[] string; ?
 	this->size = size;
 	string = new char[size];
-	string[size] = '\0'; //string[0] ?
+	string[size] = '\0';
 }
 
 CustomString::~CustomString() {
@@ -170,7 +171,8 @@ CustomString& CustomString::operator+(const char* str) {
 
 	delete[] string;
 
-	size = tempString.size + strlen(str) - 1; //removing one of the null terminator chars
+	size_t strLen = strlen(str) + 1;
+	size = tempString.size + strLen - 1; //removing one of the null terminator chars
 	string = new char[size];
 
 	size_t i = 0;
@@ -181,10 +183,10 @@ CustomString& CustomString::operator+(const char* str) {
 		}
 	}
 
-	for (size_t j = 0; j < strlen(str) + 1; j++) { //adding the null terminator
+	for (size_t j = 0; j < strLen; j++) { //adding the null terminator
 
 		string[i] = str[j];
-		i++;
+		++i;
 	}
 
 
