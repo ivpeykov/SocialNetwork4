@@ -19,13 +19,16 @@ public:
 	const Vector<User>& getCurrUsers() const;
 	Vector<Topic>& getCurrTopics();
 	const Vector<Topic>& getCurrTopics() const;
+
 	static User& getLoggedInUser();
+	static Topic& getOpenedTopic();
 
 	void setDirectory(const CustomString& newDirectory);
 	void setDirectory(const char* newDirectory);
 	void setCurrUsers(const Vector<User>& newUsers);
 	void setCurrTopics(const Vector<Topic>& newTopics);
 	static void setLoggedInUser(const User& newUser);
+	static void setOpenedTopic(const Topic& newTopic);
 
 
 	SocialNetwork& operator=(const SocialNetwork& other);
@@ -36,7 +39,9 @@ public:
 
 	static void createTopic();
 
-	static void search(const Vector<Topic>& topicsToSearch);
+	static void searchTopic(const Vector<Topic>& topicsToSearch);
+
+	static void openTopic(const Vector<Topic>& topics);
 
 	//add other commands down here....
 
@@ -46,4 +51,5 @@ private:
 	Vector<Topic> currTopics;
 
 	static User loggedInUser;
+	static Topic openedTopic;
 };

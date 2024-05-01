@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "open", "list", "exit" };
 
 void CommandsHandler::runCommands()
 {
@@ -55,7 +55,15 @@ void CommandsHandler::runCommands()
         break;
 
     case Search:
-        SocialNetwork::search(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        SocialNetwork::searchTopic(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        break;
+
+    case Open:
+        SocialNetwork::openTopic(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        break;
+
+    case List:
+        //list
         break;
 
     case Exit:

@@ -137,6 +137,34 @@ bool CustomString::find(const CustomString& substr) const //TODO: study how this
 	return false; // substring not found
 }
 
+size_t CustomString::toNum() const
+{
+	size_t result = 0;
+	for (size_t i = 0; i < size && string[i] != '\0'; ++i) {
+		if (string[i] >= '0' && string[i] <= '9') {
+			result = result * 10 + (string[i] - '0');
+		}
+		else {
+			throw std::invalid_argument("String contains non-numeric characters.");
+		}
+	}
+	return result;
+}
+
+bool CustomString::isDigit() const
+{
+	if (size == 0) {
+		return false;
+	}
+
+	for (int i = 0; i < size - 1; i++) {
+		if (!isdigit(string[i]))
+			return false;
+	}
+
+	return true; 
+}
+
 //operators
 CustomString& CustomString::operator=(const CustomString& other) {
 

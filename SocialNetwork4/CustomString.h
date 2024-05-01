@@ -38,7 +38,9 @@ public:
 
 	bool find(const CustomString& substr) const;
 
+	size_t toNum() const;
 
+	bool isDigit() const;
 
 	//operators
 	CustomString& operator=(const CustomString& other);

@@ -13,6 +13,8 @@ enum Command { //don't change order!
 	Save,
 	SaveAs,
 	Search,
+	Open,
+	List,
 	Exit,
 
 	CommandsCount

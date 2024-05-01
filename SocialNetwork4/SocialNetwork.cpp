@@ -1,6 +1,7 @@
 #include "SocialNetwork.h"
 
 User SocialNetwork::loggedInUser;
+Topic SocialNetwork::openedTopic;
 
 SocialNetwork::SocialNetwork(CustomString& directory) : directory(directory),
 currUsers(1), currTopics(1) {}
@@ -38,6 +39,11 @@ User& SocialNetwork::getLoggedInUser()
 	return loggedInUser;
 }
 
+Topic& SocialNetwork::getOpenedTopic()
+{
+	return openedTopic;
+}
+
 
 void SocialNetwork::setDirectory(const CustomString& newDirectory)
 {
@@ -62,6 +68,11 @@ void SocialNetwork::setCurrTopics(const Vector<Topic>& newTopics)
 void SocialNetwork::setLoggedInUser(const User& newUser)
 {
 	loggedInUser = newUser;
+}
+
+void SocialNetwork::setOpenedTopic(const Topic& newTopic)
+{
+	openedTopic = newTopic;
 }
 
 SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
@@ -188,7 +199,7 @@ void SocialNetwork::createTopic()
 
 }
 
-void SocialNetwork::search(const Vector<Topic>& topicsToSearch)
+void SocialNetwork::searchTopic(const Vector<Topic>& topicsToSearch)
 {
 
 	Vector<Topic> foundTopics;
@@ -220,9 +231,54 @@ void SocialNetwork::search(const Vector<Topic>& topicsToSearch)
 		}
 
 	}
-			
-
 
 	PrintHandler::printTopicsForSearch(foundTopics);
+
+}
+
+void SocialNetwork::openTopic(const Vector<Topic>& topics){
+
+
+	std::cout << "Enter full title name or title id (Note: If title name is a number, please use its id!): ";
+
+	Topic tempTopic;
+
+	ConsoleInputGetter::recieveTitleInput(tempTopic);
+	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
+		std::cout << "Could not open topic! Invalid title!" << std::endl;
+		return;
+	}
+
+	CustomString query = tempTopic.getTitle();
+
+	bool isQueryDigit = query.isDigit();
+
+	size_t topicsSize = topics.getSize();
+
+	if (isQueryDigit) {
+
+		size_t queryId = query.toNum();
+
+		for (int i = 0; i < topicsSize; ++i) {
+
+			if (queryId == topics[i].getId()) {
+				openedTopic = topics[i];
+				return;
+			}
+		}
+
+	}
+
+	else {
+
+		for (int i = 0; i < topicsSize; ++i) {
+
+			if (query == topics[i].getTitle()) {
+				openedTopic = topics[i];
+				return;
+			}
+		}
+
+	}
 
 }
