@@ -32,7 +32,7 @@ void CommandsHandler::runCommands()
         }
 
         CurrentData::getCurrSocialNetwork().setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
-        FileHandler::loadSocialNetwork(CurrentData::getCurrSocialNetwork().getDirectory());
+        FileHandler::loadSocialNetwork(CurrentData::getCurrSocialNetwork());
         break;
 
     case Signup:
@@ -48,7 +48,7 @@ void CommandsHandler::runCommands()
         break;
 
     case Save:
-        FileHandler::saveSocialNetwork();
+        FileHandler::saveSocialNetwork(CurrentData::getCurrSocialNetwork());
         break;
     case SaveAs:
         //FileHandler::saveAsSocialNetwork();

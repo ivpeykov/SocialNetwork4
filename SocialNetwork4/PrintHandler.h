@@ -12,14 +12,14 @@ public:
 	static void printEnterCommandPrompt();
 
 	static void printUser(const User& user);
-	static void printTopic(Topic& topic);
-	static void printDiscussion(Discussion& discussion);
-	static void printComment(Comment& comment);
+	static void printTopic(const Topic& topic);
+	static void printDiscussion(const Discussion& discussion);
+	static void printComment(const Comment& comment);
 
-	static void printCurrUsers();
-	static void printCurrTopics();
-	static void printDiscussions(Topic& topic);
-	static void printComments(Discussion& discussion);
+	static void printUsers(const Vector<User>& users);
+	static void printTopics(const Vector<Topic>& topics);
+	static void printDiscussions(const Topic& topic);
+	static void printComments(const Discussion& discussion);
 
 	static void printErrorSignupFirstName();
 	static void printErrorSignupLastName();

@@ -18,7 +18,17 @@ Vector<User>& SocialNetwork::getCurrUsers()
 	return currUsers;
 }
 
+const Vector<User>& SocialNetwork::getCurrUsers() const
+{
+	return currUsers;
+}
+
 Vector<Topic>& SocialNetwork::getCurrTopics()
+{
+	return currTopics;
+}
+
+const Vector<Topic>& SocialNetwork::getCurrTopics() const
 {
 	return currTopics;
 }

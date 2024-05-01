@@ -15,17 +15,17 @@ void PrintHandler::printUser(const User& user)
 		<< "Is moderator:" << std::boolalpha << user.getModeratorStatus() << std::endl;
 }
 
-void PrintHandler::printTopic(Topic& topic)
+void PrintHandler::printTopic(const Topic& topic)
 {
 	std::cout << "\nTitle:" << topic.getTitle() << std::endl
 		<< "Description:" << topic.getDescription() << std::endl
 		<< "Creator Id:" << topic.getCreatorId() << std::endl
 		<< "ID:" << topic.getId() << std::endl
 		<< "Discussions:... " << std::endl;
-	//printDiscussions(topic);
+	printDiscussions(topic);
 }
 
-void PrintHandler::printDiscussion(Discussion& discussion)
+void PrintHandler::printDiscussion(const Discussion& discussion)
 {
 	std::cout << "\nTitle:" << discussion.getTitle() << std::endl
 		<< "Description:" << discussion.getDescription() << std::endl
@@ -35,7 +35,7 @@ void PrintHandler::printDiscussion(Discussion& discussion)
 	printComments(discussion);
 }
 
-void PrintHandler::printComment(Comment& comment)
+void PrintHandler::printComment(const Comment& comment)
 {
 	std::cout << "\nAuthor:" << comment.getAuthor() << std::endl
 		<< "Text:" << comment.getText() << std::endl
@@ -44,30 +44,30 @@ void PrintHandler::printComment(Comment& comment)
 		<< "Discussion ID: " << comment.getDiscussionId() << std::endl;
 }
 
-void PrintHandler::printCurrUsers()
+void PrintHandler::printUsers(const Vector<User>& users)
 {
 	std::cout << std::endl << "Printing users..." << std::endl;
 
-	size_t usersSize = CurrentData::getCurrSocialNetwork().getCurrUsers().getSize();
+	size_t usersSize = users.getSize();
 
 	for (int i = 0; i < usersSize; i++) {
-		printUser(CurrentData::getCurrSocialNetwork().getCurrUsers()[i]);
+		printUser(users[i]);
 	}
 }
 
-void PrintHandler::printCurrTopics()
+void PrintHandler::printTopics(const Vector<Topic>& topics)
 {
 	std::cout <<  std::endl << "Printing Topics..." << std::endl;
 
-	size_t topicsSize = CurrentData::getCurrSocialNetwork().getCurrTopics().getSize();
+	size_t topicsSize = topics.getSize();
 
 	for (int i = 0; i < topicsSize; i++) {
-		printTopic(CurrentData::getCurrSocialNetwork().getCurrTopics()[i]);
+		printTopic(topics[i]);
 	}
 
 }
 
-void PrintHandler::printDiscussions(Topic& topic)
+void PrintHandler::printDiscussions(const Topic& topic)
 {
 	std::cout << std::endl << "Printing Discussions..." << std::endl;
 
@@ -83,7 +83,7 @@ void PrintHandler::printDiscussions(Topic& topic)
 
 }
 
-void PrintHandler::printComments(Discussion& discussion)
+void PrintHandler::printComments(const Discussion& discussion)
 {
 	size_t commentsSize = discussion.getComments().getSize();
 

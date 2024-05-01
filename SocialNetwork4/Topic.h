@@ -29,6 +29,7 @@ public:
 	const unsigned getCreatorId() const;
 	const unsigned getId() const;
 	Vector<Discussion>& getDiscussions();
+	const Vector<Discussion>& getDiscussions() const;
 
 	void setTitle(const char* newTitle);
 	void setTitle(CustomString& newTitle);

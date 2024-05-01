@@ -49,6 +49,11 @@ Vector<Comment>& Discussion::getComments()
 	return comments;
 }
 
+const Vector<Comment>& Discussion::getComments() const
+{
+	return comments;
+}
+
 void Discussion::setTitle(const char* title)
 {
 	this->title = title;

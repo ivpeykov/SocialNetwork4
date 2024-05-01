@@ -14,48 +14,50 @@ bool FileHandler::isFileEmpty(const char* fileName)
 	return file.peek() == std::ifstream::traits_type::eof();
 }
 
-void FileHandler::loadSocialNetwork(const CustomString& filePath)
+void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad)
 {
-	std::fstream socialNetworkFile(filePath.getString(), std::ios::binary | std::ios::in);
+	const char* filePath = socialNetworkToLoad.getDirectory().getString();
+
+	std::fstream socialNetworkFile(filePath, std::ios::binary | std::ios::in);
 
 	//If file doesn't exist, create it
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "File does not exist! Creating..." << std::endl;
-		socialNetworkFile.open(filePath.getString(), std::ios::binary | std::ios::out);
+		socialNetworkFile.open(filePath, std::ios::binary | std::ios::out);
 		if (!socialNetworkFile.is_open()) {
 			std::cout << "Could not create file!" << std::endl;
 			return;
 		}
-		CurrentData::getCurrSocialNetwork().setDirectory(filePath);
+		socialNetworkToLoad.setDirectory(filePath);
 		return;
 	}
 
 	//If file exists, but is empty currSocialNetwork remains empty
-	if (isFileEmpty(filePath.getString()))
+	if (isFileEmpty(filePath))
 		return;
 
 	//If file exists and isnt empty, read it...
-	CurrentData::getCurrSocialNetwork().getCurrUsers().clear();
-	CurrentData::getCurrSocialNetwork().getCurrTopics().clear();
+	socialNetworkToLoad.getCurrUsers().clear();
+	socialNetworkToLoad.getCurrTopics().clear();
 
 
 	//LOAD USERS....................................................//
-	loadUsers(socialNetworkFile);
+	loadUsers(socialNetworkFile, socialNetworkToLoad.getCurrUsers());
 
 
 	//LOAD TOPICS.......................................................//
-	loadTopics(socialNetworkFile);
+	loadTopics(socialNetworkFile, socialNetworkToLoad.getCurrTopics());
 
 
 	socialNetworkFile.close();
 }
 
-void FileHandler::loadUsers(std::fstream& socialNetworkFile)
+void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users)
 {
 	size_t usersCount = 0;
 
 	socialNetworkFile.read(reinterpret_cast<char*>(&usersCount), sizeof(usersCount));
-	CurrentData::getCurrSocialNetwork().getCurrUsers().resize(usersCount + 10);
+	users.resize(usersCount + 10);
 	//add 10 more places to save some time/resources
 
 	size_t strLength = 0;
@@ -104,16 +106,16 @@ void FileHandler::loadUsers(std::fstream& socialNetworkFile)
 		newUser.setPoints(points);
 		newUser.setModeratorStatus(isModerator);
 
-		CurrentData::getCurrSocialNetwork().getCurrUsers().pushBack(newUser);
+		users.pushBack(newUser);
 	}
 }
 
-void FileHandler::loadTopics(std::fstream& socialNetworkFile)
+void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& topics)
 {
 	size_t topicsCount = 0;
 
 	socialNetworkFile.read(reinterpret_cast<char*>(&topicsCount), sizeof(topicsCount));
-	CurrentData::getCurrSocialNetwork().getCurrTopics().resize(topicsCount + 10);
+	topics.resize(topicsCount + 10);
 	//add 10 more places to save some time/resources
 
 	size_t strLength = 0;
@@ -148,7 +150,7 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile)
 		//load discussions into topic
 		loadDiscussions(socialNetworkFile, newTopic);
 
-		CurrentData::getCurrSocialNetwork().getCurrTopics().pushBack(newTopic);
+		topics.pushBack(newTopic);
 	}
 }
 
@@ -156,7 +158,6 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 {
 	size_t discussionsCount = 0;
 
-	
 	socialNetworkFile.read(reinterpret_cast<char*>(&discussionsCount), sizeof(discussionsCount));
 
 	if (discussionsCount == 0) {
@@ -253,14 +254,14 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 	}
 }
 
-void FileHandler::saveSocialNetwork()
+void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 {
 	if (CurrentData::getChangesMadeStatus() == false) {
 		std::cout << "No changes to save!" << std::endl;
 		return;
 	}
-
-	const char* filepath = CurrentData::getCurrSocialNetwork().getDirectory().getString();
+	
+	const char* filepath = socialNetwork.getDirectory().getString();
 
 	std::ofstream socialNetworkFile(filepath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
@@ -270,47 +271,47 @@ void FileHandler::saveSocialNetwork()
 	}
 
 	//SAVE USERS
-	saveUsers(socialNetworkFile);
+	saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
 
 	//SAVE TOPICS
-	saveTopics(socialNetworkFile);
+	saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
 
 	socialNetworkFile.close();
 }
 
-void FileHandler::saveUsers(std::ofstream& socialNetworkFile)
+void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)
 {
-	size_t usersCount = CurrentData::getCurrSocialNetwork().getCurrUsers().getSize();
+	size_t usersCount = users.getSize();
 	socialNetworkFile.write(reinterpret_cast<const char*>(&usersCount), sizeof(usersCount));
 
 	size_t strLength = 0;
 	for (int i = 0; i < usersCount; i++) {
 
-		User userToSave = CurrentData::getCurrSocialNetwork().getCurrUsers()[i];
+		
 
 		//save firstName
-		strLength = userToSave.getFirstName().length();
+		strLength = users[i].getFirstName().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(userToSave.getFirstName().getString(), strLength);
+		socialNetworkFile.write(users[i].getFirstName().getString(), strLength);
 
 		//save lastName
-		strLength = userToSave.getLastName().length();
+		strLength = users[i].getLastName().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(userToSave.getLastName().getString(), strLength);
+		socialNetworkFile.write(users[i].getLastName().getString(), strLength);
 
 		//save userName
-		strLength = userToSave.getUserName().length();
+		strLength = users[i].getUserName().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(userToSave.getUserName().getString(), strLength);
+		socialNetworkFile.write(users[i].getUserName().getString(), strLength);
 
 		//save password
-		strLength = userToSave.getPassword().length();
+		strLength = users[i].getPassword().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(userToSave.getPassword().getString(), strLength);
+		socialNetworkFile.write(users[i].getPassword().getString(), strLength);
 
-		unsigned id = userToSave.getId();
-		unsigned points = userToSave.getPoints();
-		bool moderatorStatus = userToSave.getModeratorStatus();
+		unsigned id = users[i].getId();
+		unsigned points = users[i].getPoints();
+		bool moderatorStatus = users[i].getModeratorStatus();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&points), sizeof(points));
@@ -319,40 +320,38 @@ void FileHandler::saveUsers(std::ofstream& socialNetworkFile)
 	}
 }
 
-void FileHandler::saveTopics(std::ofstream& socialNetworkFile)
+void FileHandler::saveTopics(std::ofstream& socialNetworkFile, const Vector<Topic>& topics)
 {
-	size_t topicsCount = CurrentData::getCurrSocialNetwork().getCurrTopics().getSize();
+	size_t topicsCount = topics.getSize();
 	socialNetworkFile.write(reinterpret_cast<const char*>(&topicsCount), sizeof(topicsCount));
 
 	size_t strLength = 0;
 
 	for (int i = 0; i < topicsCount; i++) {
 
-		Topic topicToSave = CurrentData::getCurrSocialNetwork().getCurrTopics()[i];
-
 		//save title
-		strLength = topicToSave.getTitle().length();
+		strLength = topics[i].getTitle().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(topicToSave.getTitle().getString(), strLength);
+		socialNetworkFile.write(topics[i].getTitle().getString(), strLength);
 
 		//save description
-		strLength = topicToSave.getDescription().length();
+		strLength = topics[i].getDescription().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(topicToSave.getDescription().getString(), strLength);
+		socialNetworkFile.write(topics[i].getDescription().getString(), strLength);
 
 		//save creatorId, id
-		unsigned creatorId = topicToSave.getCreatorId();
-		unsigned id = topicToSave.getId();
+		unsigned creatorId = topics[i].getCreatorId();
+		unsigned id = topics[i].getId();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&creatorId), sizeof(creatorId));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 
 		//save discussions
-		saveDiscussions(socialNetworkFile, topicToSave.getDiscussions());
+		saveDiscussions(socialNetworkFile, topics[i].getDiscussions());
 	}
 }
 
-void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, Vector<Discussion>& discussions)
+void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, const Vector<Discussion>& discussions)
 {
 	size_t discussionsCount = discussions.getSize();
 	socialNetworkFile.write(reinterpret_cast<const char*>(&discussionsCount), sizeof(discussionsCount));
@@ -386,7 +385,7 @@ void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, Vector<Discu
 	}
 }
 
-void FileHandler::saveComments(std::ofstream& socialNetworkFile, Vector<Comment>& comments)
+void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Comment>& comments)
 {
 
 	size_t commentsCount = comments.getSize();
@@ -415,4 +414,6 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, Vector<Comment>
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&discussionId), sizeof(discussionId));
 	}
+
+	
 }

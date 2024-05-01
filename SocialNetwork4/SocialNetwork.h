@@ -16,7 +16,9 @@ public:
 
 	const CustomString& getDirectory() const;
 	Vector<User>& getCurrUsers();
+	const Vector<User>& getCurrUsers() const;
 	Vector<Topic>& getCurrTopics();
+	const Vector<Topic>& getCurrTopics() const;
 	static User& getLoggedInUser();
 
 	void setDirectory(const CustomString& newDirectory);

@@ -47,6 +47,11 @@ Vector<Discussion>& Topic::getDiscussions()
     return discussions;
 }
 
+const Vector<Discussion>& Topic::getDiscussions() const
+{
+    return discussions;
+}
+
 void Topic::setTitle(const char* newTitle)
 {
     title = newTitle;

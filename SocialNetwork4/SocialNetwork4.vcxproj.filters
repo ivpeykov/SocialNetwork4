@@ -70,7 +70,7 @@
       <Filter>Source Files\Services</Filter>
     </ClCompile>
     <ClCompile Include="FileHandler.cpp">
-      <Filter>Source Files\Containers</Filter>
+      <Filter>Source Files\Services</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
