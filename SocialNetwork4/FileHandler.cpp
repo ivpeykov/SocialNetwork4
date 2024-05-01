@@ -48,7 +48,6 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad)
 	//LOAD TOPICS.......................................................//
 	loadTopics(socialNetworkFile, socialNetworkToLoad.getCurrTopics());
 
-
 	socialNetworkFile.close();
 }
 
@@ -204,7 +203,6 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 
 		topic.addDiscussion(newDiscussion);
 	}
-
 }
 
 void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& discussion)

@@ -36,6 +36,8 @@ public:
 
 	static void createTopic();
 
+	static void search(const Vector<Topic>& topicsToSearch);
+
 	//add other commands down here....
 
 private:

@@ -92,6 +92,21 @@ void PrintHandler::printComments(const Discussion& discussion)
 	}
 }
 
+void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
+{
+	size_t topicsSize = topics.getSize();
+
+	if (topicsSize == 0) {
+		std::cout << "No strings found containing that string!" << std::endl;
+	}
+
+
+	for (int i = 0; i < topicsSize; i++) {
+		std::cout << topics[i].getTitle() << " {id: " << topics[i].getId() << "}" << std::endl;
+	}
+
+}
+
 void PrintHandler::printErrorSignupFirstName()
 {
 	std::cerr << "\nError creating Account! Invalid First Name!" << std::endl;

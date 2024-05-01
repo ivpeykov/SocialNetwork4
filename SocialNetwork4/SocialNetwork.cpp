@@ -187,3 +187,42 @@ void SocialNetwork::createTopic()
 	CurrentData::setChangesMadeStatus(true);
 
 }
+
+void SocialNetwork::search(const Vector<Topic>& topicsToSearch)
+{
+
+	Vector<Topic> foundTopics;
+
+	Topic tempTopic;
+
+	ConsoleInputGetter::recieveTitleInput(tempTopic);
+	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
+		std::cout << "Invalid input! Could not search topics!" << std::endl;
+		return;
+	}
+
+	CustomString rhsString = tempTopic.getTitle().getString();
+	size_t rhsStringLength = rhsString.length();
+
+	CustomString lhsString;
+	size_t lhsStringLength = 0;
+
+	size_t topicsToSearchSize = topicsToSearch.getSize();
+
+	for (int i = 0; i < topicsToSearchSize; ++i) {
+
+		lhsString = topicsToSearch[i].getTitle().getString();
+		lhsStringLength = lhsString.length();
+
+
+		if (lhsString.find(rhsString)) {
+			foundTopics.pushBack(topicsToSearch[i]);
+		}
+
+	}
+			
+
+
+	PrintHandler::printTopicsForSearch(foundTopics);
+
+}

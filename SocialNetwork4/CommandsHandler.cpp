@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "exit" };
 
 void CommandsHandler::runCommands()
 {
@@ -18,7 +18,7 @@ void CommandsHandler::runCommands()
     //add more commands here
     switch (currCommand) {
 
-    case Load:
+    case Load: // bring the input getting and avlidation into the load method
        
         ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
         if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
@@ -54,6 +54,10 @@ void CommandsHandler::runCommands()
         //FileHandler::saveAsSocialNetwork();
         break;
 
+    case Search:
+        SocialNetwork::search(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        break;
+
     case Exit:
         std::cout << "\nExiting program..." << std::endl; //send to printhandler
         //SocialNetwork::exitNetwork();
@@ -63,7 +67,7 @@ void CommandsHandler::runCommands()
         break;
 
     case 999:
-        std::cout << "\nCritical Error!\n Exiting..."; //send to printhandlr
+        std::cerr << "\nCritical Error!\n Exiting..."; //send to printhandlr
         exit(0);
         break;
 

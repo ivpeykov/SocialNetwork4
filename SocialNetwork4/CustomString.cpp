@@ -92,6 +92,51 @@ void CustomString::setString(const char* inputString) {
 	}
 }
 
+bool CustomString::find(const char* substr) const //study this
+{
+	size_t sublen = strlen(substr);
+	size_t len = size - 1;
+
+	if (sublen > len)
+		return false;
+
+	for (size_t i = 0; i <= len - sublen; ++i) {
+		size_t j;
+		for (j = 0; j < sublen; ++j) {
+			if (string[i + j] != substr[j]) {
+				break;
+			}
+		}
+		if (j == sublen) {
+			return true; // substring found
+		}
+	}
+	return false; // substring not found
+}
+
+bool CustomString::find(const CustomString& substr) const //TODO: study how this works
+{
+
+	size_t sublen = substr.length() - 1;
+	size_t len = size - 1;
+
+	if (sublen > len)
+		return false;
+
+	for (size_t i = 0; i <= len - sublen; ++i) {
+		size_t j;
+		for (j = 0; j < sublen; ++j) {
+			if (string[i + j] != substr[j]) {
+				break;
+			}
+		}
+		if (j == sublen) {
+			return true; // substring found
+		}
+	}
+	return false; // substring not found
+}
+
 //operators
 CustomString& CustomString::operator=(const CustomString& other) {
 

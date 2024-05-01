@@ -12,6 +12,7 @@ enum Command { //don't change order!
 	Create,
 	Save,
 	SaveAs,
+	Search,
 	Exit,
 
 	CommandsCount

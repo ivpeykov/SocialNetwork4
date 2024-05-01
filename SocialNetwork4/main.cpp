@@ -11,9 +11,9 @@ int main(){
 		CommandsHandler::runCommands();
 	}
 
-	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
+	//PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
 
-	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
+	//PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
 	return 0;
 }

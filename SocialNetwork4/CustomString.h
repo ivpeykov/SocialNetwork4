@@ -34,6 +34,11 @@ public:
 
 	void setString(const char* inputString);
 
+	bool find(const char* substr) const;
+
+	bool find(const CustomString& substr) const;
+
+
 
 	//operators
 	CustomString& operator=(const CustomString& other);
