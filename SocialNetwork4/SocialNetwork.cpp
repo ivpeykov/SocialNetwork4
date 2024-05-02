@@ -241,7 +241,7 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 	std::cout << "Enter full title name or title id (Note: If title name is a number, please use its id!): ";
 
-	Topic tempTopic;
+	Topic tempTopic; //optimisation: create an empty topic (no discussions, no comments)
 
 	ConsoleInputGetter::recieveTitleInput(tempTopic);
 	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
@@ -263,7 +263,8 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 			if (queryId == topics[i].getId()) {
 				openedTopic = topics[i];
-				return;
+				std::cout << "Opened Topic:\n"
+					<< topics[i].getTitle() << std::endl;
 			}
 		}
 
@@ -275,10 +276,25 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 			if (query == topics[i].getTitle()) {
 				openedTopic = topics[i];
+				std::cout << "Opened Topic:\n"
+					<< query << std::endl;
 				return;
 			}
 		}
 
 	}
+
+}
+
+void SocialNetwork::listDiscussions(const Topic& topic)
+{
+
+	if (topic.getTitle() == nullptr) { //is this method of checking ok?
+		std::cout << "Topic not opened! Please open a topic before listing!"
+			<< std::endl;
+		return;
+	}
+
+	PrintHandler::printDiscussionsForList(topic.getDiscussions());
 
 }

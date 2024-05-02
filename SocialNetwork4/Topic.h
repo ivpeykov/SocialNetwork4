@@ -9,7 +9,6 @@ public:
 
 	Topic();
 
-
 	Topic(CustomString& title, CustomString& description,
 		unsigned creatorId, unsigned id);
 

@@ -4,7 +4,7 @@ unsigned short CommandsHandler::currCommand = 999;
 
 const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "open", "list", "exit" };
 
-void CommandsHandler::runCommands()
+void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
     //consider adding failed tries
 
@@ -31,8 +31,8 @@ void CommandsHandler::runCommands()
             return;
         }
 
-        CurrentData::getCurrSocialNetwork().setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
-        FileHandler::loadSocialNetwork(CurrentData::getCurrSocialNetwork());
+        currSocialNetwork.setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
+        FileHandler::loadSocialNetwork(currSocialNetwork);
         break;
 
     case Signup:
@@ -48,22 +48,22 @@ void CommandsHandler::runCommands()
         break;
 
     case Save:
-        FileHandler::saveSocialNetwork(CurrentData::getCurrSocialNetwork());
+        FileHandler::saveSocialNetwork(currSocialNetwork);
         break;
     case SaveAs:
         //FileHandler::saveAsSocialNetwork();
         break;
 
     case Search:
-        SocialNetwork::searchTopic(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        SocialNetwork::searchTopic(currSocialNetwork.getCurrTopics());
         break;
 
     case Open:
-        SocialNetwork::openTopic(CurrentData::getCurrSocialNetwork().getCurrTopics());
+        SocialNetwork::openTopic(currSocialNetwork.getCurrTopics());
         break;
 
     case List:
-        //list
+        SocialNetwork::listDiscussions(currSocialNetwork.getOpenedTopic());
         break;
 
     case Exit:

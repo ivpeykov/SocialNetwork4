@@ -20,10 +20,12 @@ enum Command { //don't change order!
 	CommandsCount
 };
 
+class SocialNetwork;
+
 class CommandsHandler
 {
 public:
-	static void runCommands();
+	static void runCommands(SocialNetwork& currSocialNetwork);
 
 	static void setCurrCommand(unsigned short newCommand);
 

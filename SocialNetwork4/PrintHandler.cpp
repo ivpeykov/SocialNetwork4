@@ -107,6 +107,23 @@ void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
 
 }
 
+void PrintHandler::printDiscussionsForList(const Vector<Discussion>& discussions)
+{
+	size_t discussionsSize = discussions.getSize();
+
+	if (discussionsSize == 0) {
+		std::cout << "No discussions avalible in this topic!" << std::endl;
+	}
+
+	for (int i = 0; i < discussionsSize; ++i) {
+
+		std::cout << discussions[i].getTitle() << " {id: "
+			<< discussions[i].getId() << "}" << std::endl;
+
+	}
+
+}
+
 void PrintHandler::printErrorSignupFirstName()
 {
 	std::cerr << "\nError creating Account! Invalid First Name!" << std::endl;

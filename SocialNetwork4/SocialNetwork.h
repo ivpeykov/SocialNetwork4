@@ -43,6 +43,7 @@ public:
 
 	static void openTopic(const Vector<Topic>& topics);
 
+	static void listDiscussions(const Topic& topic);
 	//add other commands down here....
 
 private:

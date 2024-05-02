@@ -22,6 +22,7 @@ public:
 	static void printComments(const Discussion& discussion);
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
+	static void printDiscussionsForList(const Vector<Discussion>& discussions);
 
 	//Errors
 	static void printErrorSignupFirstName();
