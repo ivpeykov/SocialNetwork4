@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "open", "post", "list", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "edit", "edit id" "create", "save", "save as", "search", "open", "post", "list", "exit" };
 
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
@@ -41,6 +41,13 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 
     case Login:
         currSocialNetwork.login();
+        break;
+
+    case Edit:
+        currSocialNetwork.editLoggedInUser();
+        break;
+    case EditAsModerator:
+        currSocialNetwork.editUserAsModerator();
         break;
 
     case Create:

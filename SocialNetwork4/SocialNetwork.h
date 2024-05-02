@@ -37,6 +37,8 @@ public:
 
 	void login();
 
+	void editLoggedInUser();
+
 	void createTopic();
 
 	void searchTopic();

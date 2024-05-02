@@ -90,20 +90,6 @@ void SocialNetwork::signup()
 {
 	User newUser;
 
-	//FirstName
-	ConsoleInputGetter::recieveFirstNameInput(newUser);
-	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
-		PrintHandler::printErrorSignupFirstName();
-		return;
-	}
-
-	//LastName
-	ConsoleInputGetter::recieveLastNameInput(newUser);
-	if (!InputValidator::isValidLastName(newUser.getLastName())) {
-		PrintHandler::printErrorSignupLastName();
-		return;
-	}
-
 	//UserName
 	ConsoleInputGetter::recieveUserNameInput(newUser);
 	if (!InputValidator::isValidUserNameSignup(newUser.getUserName())) {
@@ -118,6 +104,20 @@ void SocialNetwork::signup()
 		return;
 	}
 
+	//FirstName
+	ConsoleInputGetter::recieveFirstNameInput(newUser);
+	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
+		PrintHandler::printErrorSignupFirstName();
+		return;
+	}
+
+	//LastName
+	ConsoleInputGetter::recieveLastNameInput(newUser);
+	if (!InputValidator::isValidLastName(newUser.getLastName())) {
+		PrintHandler::printErrorSignupLastName();
+		return;
+	}
+
 	//Moderator Status
 	if (currUsers.back().getFirstName() != nullptr) {
 		newUser.setModeratorStatus(false);
@@ -125,6 +125,8 @@ void SocialNetwork::signup()
 		unsigned lastUserId = currUsers.back().getId();
 		newUser.setId(lastUserId + 1); 
 	}
+
+	//Points are automatically 0 when creating a user
 
 	currUsers.pushBack(newUser);
 	CurrentData::setChangesMadeStatus(true);
@@ -161,6 +163,69 @@ void SocialNetwork::login()
 	}
 }
 
+void SocialNetwork::editLoggedInUser()
+{
+	//Ensure a logged in user edits
+	if (loggedInUser.getFirstName() == nullptr) { //best practice: make this a function isThereLoggedInUser();
+		std::cout << "Only logged in users can edit their profiles! Please login first!" << std::endl;
+		return;
+	}
+
+	unsigned short answer = 3;
+
+	std::cout << "What to edit?\n0 - Username\n1 - Password\n2 - both\n3 - Exit edit menu" << std::endl;
+	ConsoleInputGetter::recieveEditAnswerInput(answer);
+	if (!InputValidator::isValidEditAnswerInput(answer)) {
+		std::cout << "Invalid answer! Exiting menu";
+		answer = 3;
+	}
+
+	User newUser;
+
+	switch (answer) {
+
+	case 0:
+		//UserName
+		ConsoleInputGetter::recieveUserNameInput(newUser);
+		if (!InputValidator::isValidUserNameLogin(newUser.getUserName())) {
+			std::cout << "Could not edit user! Invalid username!"; //suggestion: specify if username already															exists
+			return;
+		}
+		break;
+
+	case 1:
+		//Password
+		ConsoleInputGetter::recievePasswordInput(newUser);
+		if (!InputValidator::isValidPassword(newUser.getPassword())) {
+			std::cout << "Could not edit user! Invalid password!";
+			return;
+		}
+		break;
+
+	case 2:
+		ConsoleInputGetter::recieveUserNameInput(newUser);
+		if (!InputValidator::isValidUserNameLogin(newUser.getUserName())) {
+			std::cout << "Could not edit user! Invalid username!"; //suggestion: specify if username already															exists
+			return;
+		}
+		ConsoleInputGetter::recievePasswordInput(newUser);
+		if (!InputValidator::isValidPassword(newUser.getPassword())) {
+			std::cout << "Could not edit user! Invalid password!";
+			return;
+		}
+		break;
+
+	case 3:
+		std::cout << "Exited edit menu!" << std::endl;
+		break;
+	default:
+		break;
+	}
+
+
+	
+}
+
 void SocialNetwork::createTopic()
 {
 	//Ensure a logged in user creates the topic
@@ -169,7 +234,7 @@ void SocialNetwork::createTopic()
 		return;
 	}
 
-	//get input for all the metadata and create a topic, then add it to the currTopics vector
+	//advice recieved: get input for all the metadata and create a topic, then add it to the currTopics vector
 	
 	Topic newTopic;
 
@@ -191,8 +256,10 @@ void SocialNetwork::createTopic()
 	newTopic.setCreatorId(loggedInUser.getId());
 
 	//id
-	unsigned lastTopicId = currTopics.back().getId();
-	newTopic.setId(lastTopicId + 1); //BUG: missing the 0 this way
+	if (currTopics.back().getTitle() != nullptr) {
+		unsigned lastTopicId = currTopics.back().getId();
+		newTopic.setId(lastTopicId + 1);
+	}
 
 	currTopics.pushBack(newTopic);
 
@@ -202,7 +269,6 @@ void SocialNetwork::createTopic()
 
 void SocialNetwork::searchTopic()
 {
-
 	Vector<Topic> foundTopics;
 
 	Topic tempTopic;
@@ -321,15 +387,16 @@ Discussion SocialNetwork::createDiscussion()
 	newDiscussion.setCreatorId(loggedInUser.getId());
 
 	//id
-	unsigned lastDiscussionId = openedTopic.getDiscussions().back().getId();
-	newDiscussion.setId(lastDiscussionId + 1); //BUG: missing the 0 this way
+	if (openedTopic.getDiscussions().back().getTitle() != nullptr) {
+		unsigned lastDiscussionId = openedTopic.getDiscussions().back().getId();
+		newDiscussion.setId(lastDiscussionId + 1);
+	}
 
 	return newDiscussion;
 }
 
 void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 {
-
 	size_t topicId = openedTopic.getId();
 	size_t topicsSize = currTopics.getSize();
 	bool addSuccessful = false;
@@ -344,11 +411,10 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 		}
 	}
 
-
 	if (addSuccessful) {
 		CurrentData::setChangesMadeStatus(true);
-		openedTopic = currTopics[i];
-		std::cout << "Posted " << newDiscussion.getTitle() << " successfully!" << std::endl;
+		openedTopic.addDiscussion(newDiscussion);
+		std::cout << "Posted Discussion: ''" << newDiscussion.getTitle() << "'' successfully!" << std::endl;
 
 	}
 	else {
@@ -358,7 +424,6 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 
 void SocialNetwork::listDiscussionsInOpenedTopic()
 {
-
 	if (openedTopic.getTitle() == nullptr) { //is this method of checking ok?
 		std::cout << "Topic not opened! Please open a topic before listing!"
 			<< std::endl;
@@ -366,5 +431,4 @@ void SocialNetwork::listDiscussionsInOpenedTopic()
 	}
 
 	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
-
 }
