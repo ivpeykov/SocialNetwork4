@@ -30,6 +30,7 @@ void PrintHandler::printDiscussion(const Discussion& discussion)
 	std::cout << "\nTitle:" << discussion.getTitle() << std::endl
 		<< "Description:" << discussion.getDescription() << std::endl
 		<< "Topic Id:" << discussion.getTopicId() << std::endl
+		<< "Creator Id: " << discussion.getCreatorId() << std::endl
 		<< "ID:" << discussion.getId() << std::endl
 		<< "Comments:... " << std::endl;
 	printComments(discussion);
@@ -154,12 +155,22 @@ void PrintHandler::printErrorLoginPassword()
 	std::cerr << "\nInvalid Password!" << std::endl;
 }
 
-void PrintHandler::printErrorCreateTitle()
+void PrintHandler::printErrorCreateTitleTopic()
 {
 	std::cerr << "\nError creating Topic! Invalid Title!" << std::endl;
 }
 
-void PrintHandler::printErrorCreateDescription()
+void PrintHandler::printErrorCreateDescriptionTopic()
 {
 	std::cerr << "\nError creating Topic! Invalid Description!" << std::endl;
+}
+
+void PrintHandler::printErrorCreateTitleDiscussion()
+{
+	std::cerr << "\nError creating Discussion! Invalid Title!" << std::endl;
+}
+
+void PrintHandler::printErrorCreateDescriptionDiscussion()
+{
+	std::cerr << "\nError creating Discussion! Invalid Description!" << std::endl;
 }

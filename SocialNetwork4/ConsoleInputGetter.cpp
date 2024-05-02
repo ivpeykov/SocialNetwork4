@@ -177,6 +177,44 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
     newTopic.setDescription(newDescription);
 }
 
+void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
+{
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    std::cout << "\nEnter title: "; //prnthndler
+
+    char newTitle[Configuration::DISCUSSION_TITLE_MAX_LENGTH];
+
+    std::cin.getline(newTitle, Configuration::DISCUSSION_TITLE_MAX_LENGTH);
+
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    newDiscussion.setTitle(newTitle);
+}
+
+void ConsoleInputGetter::recieveDescriptionInput(Discussion& newDiscussion)
+{
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    std::cout << "\nEnter Description: "; //prnthndler
+
+    char newDescription[Configuration::DISCUSSION_DESCRIPTION_MAX_LENGTH];
+
+    std::cin.getline(newDescription, Configuration::DISCUSSION_DESCRIPTION_MAX_LENGTH);
+
+    if (ConsoleInputGetter::isBufferOverfilled()) {
+        ConsoleInputGetter::flushInputBuffer();
+    }
+
+    newDiscussion.setDescription(newDescription);
+}
+
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
 {
     return socialNetworkDirectoryInput;

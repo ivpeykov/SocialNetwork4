@@ -33,17 +33,22 @@ public:
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
-	static void signup();
+	void signup();
 
-	static void login();
+	void login();
 
-	static void createTopic();
+	void createTopic();
 
-	static void searchTopic(const Vector<Topic>& topicsToSearch);
+	void searchTopic();
 
-	static void openTopic(const Vector<Topic>& topics);
+	void openTopic();
 
-	static void listDiscussions(const Topic& topic);
+	Discussion createDiscussion();
+
+	void postDiscussion(const Discussion& newDiscussion); //can use move semantics here
+
+	void listDiscussionsInOpenedTopic();
+
 	//add other commands down here....
 
 private:

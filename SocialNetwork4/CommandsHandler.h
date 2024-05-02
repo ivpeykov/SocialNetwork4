@@ -14,6 +14,7 @@ enum Command { //don't change order!
 	SaveAs,
 	Search,
 	Open,
+	Post,
 	List,
 	Exit,
 

@@ -11,13 +11,13 @@ int main(){
 		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 	}
 
-	//PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
+	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
 
-	//PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
+	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
 
-	std::cout << "Opened Topic: " << std::endl;
-	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
+	//std::cout << "Opened Topic: " << std::endl;
+	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
 
 	return 0;
 }

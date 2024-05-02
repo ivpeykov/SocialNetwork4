@@ -82,7 +82,7 @@ void Topic::setId(unsigned newId)
     id = newId;
 }
 
-void Topic::addDiscussion(Discussion& newDiscussion)
+void Topic::addDiscussion(const Discussion& newDiscussion)
 {
     discussions.pushBack(newDiscussion);
 }

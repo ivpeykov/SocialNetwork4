@@ -38,7 +38,7 @@ public:
 
 	void setCreatorId(unsigned newCreatorId);
 	void setId(unsigned newId);
-	void addDiscussion(Discussion& newDiscussion);
+	void addDiscussion(const Discussion& newDiscussion); // possible move semantics here
 
 	bool isEqualWithoutId(const Topic& other) const;
 	bool isNotEqualWithoutId(const Topic& other) const;

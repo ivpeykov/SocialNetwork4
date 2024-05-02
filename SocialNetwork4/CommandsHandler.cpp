@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "open", "list", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "create", "save", "save as", "search", "open", "post", "list", "exit" };
 
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
@@ -36,15 +36,15 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         break;
 
     case Signup:
-        SocialNetwork::signup();
+        currSocialNetwork.signup();
         break;
 
     case Login:
-        SocialNetwork::login();
+        currSocialNetwork.login();
         break;
 
     case Create:
-        SocialNetwork::createTopic();
+        currSocialNetwork.createTopic();
         break;
 
     case Save:
@@ -55,20 +55,29 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         break;
 
     case Search:
-        SocialNetwork::searchTopic(currSocialNetwork.getCurrTopics());
+        currSocialNetwork.searchTopic();
         break;
 
     case Open:
-        SocialNetwork::openTopic(currSocialNetwork.getCurrTopics());
+        currSocialNetwork.openTopic();
+        break;
+
+    case Post:  
+        try {
+            currSocialNetwork.postDiscussion(currSocialNetwork.createDiscussion());
+        }
+        catch (const std::runtime_error& error) {
+            std::cerr << "Error: " << error.what() << std::endl;
+        }
         break;
 
     case List:
-        SocialNetwork::listDiscussions(currSocialNetwork.getOpenedTopic());
+        currSocialNetwork.listDiscussionsInOpenedTopic();
         break;
 
     case Exit:
         std::cout << "\nExiting program..." << std::endl; //send to printhandler
-        //SocialNetwork::exitNetwork();
+        //currSocialNetwork.exitNetwork();
 
         //Do you wish to exit application? Y/N ?
         //if Y exit(0)

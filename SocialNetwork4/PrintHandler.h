@@ -33,6 +33,9 @@ public:
 	static void printErrorLoginUserName();
 	static void printErrorLoginPassword();
 
-	static void printErrorCreateTitle();
-	static void printErrorCreateDescription();
+	static void printErrorCreateTitleTopic();
+	static void printErrorCreateDescriptionTopic();
+
+	static void printErrorCreateTitleDiscussion();
+	static void printErrorCreateDescriptionDiscussion();
 };

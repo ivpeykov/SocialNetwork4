@@ -26,7 +26,8 @@ public:
 	static void recieveDescriptionInput(Topic& newTopic);
 
 	//Recieve Discussion Input data
-	//.....
+	static void recieveTitleInput(Discussion& newDiscussion);
+	static void recieveDescriptionInput(Discussion& newDiscussion);
 
 	//Recieve Comment Input data
 	//.....

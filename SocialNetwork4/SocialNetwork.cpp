@@ -119,14 +119,14 @@ void SocialNetwork::signup()
 	}
 
 	//Moderator Status
-	if (CurrentData::getCurrSocialNetwork().getCurrUsers().back().getFirstName() != nullptr) {
+	if (currUsers.back().getFirstName() != nullptr) {
 		newUser.setModeratorStatus(false);
 		//ID
-		unsigned lastUserId = CurrentData::getCurrSocialNetwork().getCurrUsers().back().getId();
-		newUser.setId(lastUserId + 1);
+		unsigned lastUserId = currUsers.back().getId();
+		newUser.setId(lastUserId + 1); 
 	}
 
-	CurrentData::getCurrSocialNetwork().getCurrUsers().pushBack(newUser);
+	currUsers.pushBack(newUser);
 	CurrentData::setChangesMadeStatus(true);
 }
 
@@ -164,7 +164,7 @@ void SocialNetwork::login()
 void SocialNetwork::createTopic()
 {
 	//Ensure a logged in user creates the topic
-	if (SocialNetwork::getLoggedInUser().getFirstName() == nullptr) {
+	if (loggedInUser.getFirstName() == nullptr) {
 		std::cout << "Only logged in users can create topics! Please login first!" << std::endl;
 		return;
 	}
@@ -176,30 +176,31 @@ void SocialNetwork::createTopic()
 	//Title
 	ConsoleInputGetter::recieveTitleInput(newTopic);
 	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
-		PrintHandler::printErrorCreateTitle();
+		PrintHandler::printErrorCreateTitleTopic();
 		return;
 	}
 
 	//Description
 	ConsoleInputGetter::recieveDescriptionInput(newTopic);
 	if (!InputValidator::isValidDescription(newTopic.getDescription())) {
-		PrintHandler::printErrorCreateDescription();
+		PrintHandler::printErrorCreateDescriptionTopic();
 		return;
 	}
 
 	//CreatorId
-	newTopic.setCreatorId(SocialNetwork::getLoggedInUser().getId());
+	newTopic.setCreatorId(loggedInUser.getId());
 
 	//id
-	newTopic.setId(CurrentData::getCurrSocialNetwork().getCurrTopics().getSize());
+	unsigned lastTopicId = currTopics.back().getId();
+	newTopic.setId(lastTopicId + 1); //BUG: missing the 0 this way
 
-	CurrentData::getCurrSocialNetwork().getCurrTopics().pushBack(newTopic);
+	currTopics.pushBack(newTopic);
 
 	CurrentData::setChangesMadeStatus(true);
 
 }
 
-void SocialNetwork::searchTopic(const Vector<Topic>& topicsToSearch)
+void SocialNetwork::searchTopic()
 {
 
 	Vector<Topic> foundTopics;
@@ -218,16 +219,16 @@ void SocialNetwork::searchTopic(const Vector<Topic>& topicsToSearch)
 	CustomString lhsString;
 	size_t lhsStringLength = 0;
 
-	size_t topicsToSearchSize = topicsToSearch.getSize();
+	size_t topicsToSearchSize = currTopics.getSize();
 
 	for (int i = 0; i < topicsToSearchSize; ++i) {
 
-		lhsString = topicsToSearch[i].getTitle().getString();
+		lhsString = currTopics[i].getTitle().getString();
 		lhsStringLength = lhsString.length();
 
 
 		if (lhsString.find(rhsString)) {
-			foundTopics.pushBack(topicsToSearch[i]);
+			foundTopics.pushBack(currTopics[i]);
 		}
 
 	}
@@ -236,7 +237,7 @@ void SocialNetwork::searchTopic(const Vector<Topic>& topicsToSearch)
 
 }
 
-void SocialNetwork::openTopic(const Vector<Topic>& topics){
+void SocialNetwork::openTopic(){
 
 
 	std::cout << "Enter full title name or title id (Note: If title name is a number, please use its id!): ";
@@ -253,7 +254,7 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 	bool isQueryDigit = query.isDigit();
 
-	size_t topicsSize = topics.getSize();
+	size_t topicsSize = currTopics.getSize();
 
 	if (isQueryDigit) {
 
@@ -261,10 +262,10 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 		for (int i = 0; i < topicsSize; ++i) {
 
-			if (queryId == topics[i].getId()) {
-				openedTopic = topics[i];
+			if (queryId == currTopics[i].getId()) {
+				openedTopic = currTopics[i];
 				std::cout << "Opened Topic:\n"
-					<< topics[i].getTitle() << std::endl;
+					<< currTopics[i].getTitle() << std::endl;
 			}
 		}
 
@@ -274,8 +275,8 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 		for (int i = 0; i < topicsSize; ++i) {
 
-			if (query == topics[i].getTitle()) {
-				openedTopic = topics[i];
+			if (query == currTopics[i].getTitle()) {
+				openedTopic = currTopics[i];
 				std::cout << "Opened Topic:\n"
 					<< query << std::endl;
 				return;
@@ -286,15 +287,84 @@ void SocialNetwork::openTopic(const Vector<Topic>& topics){
 
 }
 
-void SocialNetwork::listDiscussions(const Topic& topic)
+Discussion SocialNetwork::createDiscussion()
 {
 
-	if (topic.getTitle() == nullptr) { //is this method of checking ok?
+	if (loggedInUser.getFirstName() == nullptr) {
+		throw std::runtime_error("Discussion could not be created! Please log in before posting!");
+	}
+
+	if (openedTopic.getTitle() == nullptr) { //is this method of checking ok?
+		throw std::runtime_error("Discussion could not be created! Please open a topic before posting!");
+	}
+
+	
+	Discussion newDiscussion; //optimisation: create an empty discussion ( no comments)
+
+	//Title
+	ConsoleInputGetter::recieveTitleInput(newDiscussion);
+	if (!InputValidator::isValidTitle(newDiscussion.getTitle())) {
+		throw std::runtime_error("Discussion could not be created! Invalid Title!");
+	}
+
+	//Description
+	ConsoleInputGetter::recieveDescriptionInput(newDiscussion);
+	if (!InputValidator::isValidDescription(newDiscussion.getDescription())) {
+		PrintHandler::printErrorCreateDescriptionDiscussion();
+		throw std::runtime_error("Discussion could not be created! Invalid Description!");
+	}
+
+	//topicId
+	newDiscussion.setTopicId(openedTopic.getId());
+
+	//creatorId
+	newDiscussion.setCreatorId(loggedInUser.getId());
+
+	//id
+	unsigned lastDiscussionId = openedTopic.getDiscussions().back().getId();
+	newDiscussion.setId(lastDiscussionId + 1); //BUG: missing the 0 this way
+
+	return newDiscussion;
+}
+
+void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
+{
+
+	size_t topicId = openedTopic.getId();
+	size_t topicsSize = currTopics.getSize();
+	bool addSuccessful = false;
+
+	int i = 0;
+	for (i; i < topicsSize; ++i) {
+
+		if (topicId == currTopics[i].getId()) {
+			currTopics[i].addDiscussion(newDiscussion);
+			addSuccessful = true;
+			break;
+		}
+	}
+
+
+	if (addSuccessful) {
+		CurrentData::setChangesMadeStatus(true);
+		openedTopic = currTopics[i];
+		std::cout << "Posted " << newDiscussion.getTitle() << " successfully!" << std::endl;
+
+	}
+	else {
+		throw std::runtime_error("Topic not found");
+	}
+}
+
+void SocialNetwork::listDiscussionsInOpenedTopic()
+{
+
+	if (openedTopic.getTitle() == nullptr) { //is this method of checking ok?
 		std::cout << "Topic not opened! Please open a topic before listing!"
 			<< std::endl;
 		return;
 	}
 
-	PrintHandler::printDiscussionsForList(topic.getDiscussions());
+	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
 
 }
