@@ -17,7 +17,7 @@ int main(){
 
 
 	//std::cout << "Opened Topic: " << std::endl;
-	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
+	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic())
 
 	return 0;
 }
