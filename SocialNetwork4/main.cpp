@@ -6,9 +6,38 @@
 int main(){
 	
 	//Ensure a social network is loaded manually by user first !!!!
+
+	//BUG: spamming enter leads to unexpected call command signup
+
+	while (CommandsHandler::getCurrCommand() != Command::Load) {
+		PrintHandler::printEnterCommandPrompt();
+
+		ConsoleInputGetter::recieveCommandInput();
+		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
+			ConsoleInputGetter::resetCommandInput();
+		}
+
+		if (CommandsHandler::getCurrCommand() == Load) {
+			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork()); //change to FileHandler::load() after fixing methods
+			CommandsHandler::setCurrCommand(999);
+			break;
+		}
+
+		else {
+			std::cout << "Please load a Social Network first!" << std::endl;
+		} 
+	}
+
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
 		PrintHandler::printEnterCommandPrompt();
-		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
+
+		ConsoleInputGetter::recieveCommandInput();
+		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
+			ConsoleInputGetter::resetCommandInput();
+		}
+		else {
+			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
+		}
 	}
 
 	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove

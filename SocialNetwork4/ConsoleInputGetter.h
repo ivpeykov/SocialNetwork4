@@ -20,6 +20,9 @@ public:
 	static void recieveLastNameInput(User& newUser);
 	static void recieveUserNameInput(User& newUser);
 	static void recievePasswordInput(User& newUser);
+	static void recieveAnswerInputForEditing(short& answer);
+	static void recieveIdInputForEditUserAsModerator(size_t& id);
+	static void recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus);
 
 	//Recieve Topic Input data
 	static void recieveTitleInput(Topic& newTopic);
