@@ -5,28 +5,9 @@
 
 int main(){
 	
-	//Ensure a social network is loaded manually by user first !!!!
-
 	//BUG: spamming enter leads to unexpected call command signup
 
-	while (CommandsHandler::getCurrCommand() != Command::Load) {
-		PrintHandler::printEnterCommandPrompt();
-
-		ConsoleInputGetter::recieveCommandInput();
-		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
-			ConsoleInputGetter::resetCommandInput();
-		}
-
-		if (CommandsHandler::getCurrCommand() == Load) {
-			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork()); //change to FileHandler::load() after fixing methods
-			CommandsHandler::setCurrCommand(999);
-			break;
-		}
-
-		else {
-			std::cout << "Please load a Social Network first!" << std::endl;
-		} 
-	}
+	bool networkLoaded = false;
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
 		PrintHandler::printEnterCommandPrompt();
@@ -35,9 +16,27 @@ int main(){
 		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
 			ConsoleInputGetter::resetCommandInput();
 		}
-		else {
+
+		else if(CommandsHandler::getCurrCommand() == Load){
+
+			if (networkLoaded) {
+				std::cout << "Network already loaded! Please restart program and load again!"
+					<< std::endl;
+				continue;
+			}
+
+			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
+			networkLoaded = true;
+		}
+
+		else if (CommandsHandler::getCurrCommand() != Load && networkLoaded) {
 			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 		}
+
+		else if(CommandsHandler::getCurrCommand() != Exit){
+			std::cout << "Please load a Social Network first!" << std::endl;
+		}
+
 	}
 
 	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
