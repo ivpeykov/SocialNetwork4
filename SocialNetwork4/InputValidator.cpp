@@ -11,6 +11,17 @@ bool InputValidator::doesStringContainNonAsciiChars(const CustomString& string)
     return false;
 }
 
+bool InputValidator::doesStringContainNonAsciiChars(const char* string)
+{
+    size_t strLen = strlen(string) + 1;
+    for (int i = 0; i < strLen; i++) {
+        if (static_cast<unsigned char>(string[i]) > 127) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool InputValidator::isValidCommandInput(const CustomString& commandInput)
 {
     if (commandInput == nullptr) {
@@ -47,6 +58,11 @@ bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& dire
         std::cout << "Invalid directory!" << std::endl;
         return false;
     }
+
+    if (directoryInput[0] == '\0') { //remove?
+        return false;
+    }
+
     return true;
 }
 
@@ -54,6 +70,10 @@ bool InputValidator::isValidFirstName(const CustomString& firstName)
 {
     if (doesStringContainNonAsciiChars(firstName))
         return false;
+
+    if (firstName[0] == '\0') {
+        return false;
+    }
 
     for (int i = 0; i < firstName.length() - 1; i++) {
         if (!isalpha(firstName[i]))
@@ -68,6 +88,10 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
     if (doesStringContainNonAsciiChars(lastName))
         return false;
 
+    if (lastName[0] == '\0') {
+        return false;
+    }
+
     for (int i = 0; i < lastName.length() - 1; i++) {
         if (!isalpha(lastName[i]))
             return false;
@@ -80,6 +104,10 @@ bool InputValidator::isValidUserNameSignup(const CustomString& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
+
+    if (userName[0] == '\0') {
+        return false;
+    }
    
     if (CurrentData::doesUsernameExist(userName))
         return false;
@@ -92,6 +120,10 @@ bool InputValidator::isValidUserNameLogin(const CustomString& userName) //sugges
     if (doesStringContainNonAsciiChars(userName))
         return false;
 
+    if (userName[0] == '\0') {
+        return false;
+    }
+
     if (!CurrentData::doesUsernameExist(userName))
         return false;
 
@@ -103,10 +135,14 @@ bool InputValidator::isValidPassword(const CustomString& password)
     if (doesStringContainNonAsciiChars(password))
         return false;
 
+    if (password[0] == '\0') {
+        return false;
+    }
+
     return true;
 }
 
-bool InputValidator::isValidAnswerInputForEditing(const short answer, const unsigned maxAnswerValue)
+bool InputValidator::isValidAnswerInputForEditing(const short answer, const short maxAnswerValue)
 {
     return answer >= 0 && answer <= maxAnswerValue;
 }
@@ -117,6 +153,10 @@ bool InputValidator::isValidTitle(const CustomString& title)
     if (doesStringContainNonAsciiChars(title))
         return false;
 
+    if (title[0] == '\0') {
+        return false;
+    }
+
     return true;
 }
 
@@ -124,6 +164,10 @@ bool InputValidator::isValidDescription(const CustomString& description)
 {
     if (doesStringContainNonAsciiChars(description))
         return false;
+
+    if (description[0] == '\0') {
+        return false;
+    }
 
     return true;
 }

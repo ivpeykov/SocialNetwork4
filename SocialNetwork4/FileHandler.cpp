@@ -275,6 +275,8 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
 
 	socialNetworkFile.close();
+
+	std::cout << "Successfully saved social network data!" << std::endl;
 }
 
 void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)
@@ -284,8 +286,6 @@ void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>
 
 	size_t strLength = 0;
 	for (int i = 0; i < usersCount; i++) {
-
-		
 
 		//save firstName
 		strLength = users[i].getFirstName().length();

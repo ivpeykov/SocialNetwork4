@@ -2,6 +2,7 @@
 
 User SocialNetwork::loggedInUser;
 Topic SocialNetwork::openedTopic;
+Discussion SocialNetwork::openedDiscussion;
 
 SocialNetwork::SocialNetwork(CustomString& directory) : directory(directory),
 currUsers(1), currTopics(1) {}
@@ -44,6 +45,11 @@ Topic& SocialNetwork::getOpenedTopic()
 	return openedTopic;
 }
 
+Discussion& SocialNetwork::getOpenedDiscussion()
+{
+	return openedDiscussion;
+}
+
 
 void SocialNetwork::setDirectory(const CustomString& newDirectory)
 {
@@ -78,6 +84,11 @@ void SocialNetwork::setOpenedTopic(const Topic& newTopic)
 bool SocialNetwork::isThereLoggedInUser()
 {
 	return loggedInUser.getFirstName() != nullptr;
+}
+
+bool SocialNetwork::isThereOpenedTopic()
+{
+	return openedTopic.getTitle() != nullptr;
 }
 
 SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
@@ -335,7 +346,6 @@ void SocialNetwork::editUserAsModerator()
 			return;
 		}
 
-		std::cout << "Please enter number from 0 to 5 to edit: ";
 		try {
 			ConsoleInputGetter::recieveAnswerInputForEditing(answer);
 		}
@@ -344,7 +354,7 @@ void SocialNetwork::editUserAsModerator()
 			return;
 		}
 		if (!InputValidator::isValidAnswerInputForEditing(answer, 5)) {
-			std::cout << "Invalid answer! Exiting menu!";
+			std::cout << "Invalid answer! Exiting menu!" << std::endl;
 			return;
 		}
 
@@ -506,13 +516,13 @@ void SocialNetwork::searchTopic()
 void SocialNetwork::openTopic(){
 
 
-	std::cout << "Enter full title name or title id (Note: If title name is a number, please use its id!): ";
+	std::cout << "Enter full title name or topic id (Note: If title name is a number, please use its id!): ";
 
 	Topic tempTopic; //optimisation: create an empty topic (no discussions, no comments)
 
 	ConsoleInputGetter::recieveTitleInput(tempTopic);
 	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
-		std::cout << "Could not open topic! Invalid title!" << std::endl;
+		std::cout << "Could not open topic! Invalid title or id!" << std::endl;
 		return;
 	}
 
@@ -532,6 +542,7 @@ void SocialNetwork::openTopic(){
 				openedTopic = currTopics[i];
 				std::cout << "Opened Topic:\n"
 					<< currTopics[i].getTitle() << std::endl;
+				return;
 			}
 		}
 
@@ -550,6 +561,8 @@ void SocialNetwork::openTopic(){
 		}
 
 	}
+
+	std::cout << "Could not open topic! Invalid title or id!" << std::endl;
 
 }
 
@@ -631,4 +644,43 @@ void SocialNetwork::listDiscussionsInOpenedTopic()
 	}
 
 	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
+}
+
+void SocialNetwork::openDiscussion()
+{
+	if (!isThereOpenedTopic()) {
+		std::cout << "Could not open discussion! Please open a topic first!"
+			<< std::endl;
+		return;
+	}
+
+	size_t id = 0;
+
+	try {
+		ConsoleInputGetter::recieveOpenDiscussionIdInput(id);
+	}
+
+	catch (std::exception e) {
+		std::cout << e.what() << std::endl;
+		std::cout << "Could not open discussion!" << std::endl;
+		return;
+	}
+
+	size_t discussionsSize = openedTopic.getDiscussions().getSize();
+	bool discussionOpened = false;
+
+	for (int i = 0; i < discussionsSize; ++i) {
+
+		if (id == openedTopic.getDiscussions()[i].getId()) {
+			openedDiscussion = openedTopic.getDiscussions()[i];
+			discussionOpened = true;
+			std::cout << "Successfully opened discussion ''" << openedDiscussion.getTitle() << "''!" << std::endl;
+			return;
+		}
+
+	}
+
+	if (!discussionOpened) {
+		std::cout << "Could not open discussion! No discussion with such id exists!" << std::endl;
+	}
 }

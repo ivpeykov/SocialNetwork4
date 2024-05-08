@@ -72,6 +72,9 @@
     <ClCompile Include="FileHandler.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
+    <ClCompile Include="Configuration.cpp">
+      <Filter>Source Files\Services</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomString.h">

@@ -10,6 +10,8 @@ public:
 
 	static bool doesStringContainNonAsciiChars(const CustomString& string);
 
+	static bool doesStringContainNonAsciiChars(const char* string);
+
 	static bool isValidCommandInput(const CustomString& commandInput);
 
 	static bool isValidSocialNetworkDirectoryInput(const CustomString& directoryInput);
@@ -22,7 +24,7 @@ public:
 	static bool isValidUserNameSignup(const CustomString& userName);
 	static bool isValidUserNameLogin(const CustomString& userName);
 	static bool isValidPassword(const CustomString& password);
-	static bool isValidAnswerInputForEditing(const short answer,const unsigned maxAnswerValue);
+	static bool isValidAnswerInputForEditing(const short answer,const short maxAnswerValue);
 
 	//Topic Data Validation
 	static bool isValidTitle(const CustomString& title);

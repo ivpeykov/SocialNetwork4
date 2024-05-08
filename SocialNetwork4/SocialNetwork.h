@@ -5,7 +5,7 @@
 #include "CurrentData.h"
 #include "User.h"
 #include "Topic.h"
-
+#include "Discussion.h"
 
 class SocialNetwork
 {
@@ -22,6 +22,7 @@ public:
 
 	static User& getLoggedInUser();
 	static Topic& getOpenedTopic();
+	static Discussion& getOpenedDiscussion();
 
 	void setDirectory(const CustomString& newDirectory);
 	void setDirectory(const char* newDirectory);
@@ -31,7 +32,7 @@ public:
 	static void setOpenedTopic(const Topic& newTopic);
 
 	static bool isThereLoggedInUser();
-
+	static bool isThereOpenedTopic();
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
@@ -57,7 +58,7 @@ public:
 
 	void listDiscussionsInOpenedTopic();
 
-
+	void openDiscussion();
 
 	//add other commands down here....
 
@@ -68,4 +69,5 @@ private:
 
 	static User loggedInUser;
 	static Topic openedTopic;
+	static Discussion openedDiscussion;
 };
