@@ -47,6 +47,11 @@ bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& dire
         std::cout << "Invalid directory!" << std::endl;
         return false;
     }
+
+    if (directoryInput[0] == '\0') { //remove?
+        return false;
+    }
+
     return true;
 }
 
@@ -54,6 +59,10 @@ bool InputValidator::isValidFirstName(const CustomString& firstName)
 {
     if (doesStringContainNonAsciiChars(firstName))
         return false;
+
+    if (firstName[0] == '\0') {
+        return false;
+    }
 
     for (int i = 0; i < firstName.length() - 1; i++) {
         if (!isalpha(firstName[i]))
@@ -68,6 +77,10 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
     if (doesStringContainNonAsciiChars(lastName))
         return false;
 
+    if (lastName[0] == '\0') {
+        return false;
+    }
+
     for (int i = 0; i < lastName.length() - 1; i++) {
         if (!isalpha(lastName[i]))
             return false;
@@ -80,6 +93,10 @@ bool InputValidator::isValidUserNameSignup(const CustomString& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
+
+    if (userName[0] == '\0') {
+        return false;
+    }
    
     if (CurrentData::doesUsernameExist(userName))
         return false;
@@ -92,6 +109,10 @@ bool InputValidator::isValidUserNameLogin(const CustomString& userName) //sugges
     if (doesStringContainNonAsciiChars(userName))
         return false;
 
+    if (userName[0] == '\0') {
+        return false;
+    }
+
     if (!CurrentData::doesUsernameExist(userName))
         return false;
 
@@ -102,6 +123,10 @@ bool InputValidator::isValidPassword(const CustomString& password)
 {
     if (doesStringContainNonAsciiChars(password))
         return false;
+
+    if (password[0] == '\0') {
+        return false;
+    }
 
     return true;
 }
@@ -117,6 +142,10 @@ bool InputValidator::isValidTitle(const CustomString& title)
     if (doesStringContainNonAsciiChars(title))
         return false;
 
+    if (title[0] == '\0') {
+        return false;
+    }
+
     return true;
 }
 
@@ -124,6 +153,10 @@ bool InputValidator::isValidDescription(const CustomString& description)
 {
     if (doesStringContainNonAsciiChars(description))
         return false;
+
+    if (description[0] == '\0') {
+        return false;
+    }
 
     return true;
 }

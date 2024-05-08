@@ -18,8 +18,9 @@ public:
 	static void setCurrSocialNetwork(const SocialNetwork& newSocialNetwork);
 	static void setChangesMadeStatus(const bool newStatus);
 
-	static bool doesUsernameExist(const CustomString& userName);
-	static bool isLoginSuccessful(User& user);
+	static bool doesUsernameExist(const CustomString& userName); // TODO : consider moving to socialNetwork
+	static bool isLoginSuccessful(User& user); //TODO :  consider moving this to socialNetwork
+
 private:
 
 	static SocialNetwork currSocialNetwork;

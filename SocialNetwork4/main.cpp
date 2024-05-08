@@ -17,7 +17,7 @@ int main(){
 			ConsoleInputGetter::resetCommandInput();
 		}
 
-		else if(CommandsHandler::getCurrCommand() == Load){
+		else if (CommandsHandler::getCurrCommand() == Load){
 
 			if (networkLoaded) {
 				std::cout << "Network already loaded! Please restart program and load again!"
@@ -33,7 +33,7 @@ int main(){
 			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 		}
 
-		else if(CommandsHandler::getCurrCommand() != Exit){
+		else if (CommandsHandler::getCurrCommand() != Exit){
 			std::cout << "Please load a Social Network first!" << std::endl;
 		}
 
@@ -44,8 +44,11 @@ int main(){
 	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
 
-	//std::cout << "Opened Topic: " << std::endl;
-	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic())
+	std::cout << "Opened Topic: " << std::endl;
+	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
+
+	std::cout << "Opened Discussion: " << std::endl;
+	PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
 
 	return 0;
 }

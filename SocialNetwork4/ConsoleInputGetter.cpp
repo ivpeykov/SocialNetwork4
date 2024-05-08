@@ -16,8 +16,8 @@ void ConsoleInputGetter::flushInputBuffer()
 
 void ConsoleInputGetter::recieveCommandInput()
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
 
@@ -35,9 +35,9 @@ void ConsoleInputGetter::recieveCommandInput()
 
     commandInput.setString(tempCommandInput);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
+    if (isBufferOverfilled()) {
         resetCommandInput();
-        ConsoleInputGetter::flushInputBuffer();
+        flushInputBuffer();
     }
 }
 
@@ -46,8 +46,8 @@ void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
 {
     std::cout << "Enter social network directory: ";
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
 
@@ -56,17 +56,17 @@ void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
 
     socialNetworkDirectoryInput.setString(input);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
+    if (isBufferOverfilled()) {
         resetSocialNetworkDirectoryInput();
-        ConsoleInputGetter::flushInputBuffer();
+        flushInputBuffer();
     }
 
 }
 
 void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter user first name: "; //prnthndler
@@ -75,8 +75,8 @@ void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
 
     std::cin.getline(newName, Configuration::FIRST_NAME_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newUser.setFirstName(newName);
@@ -84,8 +84,8 @@ void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
 
 void ConsoleInputGetter::recieveLastNameInput(User& newUser)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter user last name: "; //prnthndler
@@ -94,8 +94,8 @@ void ConsoleInputGetter::recieveLastNameInput(User& newUser)
 
     std::cin.getline(newName, Configuration::LAST_NAME_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newUser.setLastName(newName);
@@ -103,8 +103,8 @@ void ConsoleInputGetter::recieveLastNameInput(User& newUser)
 
 void ConsoleInputGetter::recieveUserNameInput(User& newUser)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter username: "; //prnthndler
@@ -113,8 +113,8 @@ void ConsoleInputGetter::recieveUserNameInput(User& newUser)
 
     std::cin.getline(newName, Configuration::USER_NAME_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newUser.setUserName(newName);
@@ -122,8 +122,8 @@ void ConsoleInputGetter::recieveUserNameInput(User& newUser)
 
 void ConsoleInputGetter::recievePasswordInput(User& newUser)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter user password: "; //prnthndler
@@ -132,8 +132,8 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
 
     std::cin.getline(newPass, Configuration::PASSWORD_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newUser.setPassword(newPass);
@@ -154,7 +154,7 @@ void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer)
     }
 }
 
-void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id) //Potential bug: spamming enter buffer overflow?
+void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id) ///BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
 {
     short failedTries = 0;
 
@@ -178,7 +178,7 @@ void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id) //Pote
 
 }
 
-void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus)
+void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus) //BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
 {
     
     short failedTries = 0;
@@ -198,8 +198,8 @@ void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool&
 
 void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter title: "; //prnthndler
@@ -208,8 +208,8 @@ void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
 
     std::cin.getline(newTitle, Configuration::TOPIC_TITLE_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newTopic.setTitle(newTitle);
@@ -217,8 +217,8 @@ void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
 
 void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter Description: "; //prnthndler
@@ -227,8 +227,8 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
 
     std::cin.getline(newDescription, Configuration::TOPIC_DESCRIPTION_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newTopic.setDescription(newDescription);
@@ -236,8 +236,8 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
 
 void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter title: "; //prnthndler
@@ -246,8 +246,8 @@ void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
 
     std::cin.getline(newTitle, Configuration::DISCUSSION_TITLE_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newDiscussion.setTitle(newTitle);
@@ -255,8 +255,8 @@ void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
 
 void ConsoleInputGetter::recieveDescriptionInput(Discussion& newDiscussion)
 {
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     std::cout << "\nEnter Description: "; //prnthndler
@@ -265,11 +265,29 @@ void ConsoleInputGetter::recieveDescriptionInput(Discussion& newDiscussion)
 
     std::cin.getline(newDescription, Configuration::DISCUSSION_DESCRIPTION_MAX_LENGTH);
 
-    if (ConsoleInputGetter::isBufferOverfilled()) {
-        ConsoleInputGetter::flushInputBuffer();
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
     }
 
     newDiscussion.setDescription(newDescription);
+}
+
+void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id) //BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
+{
+    short failedTries = 0;
+
+    std::cout << "Enter ID: ";
+    while (!(std::cin >> id)) {
+        failedTries++;
+        if (failedTries == 3) {
+            flushInputBuffer();
+            throw std::exception("Invalid input! Too many failed tries!");
+        }
+
+        std::cout << "\nInvalid input! Please enter a valid number: ";
+        flushInputBuffer();
+    }
+
 }
 
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
