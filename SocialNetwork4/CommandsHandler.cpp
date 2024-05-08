@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "exit" };
 
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
@@ -37,6 +37,10 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         currSocialNetwork.login();
         break;
 
+    case Logout:
+        currSocialNetwork.logout();
+        break;
+
     case Edit:
         currSocialNetwork.editLoggedInUser();
         break;
@@ -48,10 +52,10 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         currSocialNetwork.createTopic();
         break;
 
-    case Save:
+    case Save: //TODO: print saved successfully message
         FileHandler::saveSocialNetwork(currSocialNetwork);
         break;
-    case SaveAs:
+    case SaveAs: //TODO: print saved successfully message
         //FileHandler::saveAsSocialNetwork();
         break;
 
@@ -76,7 +80,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         currSocialNetwork.listDiscussionsInOpenedTopic();
         break;
 
-    case Exit:
+    case Exit: //TODO: all changes must be saved!
         std::cout << "\nExiting program..." << std::endl; //send to printhandler
         //currSocialNetwork.exitNetwork();
 

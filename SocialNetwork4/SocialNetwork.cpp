@@ -168,6 +168,18 @@ void SocialNetwork::login()
 	}
 }
 
+void SocialNetwork::logout()
+{
+	if (!isThereLoggedInUser()) {
+		std::cout << "Couldn't log out! No user is logged in!" << std::endl;
+		return;
+	}
+
+	loggedInUser.clearUser();
+
+	std::cout << "Logged out successfully!" << std::endl;
+}
+
 void SocialNetwork::editLoggedInUser() //BUG: Everywhere where we iterate through users we need to do it with size_t i not int i
 {
 	if (!isThereLoggedInUser()) {

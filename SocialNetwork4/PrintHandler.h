@@ -9,6 +9,8 @@ class PrintHandler
 {
 public:
 
+	//TODO :: Add exception handling for everything that tries to print nullptr
+
 	static void printEnterCommandPrompt();
 
 	static void printUser(const User& user);

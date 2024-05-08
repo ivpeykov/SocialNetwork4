@@ -9,6 +9,7 @@ enum Command { //don't change order!
 	Load,
 	Signup,
 	Login,
+	Logout,
 	Edit,
 	EditAsModerator,
 	Create,

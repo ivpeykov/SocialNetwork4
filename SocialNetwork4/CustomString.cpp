@@ -323,4 +323,5 @@ std::ostream& operator<<(std::ostream& os, const CustomString& str)
 	else
 		throw std::runtime_error("Trying to output a nullptr CustomString");
 
+	return os;
 }

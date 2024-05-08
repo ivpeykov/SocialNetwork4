@@ -34,6 +34,8 @@ public:
 	const unsigned getPoints() const;
 	const bool getModeratorStatus() const;
 
+	void clearUser();
+
 	void setFirstName(const CustomString& newFirstName);
 	void setFirstName(const char* newFirstName);
 

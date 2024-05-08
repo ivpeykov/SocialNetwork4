@@ -70,6 +70,18 @@ const bool User::getModeratorStatus() const
 	return isModerator;
 }
 
+void User::clearUser()
+{
+	firstName.clearString();
+	lastName.clearString();
+	userName.clearString();
+	password.clearString();
+
+	id = 0;
+	points = 0;
+	isModerator = false;
+}
+
 void User::setFirstName(const CustomString& newFirstName)
 {
 	firstName = newFirstName;

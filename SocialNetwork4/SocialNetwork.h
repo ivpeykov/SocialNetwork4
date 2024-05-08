@@ -39,6 +39,8 @@ public:
 
 	void login();
 
+	void logout();
+
 	void editLoggedInUser();
 
 	void editUserAsModerator();
