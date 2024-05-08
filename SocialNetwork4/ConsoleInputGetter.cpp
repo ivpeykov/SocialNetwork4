@@ -50,7 +50,6 @@ void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
         ConsoleInputGetter::flushInputBuffer();
     }
 
-
     char input[128];
     std::cin.getline(input, 128, '\n');
 
