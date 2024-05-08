@@ -16,7 +16,7 @@ public:
 
 
 	//User Data Validation
-	//BUG: Names/pass can be empty! This shouldnt happen
+	//BUG: Names/pass can be empty! This shouldn't happen
 	static bool isValidFirstName(const CustomString& firstName);
 	static bool isValidLastName(const CustomString& lastName);
 	static bool isValidUserNameSignup(const CustomString& userName);
