@@ -16,12 +16,13 @@ public:
 
 
 	//User Data Validation
+	//BUG: Names/pass can be empty! This shouldn't happen
 	static bool isValidFirstName(const CustomString& firstName);
 	static bool isValidLastName(const CustomString& lastName);
 	static bool isValidUserNameSignup(const CustomString& userName);
 	static bool isValidUserNameLogin(const CustomString& userName);
 	static bool isValidPassword(const CustomString& password);
-
+	static bool isValidAnswerInputForEditing(const short answer,const unsigned maxAnswerValue);
 
 	//Topic Data Validation
 	static bool isValidTitle(const CustomString& title);

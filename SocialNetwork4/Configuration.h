@@ -18,7 +18,7 @@ public:
 	static const unsigned DISCUSSION_DESCRIPTION_MAX_LENGTH = 2048;
 	static const unsigned COMMENT_AUTHOR_NAME_MAX_LENGTH = 128;
 	static const unsigned COMMENT_TEXT_MAX_LENGTH = 512;
-	static const unsigned short COMMAND_INPUT_MAX_LENGTH = 7; // Longest command + \0 length. Adjust if more commands are added
+	static const unsigned short COMMAND_INPUT_MAX_LENGTH = 8; // Longest command + \0 length. Adjust if more commands are added
 
 };
 

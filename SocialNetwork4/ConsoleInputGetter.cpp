@@ -139,6 +139,63 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
     newUser.setPassword(newPass);
 }
 
+void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer)
+{
+    short failedTries = 0;
+
+    while (!(std::cin >> answer)) {
+        failedTries++;
+        if (failedTries == 3) {
+            flushInputBuffer();
+            throw std::exception("Invalid input! Too many failed tries!");
+        }
+        std::cout << "\nInvalid input! Please enter a valid number: ";
+        flushInputBuffer();
+    }
+}
+
+void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id) //Potential bug: spamming enter buffer overflow?
+{
+    short failedTries = 0;
+
+    std::cout << "Enter ID: ";
+    while (!(std::cin >> id) || id == 0) {
+        failedTries++;
+        if (failedTries == 3) {
+            flushInputBuffer();
+            throw std::exception("Invalid input! Too many failed tries!");
+        }
+
+        if (id == 0 && std::cin.good()) {
+            std::cout << "Invalid input! Cannot change moderator status of the root admin! \nPlease enter a valid number: " << std::endl;
+            flushInputBuffer();
+            continue;
+        }
+
+        std::cout << "\nInvalid input! Please enter a valid number: ";
+        flushInputBuffer();
+    }
+
+}
+
+void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus)
+{
+    
+    short failedTries = 0;
+
+    std::cout << "Enter status number (0 - Normal user ; 1 - Moderator): ";
+    while (!(std::cin >> newModeratorStatus)) {
+        failedTries++;
+        if (failedTries == 3) {
+            flushInputBuffer();
+            throw std::exception("Invalid input! Too many failed tries!");
+        }
+        std::cout << "\nInvalid input! Please enter a valid number: ";
+        flushInputBuffer();
+    }
+
+}
+
 void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
 {
     if (ConsoleInputGetter::isBufferOverfilled()) {

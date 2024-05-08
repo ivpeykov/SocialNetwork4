@@ -30,12 +30,18 @@ public:
 	static void setLoggedInUser(const User& newUser);
 	static void setOpenedTopic(const Topic& newTopic);
 
+	static bool isThereLoggedInUser();
+
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
 	void signup();
 
 	void login();
+
+	void editLoggedInUser();
+
+	void editUserAsModerator();
 
 	void createTopic();
 
@@ -48,6 +54,8 @@ public:
 	void postDiscussion(const Discussion& newDiscussion); //can use move semantics here
 
 	void listDiscussionsInOpenedTopic();
+
+
 
 	//add other commands down here....
 

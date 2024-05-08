@@ -87,7 +87,7 @@ bool InputValidator::isValidUserNameSignup(const CustomString& userName)
     return true;
 }
 
-bool InputValidator::isValidUserNameLogin(const CustomString& userName)
+bool InputValidator::isValidUserNameLogin(const CustomString& userName) //suggestion: check for existance elsewhere
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
@@ -105,6 +105,12 @@ bool InputValidator::isValidPassword(const CustomString& password)
 
     return true;
 }
+
+bool InputValidator::isValidAnswerInputForEditing(const short answer, const unsigned maxAnswerValue)
+{
+    return answer >= 0 && answer <= maxAnswerValue;
+}
+
 
 bool InputValidator::isValidTitle(const CustomString& title)
 {
