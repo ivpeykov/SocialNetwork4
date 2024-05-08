@@ -346,7 +346,6 @@ void SocialNetwork::editUserAsModerator()
 			return;
 		}
 
-		std::cout << "Please enter number from 0 to 5 to edit: ";
 		try {
 			ConsoleInputGetter::recieveAnswerInputForEditing(answer);
 		}
@@ -355,7 +354,7 @@ void SocialNetwork::editUserAsModerator()
 			return;
 		}
 		if (!InputValidator::isValidAnswerInputForEditing(answer, 5)) {
-			std::cout << "Invalid answer! Exiting menu!";
+			std::cout << "Invalid answer! Exiting menu!" << std::endl;
 			return;
 		}
 

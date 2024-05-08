@@ -1,6 +1,7 @@
 #pragma once
 #include "CustomString.h"
 #include "Configuration.h"
+#include "InputValidator.h"
 #include "User.h"
 #include "Topic.h"
 

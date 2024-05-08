@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="CommandsHandler.cpp" />
     <ClCompile Include="Comment.cpp" />
+    <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConsoleInputGetter.cpp" />
     <ClCompile Include="CurrentData.cpp" />
     <ClCompile Include="CustomString.cpp" />

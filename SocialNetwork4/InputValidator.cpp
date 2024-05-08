@@ -11,6 +11,17 @@ bool InputValidator::doesStringContainNonAsciiChars(const CustomString& string)
     return false;
 }
 
+bool InputValidator::doesStringContainNonAsciiChars(const char* string)
+{
+    size_t strLen = strlen(string) + 1;
+    for (int i = 0; i < strLen; i++) {
+        if (static_cast<unsigned char>(string[i]) > 127) {
+            return true;
+        }
+    }
+    return false;
+}
+
 bool InputValidator::isValidCommandInput(const CustomString& commandInput)
 {
     if (commandInput == nullptr) {
@@ -131,7 +142,7 @@ bool InputValidator::isValidPassword(const CustomString& password)
     return true;
 }
 
-bool InputValidator::isValidAnswerInputForEditing(const short answer, const unsigned maxAnswerValue)
+bool InputValidator::isValidAnswerInputForEditing(const short answer, const short maxAnswerValue)
 {
     return answer >= 0 && answer <= maxAnswerValue;
 }

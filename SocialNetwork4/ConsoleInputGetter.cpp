@@ -141,57 +141,125 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
 
 void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer)
 {
-    short failedTries = 0;
 
-    while (!(std::cin >> answer)) {
-        failedTries++;
-        if (failedTries == 3) {
-            flushInputBuffer();
-            throw std::exception("Invalid input! Too many failed tries!");
-        }
-        std::cout << "\nInvalid input! Please enter a valid number: ";
+    if (isBufferOverfilled()) {
         flushInputBuffer();
     }
+
+    short inputBuffer = 2; //1 for the digit , 2 for the null char
+    size_t tempAnswer = 0;
+
+    std::cout << "Please enter number from 0 to 5 to edit: ";
+    char* input = new char[inputBuffer];
+    std::cin.getline(input, inputBuffer);
+
+    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
+        delete[] input;
+        input = nullptr;
+        throw std::exception("Invalid answer input!");
+    }
+
+    CustomString strInput = input;
+
+    try {
+        tempAnswer = strInput.toNum();
+    }
+    catch (std::exception e) {
+        delete[] input;
+        throw e;
+    }
+
+    delete[] input;
+    answer = tempAnswer;
 }
 
-void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id) ///BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
+void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id)
 {
-    short failedTries = 0;
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
+    }
+
+    short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
+
+    size_t tempId = 0;
 
     std::cout << "Enter ID: ";
-    while (!(std::cin >> id) || id == 0) {
-        failedTries++;
-        if (failedTries == 3) {
-            flushInputBuffer();
-            throw std::exception("Invalid input! Too many failed tries!");
-        }
 
-        if (id == 0 && std::cin.good()) {
-            std::cout << "Invalid input! Cannot change moderator status of the root admin! \nPlease enter a valid number: " << std::endl;
-            flushInputBuffer();
-            continue;
-        }
+    char* input = new char[inputBuffer];
 
-        std::cout << "\nInvalid input! Please enter a valid number: ";
-        flushInputBuffer();
+    std::cin.getline(input, inputBuffer); 
+    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
+        delete[] input;
+        input = nullptr;
+        throw std::exception("Invalid Id input!");
     }
+
+    CustomString strInput = input;
+
+    try {
+        tempId = strInput.toNum();
+    }
+    catch (std::exception e) {
+        delete[] input;
+        throw e;
+    }
+
+    if (tempId == 0) {
+        delete[] input;
+        throw std::exception("Invalid input! Cannot change moderator status of the root admin!");
+    }
+
+
+    delete[] input;
+    id = tempId;
 
 }
 
-void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus) //BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
+void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus)
 {
-    
-    short failedTries = 0;
+
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
+    }
+
+    short inputBuffer = 2; //1 for the digit , 2 for the null char
+    size_t tempStatus = 0;
 
     std::cout << "Enter status number (0 - Normal user ; 1 - Moderator): ";
-    while (!(std::cin >> newModeratorStatus)) {
-        failedTries++;
-        if (failedTries == 3) {
-            flushInputBuffer();
-            throw std::exception("Invalid input! Too many failed tries!");
-        }
-        std::cout << "\nInvalid input! Please enter a valid number: ";
-        flushInputBuffer();
+    char* input = new char[inputBuffer];
+    std::cin.getline(input, inputBuffer);
+
+    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
+        delete[] input;
+        input = nullptr;
+        throw std::exception("Invalid moderator status input!");
+    }
+
+    CustomString strInput = input;
+
+    try {
+        tempStatus = strInput.toNum();
+    }
+    catch (std::exception e) {
+        delete[] input;
+        throw e;
+    }
+
+    if (tempStatus == 0) {
+        newModeratorStatus = 0;
+        delete[] input;
+        
+    }
+
+    else if (tempStatus == 1) {
+        newModeratorStatus = 1;
+        delete[] input;
+    }
+
+
+    else {
+        delete[] input;
+        throw std::exception("Invalid status input!");
     }
 
 }
@@ -272,22 +340,39 @@ void ConsoleInputGetter::recieveDescriptionInput(Discussion& newDiscussion)
     newDiscussion.setDescription(newDescription);
 }
 
-void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id) //BUG : THIS ALLOWS BUFFER OVERFLOW BECAUSE OF \n or \t spam
+void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)
 {
-    short failedTries = 0;
-
-    std::cout << "Enter ID: ";
-    while (!(std::cin >> id)) {
-        failedTries++;
-        if (failedTries == 3) {
-            flushInputBuffer();
-            throw std::exception("Invalid input! Too many failed tries!");
-        }
-
-        std::cout << "\nInvalid input! Please enter a valid number: ";
+    if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
+    short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
+    
+    size_t tempId = 0;
+
+    std::cout << "Enter ID: ";
+
+    char* input = new char[inputBuffer];
+
+    std::cin.getline(input, inputBuffer);
+    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
+        delete[] input;
+        input = nullptr;
+        throw std::exception("Invalid Id input!");
+    }
+
+    CustomString strInput = input;
+
+    try {
+        tempId = strInput.toNum();
+    }
+    catch (std::exception e) {
+        delete[] input;
+        throw e;
+    }
+
+    delete[] input;
+    id = tempId;
 }
 
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
