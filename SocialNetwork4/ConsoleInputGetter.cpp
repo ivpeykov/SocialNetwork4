@@ -280,6 +280,7 @@ void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
     }
 
     newTopic.setTitle(newTitle);
+
 }
 
 void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
@@ -301,7 +302,7 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
     newTopic.setDescription(newDescription);
 }
 
-void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
+void ConsoleInputGetter::recieveDiscussionTitleInput(Discussion& newDiscussion)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -320,7 +321,7 @@ void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
     newDiscussion.setTitle(newTitle);
 }
 
-void ConsoleInputGetter::recieveContentInput(Discussion& newDiscussion)
+void ConsoleInputGetter::recieveDiscussionContentInput(Discussion& newDiscussion)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -380,6 +381,25 @@ void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)
 
     delete[] input;
     id = tempId;
+}
+
+void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
+{
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
+    }
+
+    std::cout << "\nEnter comment: ";
+
+    char comment[Configuration::COMMENT_TEXT_MAX_LENGTH]; //add exception handling
+
+    std::cin.getline(comment, Configuration::COMMENT_TEXT_MAX_LENGTH);
+
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
+    }
+
+    newComment.setText(comment);
 }
 
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()

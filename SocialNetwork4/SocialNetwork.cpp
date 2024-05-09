@@ -91,6 +91,11 @@ bool SocialNetwork::isThereOpenedTopic()
 	return openedTopic.getTitle() != nullptr;
 }
 
+bool SocialNetwork::isThereOpenedDiscussion()
+{
+	return openedDiscussion.getTitle() != nullptr;
+}
+
 SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
 	if (this != &other) {
 
@@ -138,7 +143,7 @@ void SocialNetwork::signup()
 	if (currUsers.back().getFirstName() != nullptr) {
 		newUser.setModeratorStatus(false);
 		//ID
-		unsigned lastUserId = currUsers.back().getId();
+		size_t lastUserId = currUsers.back().getId();
 		newUser.setId(lastUserId + 1); 
 	}
 
@@ -202,7 +207,7 @@ void SocialNetwork::editLoggedInUser() //BUG: Everywhere where we iterate throug
 	bool userFound = false;
 	size_t usersSize = currUsers.getSize();
 	
-	unsigned loggedInUserId = loggedInUser.getId();
+	size_t loggedInUserId = loggedInUser.getId();
 	for (userPos; userPos < usersSize; ++userPos) {
 		if (loggedInUserId == currUsers[userPos].getId()) {
 			userFound = true;
@@ -436,12 +441,11 @@ void SocialNetwork::editUserAsModerator()
 
 }
 
-void SocialNetwork::createTopic()
+Topic SocialNetwork::createTopic()
 {
 	//Ensure a logged in user creates the topic
 	if (!isThereLoggedInUser()) {
-		std::cout << "Only logged in users can create topics! Please login first!" << std::endl;
-		return;
+		throw std::runtime_error("Topic could not be created! Please log in before creating!");
 	}
 
 	//advice recieved: get input for all the metadata and create a topic, then add it to the currTopics vector
@@ -452,14 +456,13 @@ void SocialNetwork::createTopic()
 	ConsoleInputGetter::recieveTitleInput(newTopic);
 	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
 		PrintHandler::printErrorCreateTitleTopic();
-		return;
+		throw std::runtime_error("Topic could not be created! Invalid Title!");
 	}
 
 	//Description
 	ConsoleInputGetter::recieveDescriptionInput(newTopic);
 	if (!InputValidator::isValidDescription(newTopic.getDescription())) {
-		PrintHandler::printErrorCreateDescriptionTopic();
-		return;
+		throw std::runtime_error("Topic could not be created! Invalid Description!");
 	}
 
 	//CreatorId
@@ -467,14 +470,18 @@ void SocialNetwork::createTopic()
 
 	//id
 	if (currTopics.back().getTitle() != nullptr) {
-		unsigned lastTopicId = currTopics.back().getId();
+		size_t lastTopicId = currTopics.back().getId();
 		newTopic.setId(lastTopicId + 1);
 	}
 
+	return newTopic;
+}
+
+void SocialNetwork::addTopic(const Topic& newTopic)
+{
 	currTopics.pushBack(newTopic);
 
 	CurrentData::setChangesMadeStatus(true);
-
 }
 
 void SocialNetwork::searchTopic()
@@ -514,7 +521,6 @@ void SocialNetwork::searchTopic()
 }
 
 void SocialNetwork::openTopic(){
-
 
 	std::cout << "Enter full title name or topic id (Note: If title name is a number, please use its id!): ";
 
@@ -573,7 +579,7 @@ Discussion SocialNetwork::createDiscussion()
 		throw std::runtime_error("Discussion could not be created! Please log in before posting!");
 	}
 
-	if (openedTopic.getTitle() == nullptr) { //is this method of checking ok?
+	if (!isThereOpenedTopic()) {
 		throw std::runtime_error("Discussion could not be created! Please open a topic before posting!");
 	}
 
@@ -581,13 +587,13 @@ Discussion SocialNetwork::createDiscussion()
 	Discussion newDiscussion; //optimisation: create an empty discussion ( no comments)
 
 	//Title
-	ConsoleInputGetter::recieveTitleInput(newDiscussion);
+	ConsoleInputGetter::recieveDiscussionTitleInput(newDiscussion);
 	if (!InputValidator::isValidTitle(newDiscussion.getTitle())) {
 		throw std::runtime_error("Discussion could not be created! Invalid Title!");
 	}
 
 	//Content
-	ConsoleInputGetter::recieveContentInput(newDiscussion);
+	ConsoleInputGetter::recieveDiscussionContentInput(newDiscussion);
 	if (!InputValidator::isValidContent(newDiscussion.getContent())) {
 		PrintHandler::printErrorCreateDescriptionDiscussion();
 		throw std::runtime_error("Discussion could not be created! Invalid Content!");
@@ -601,7 +607,7 @@ Discussion SocialNetwork::createDiscussion()
 
 	//id
 	if (openedTopic.getDiscussions().back().getTitle() != nullptr) {
-		unsigned lastDiscussionId = openedTopic.getDiscussions().back().getId();
+		size_t lastDiscussionId = openedTopic.getDiscussions().back().getId();
 		newDiscussion.setId(lastDiscussionId + 1);
 	}
 
@@ -614,7 +620,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 	size_t topicsSize = currTopics.getSize();
 	bool addSuccessful = false;
 
-	int i = 0;
+	size_t i = 0;
 	for (i; i < topicsSize; ++i) {
 
 		if (topicId == currTopics[i].getId()) {
@@ -637,7 +643,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 
 void SocialNetwork::listDiscussionsInOpenedTopic()
 {
-	if (openedTopic.getTitle() == nullptr) { //is this method of checking ok?
+	if (!isThereOpenedTopic()) {
 		std::cout << "Topic not opened! Please open a topic before listing!"
 			<< std::endl;
 		return;
@@ -686,4 +692,80 @@ void SocialNetwork::openDiscussion()
 	if (!discussionOpened) {
 		std::cout << "Could not open discussion! No discussion with such id exists!" << std::endl;
 	}
+}
+
+Comment SocialNetwork::createComment() //continue here...
+{
+	if (!isThereLoggedInUser()) {
+		throw std::runtime_error("Comment could not be created! Please log in before commenting!");
+	}
+
+	if (!isThereOpenedTopic()) {
+		throw std::runtime_error("Comment could not be created! Please open a topic before commenting!");
+	}
+
+	if (!isThereOpenedDiscussion()) {
+		throw std::runtime_error("Comment could not be created! Please open a discussion before commenting!");
+	}
+
+	Comment newComment;
+
+	ConsoleInputGetter::recieveCommentTextInput(newComment);
+	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
+		throw std::runtime_error("Comment could not be created! Invalid input!");
+	}
+
+	newComment.setAuthor(loggedInUser.getUserName());
+	newComment.setScore(0);
+	newComment.setDiscussionId(openedDiscussion.getId());
+
+	if (openedDiscussion.getComments().back().getAuthor() != nullptr) {
+		size_t lastCommentId = openedDiscussion.getComments().back().getId();
+		newComment.setId(lastCommentId + 1);
+	}
+	
+	return newComment;
+}
+
+
+void SocialNetwork::addComment(const Comment& newComment)
+{
+
+	//Find corresponding topic
+	size_t searchedTopicId = openedTopic.getId();
+	size_t topicsSize = currTopics.getSize();
+	bool topicFound = false;
+
+	size_t topicPos = 0;
+	for (topicPos; topicPos < topicsSize; ++topicPos) {
+
+		if (searchedTopicId == currTopics[topicPos].getId()) {
+			topicFound = true;
+			break;
+		}
+	}
+
+	if (topicFound == false) {
+		throw std::runtime_error("Topic not found");
+	}
+
+	//Find corresponding discussion
+	size_t searchedDiscussionId = openedDiscussion.getId();
+	size_t discussionsSize = currTopics[topicPos].getDiscussions().getSize();
+	bool discussionFound = false;
+
+	size_t discussionPos = 0;
+	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
+		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
+			currTopics[topicPos].getDiscussions()[discussionPos].addComment(newComment);
+			CurrentData::setChangesMadeStatus(true);
+			discussionFound = true;
+		}
+	}
+
+	if (discussionFound == false) {
+		throw std::runtime_error("Discussion not found");
+	}
+
+	openedDiscussion.addComment(newComment);
 }

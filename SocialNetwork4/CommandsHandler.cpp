@@ -2,11 +2,11 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "help", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "comment", "help", "exit" };
 
 bool CommandsHandler::networkLoaded = false;
 
-void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
+void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: ADD exception handling for all commands
 {
     //consider adding failed tries
 
@@ -81,7 +81,12 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
-        currSocialNetwork.createTopic();
+        try {
+            currSocialNetwork.addTopic(currSocialNetwork.createTopic());
+        }
+        catch (const std::runtime_error& error) {
+            std::cerr << "Error: " << error.what() << std::endl;
+        }
         break;
 
     case Save: //TODO: print saved successfully message
@@ -145,6 +150,20 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         currSocialNetwork.openDiscussion();
         break;
 
+    case AddComment:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
+
+        try {
+            currSocialNetwork.addComment(currSocialNetwork.createComment());
+        }
+        catch (const std::runtime_error& error) {
+            std::cerr << "Error: " << error.what() << std::endl;
+        }
+        break;
+
     case Help:
         PrintHandler::printCommands(commandsList, CommandsCount);
         break;
@@ -155,11 +174,6 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 
         //Do you wish to exit application? Y/N ?
         //if Y exit(0)
-        break;
-
-    case 999:
-        std::cerr << "\nCritical Error!\n Exiting..."; //send to printhandlr
-        exit(0);
         break;
 
     default: break;

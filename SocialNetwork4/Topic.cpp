@@ -2,15 +2,16 @@
 
 Topic::Topic() : title(nullptr), description(nullptr), creatorId(0), id(0), discussions() {}
 
-Topic::Topic(CustomString& title, CustomString& description,
-    unsigned creatorId, unsigned id) :
+Topic::Topic(const CustomString& title, const CustomString& description,
+    const size_t creatorId, const size_t id) :
     title(title), description(description), creatorId(creatorId), id(id), discussions() {}
 
 Topic::Topic(const char* title, const char* description,
-    unsigned creatorId, unsigned id) :
+    const size_t creatorId, const size_t id) :
     title(title), description(description), creatorId(creatorId), id(id), discussions() {}
 
-Topic::Topic(const char* title, const char* description, unsigned creatorId, unsigned id, Vector<Discussion>& discussions) : title(title), description(description), creatorId(creatorId), id(id), discussions(discussions)
+Topic::Topic(const char* title, const char* description, 
+    const size_t creatorId, const size_t id, const Vector<Discussion>& discussions) : title(title), description(description), creatorId(creatorId), id(id), discussions(discussions)
 {
 }
 
@@ -32,12 +33,12 @@ const CustomString& Topic::getDescription() const
     return description;
 }
 
-const unsigned Topic::getCreatorId() const
+const size_t Topic::getCreatorId() const
 {
     return creatorId;
 }
 
-const unsigned Topic::getId() const
+const size_t Topic::getId() const
 {
     return id;
 }
@@ -57,7 +58,7 @@ void Topic::setTitle(const char* newTitle)
     title = newTitle;
 }
 
-void Topic::setTitle(CustomString& newTitle)
+void Topic::setTitle(const CustomString& newTitle)
 {
     title = newTitle;
 }
@@ -67,17 +68,17 @@ void Topic::setDescription(const char* newDescription)
     description = newDescription;
 }
 
-void Topic::setDescription(CustomString& newDescription)
+void Topic::setDescription(const CustomString& newDescription)
 {
     description = newDescription;
 }
 
-void Topic::setCreatorId(unsigned newCreatorId)
+void Topic::setCreatorId(const size_t newCreatorId)
 {
     creatorId = newCreatorId;
 }
 
-void Topic::setId(unsigned newId)
+void Topic::setId(const size_t newId)
 {
     id = newId;
 }

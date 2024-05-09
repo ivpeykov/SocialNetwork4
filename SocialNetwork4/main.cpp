@@ -13,6 +13,7 @@ int main(){
 		ConsoleInputGetter::recieveCommandInput();
 		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
 			ConsoleInputGetter::resetCommandInput();
+			CommandsHandler::setCurrCommand(999);
 		}
 		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 	}
@@ -22,11 +23,11 @@ int main(){
 	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
 
-	//std::cout << "Opened Topic: " << std::endl;
-	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
+	std::cout << "Opened Topic: " << std::endl;
+	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
 
-	//std::cout << "Opened Discussion: " << std::endl;
-	//PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
+	std::cout << "Opened Discussion: " << std::endl;
+	PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
 
 	return 0;
 }

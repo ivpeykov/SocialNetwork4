@@ -2,12 +2,12 @@
 
 Comment::Comment() : author(nullptr), text(nullptr), score(0), id(0), discussionId(0) {}
 
-Comment::Comment(CustomString& author, CustomString& text,
-    int score, unsigned id, unsigned discussionId) :
+Comment::Comment(const CustomString& author, const CustomString& text,
+    const int score, const size_t id, const size_t discussionId) :
     author(author), text(text), score(score), id(id), discussionId(discussionId) {}
 
 Comment::Comment(const char* author, const char* text,
-    int score, unsigned id, unsigned discussionId) :
+    const int score, const size_t id, const size_t discussionId) :
     author(author), text(text), score(score), id(id), discussionId(discussionId) {}
 
 const CustomString& Comment::getAuthor() const
@@ -25,12 +25,12 @@ const int Comment::getScore() const
     return score;
 }
 
-const unsigned Comment::getId() const
+const size_t Comment::getId() const
 {
     return id;
 }
 
-const unsigned Comment::getDiscussionId() const
+const size_t Comment::getDiscussionId() const
 {
     return discussionId;
 }
@@ -55,17 +55,17 @@ void Comment::setText(const CustomString& newText)
     text = newText;
 }
 
-void Comment::setScore(int newScore)
+void Comment::setScore(const int newScore)
 {
     score = newScore;
 }
 
-void Comment::setId(unsigned newId)
+void Comment::setId(const size_t newId)
 {
     id = newId;
 }
 
-void Comment::setDiscussionId(unsigned newDiscussionId)
+void Comment::setDiscussionId(const size_t newDiscussionId)
 {
     discussionId = newDiscussionId;
 }

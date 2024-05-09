@@ -66,7 +66,8 @@ void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users
 
 	size_t strLength = 0;
 
-	unsigned id = 0, points = 0;
+	size_t id = 0;
+	int points = 0;
 	bool isModerator = false;
 
 	User newUser;
@@ -125,7 +126,7 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& top
 	size_t strLength = 0;
 
 	Topic newTopic;
-	unsigned creatorId = 0, id = 0;
+	size_t creatorId = 0, id = 0;
 
 	char* string = nullptr;
 
@@ -174,7 +175,7 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 	size_t strLength = 0;
 
 	Discussion newDiscussion;
-	unsigned topicId = 0, creatorId = 0, id = 0;
+	size_t topicId = 0, creatorId = 0, id = 0;
 
 	char* string = nullptr;
 
@@ -224,7 +225,8 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 	size_t strLength = 0;
 
 	Comment newComment;
-	unsigned score = 0, id = 0, discussionId = 0;
+	int score = 0;
+	size_t id = 0, discussionId = 0;
 
 	char* string = nullptr;
 
@@ -312,8 +314,8 @@ void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
 		socialNetworkFile.write(users[i].getPassword().getString(), strLength);
 
-		unsigned id = users[i].getId();
-		unsigned points = users[i].getPoints();
+		size_t id = users[i].getId();
+		int points = users[i].getPoints();
 		bool moderatorStatus = users[i].getModeratorStatus();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
@@ -343,8 +345,8 @@ void FileHandler::saveTopics(std::ofstream& socialNetworkFile, const Vector<Topi
 		socialNetworkFile.write(topics[i].getDescription().getString(), strLength);
 
 		//save creatorId, id
-		unsigned creatorId = topics[i].getCreatorId();
-		unsigned id = topics[i].getId();
+		size_t creatorId = topics[i].getCreatorId();
+		size_t id = topics[i].getId();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&creatorId), sizeof(creatorId));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
@@ -375,9 +377,9 @@ void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, const Vector
 
 
 		//save topicId, creatorId, id
-		unsigned topicId = discussions[i].getTopicId();
-		unsigned creatorId = discussions[i].getCreatorId();
-		unsigned id = discussions[i].getId();
+		size_t topicId = discussions[i].getTopicId();
+		size_t creatorId = discussions[i].getCreatorId();
+		size_t id = discussions[i].getId();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&topicId), sizeof(topicId));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&creatorId), sizeof(creatorId));
@@ -409,9 +411,9 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Co
 		socialNetworkFile.write(comments[i].getText().getString(), strLength);
 
 		//save score, id, discussionId
-		unsigned score = comments[i].getScore();
-		unsigned id = comments[i].getId();
-		unsigned discussionId = comments[i].getDiscussionId();
+		int score = comments[i].getScore();
+		size_t id = comments[i].getId();
+		size_t discussionId = comments[i].getDiscussionId();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&score), sizeof(score));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));

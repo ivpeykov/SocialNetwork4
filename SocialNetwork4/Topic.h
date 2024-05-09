@@ -9,14 +9,14 @@ public:
 
 	Topic();
 
-	Topic(CustomString& title, CustomString& description,
-		unsigned creatorId, unsigned id);
+	Topic(const CustomString& title, const CustomString& description,
+		const size_t creatorId, const size_t id);
 
 	Topic(const char* title, const char* description,
-		unsigned creatorId, unsigned id);
+		const size_t creatorId, const size_t id);
 
 	Topic(const char* title, const char* description,
-		unsigned creatorId, unsigned id, Vector<Discussion>& discussions);
+		const size_t creatorId, const size_t id, const Vector<Discussion>& discussions); //const vector?
 
 	Topic(const Topic& other);
 
@@ -25,19 +25,19 @@ public:
 
 	const CustomString& getTitle() const;
 	const CustomString& getDescription() const;
-	const unsigned getCreatorId() const;
-	const unsigned getId() const;
+	const size_t getCreatorId() const;
+	const size_t getId() const;
 	Vector<Discussion>& getDiscussions();
 	const Vector<Discussion>& getDiscussions() const;
 
 	void setTitle(const char* newTitle);
-	void setTitle(CustomString& newTitle);
+	void setTitle(const CustomString& newTitle);
 
 	void setDescription(const char* newDescription);
-	void setDescription(CustomString& newDescription);
+	void setDescription(const CustomString& newDescription);
 
-	void setCreatorId(unsigned newCreatorId);
-	void setId(unsigned newId);
+	void setCreatorId(const size_t newCreatorId);
+	void setId(const size_t newId);
 	void addDiscussion(const Discussion& newDiscussion); // possible move semantics here
 
 	bool isEqualWithoutId(const Topic& other) const;
@@ -50,8 +50,8 @@ public:
 private:
 	CustomString title;
 	CustomString description;
-	unsigned creatorId;
-	unsigned id;
+	size_t creatorId;
+	size_t id;
 	Vector<Discussion> discussions;
 
 };

@@ -5,25 +5,25 @@ userName(nullptr), password(nullptr), id(0), points(0), isModerator(true) {} //f
 
 User::User(const CustomString& firstName, const CustomString& lastName,
 	const CustomString& userName, const CustomString& password,
-	const unsigned id) : firstName(firstName), lastName(lastName),
+	const size_t id) : firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(0), isModerator(id == 0) {}
 
 User::User(const char* firstName, const char*
 	lastName, const char* userName, const char* password,
-	const unsigned id) : firstName(firstName), lastName(lastName),
+	const size_t id) : firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(0), isModerator(id == 0) {}
 
 User::User(const CustomString& firstName,
 	const CustomString& lastName, const CustomString& userName,
-	const CustomString& password, const unsigned id,
-	const unsigned points, const bool isModerator) :
+	const CustomString& password, const size_t id,
+	const int points, const bool isModerator) :
 	firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(points), isModerator(isModerator) {} //for reading from files
 
 
 User::User(const char* firstName, const char* lastName,
-	const char* userName, const char* password, const unsigned id,
-	const unsigned points, const bool isModerator) : firstName(firstName), lastName(lastName),
+	const char* userName, const char* password, const size_t id,
+	const int points, const bool isModerator) : firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(points), isModerator(isModerator) {} //for reading from files
 
 User::User(const User& other) :
@@ -55,12 +55,12 @@ const CustomString& User::getPassword() const
 	return password;
 }
 
-const unsigned User::getId() const
+const size_t User::getId() const
 {
 	return id;
 }
 
-const unsigned User::getPoints() const
+const int User::getPoints() const
 {
 	return points;
 }
@@ -122,12 +122,12 @@ void User::setPassword(const char* newPassword)
 	password = newPassword;
 }
 
-void User::setId(const unsigned newId)
+void User::setId(const size_t newId)
 {
 	id = newId;
 }
 
-void User::setPoints(const unsigned newPoints)
+void User::setPoints(const int newPoints)
 {
 	points = newPoints;
 }

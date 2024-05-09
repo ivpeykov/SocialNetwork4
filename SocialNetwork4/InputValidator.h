@@ -23,7 +23,7 @@ public:
 	static bool isValidUserNameSignup(const CustomString& userName);
 	static bool isValidUserNameLogin(const CustomString& userName);
 	static bool isValidPassword(const CustomString& password);
-	static bool isValidAnswerInputForEditing(const short answer,const short maxAnswerValue);
+	static bool isValidAnswerInputForEditing(const short answer, const short maxAnswerValue);
 
 	//Topic Data Validation
 	static bool isValidTitle(const CustomString& title);
@@ -37,5 +37,5 @@ public:
 
 
 	//Comment Data Validation
-	//...
+	static bool isValidCommentTextInput(const CustomString& text);
 };

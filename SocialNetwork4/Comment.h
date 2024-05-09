@@ -7,17 +7,17 @@ public:
 
 	Comment();
 
-	Comment(CustomString& author, CustomString& text,
-		int score, unsigned id, unsigned discussionId);
+	Comment(const CustomString& author, const CustomString& text,
+		const int score, const size_t id, const size_t discussionId);
 
 	Comment(const char* author, const char* text,
-		int score, unsigned id, unsigned discussionId);
+		const int score, const size_t id, const size_t discussionId);
 
 	const CustomString& getAuthor() const;
 	const CustomString& getText() const;
 	const int getScore() const;
-	const unsigned getId() const;
-	const unsigned getDiscussionId() const;
+	const size_t getId() const;
+	const size_t getDiscussionId() const;
 
 	void setAuthor(const char* newAuthor);
 	void setAuthor(const CustomString& newAuthor);
@@ -25,9 +25,9 @@ public:
 	void setText(const char* newText);
 	void setText(const CustomString& newText);
 
-	void setScore(int newScore);
-	void setId(unsigned newId);
-	void setDiscussionId(unsigned newDiscussionId);
+	void setScore(const int newScore);
+	void setId(const size_t newId);
+	void setDiscussionId(const size_t newDiscussionId);
 
 	bool isEqualWithoutId(const Comment& other) const;
 	bool isNotEqualWithoutId(const Comment& other) const;
@@ -41,6 +41,6 @@ private:
 	CustomString author;
 	CustomString text;
 	int score;
-	unsigned id;
-	unsigned discussionId;
+	size_t id;
+	size_t discussionId;
 };

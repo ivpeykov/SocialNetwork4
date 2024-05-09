@@ -33,6 +33,7 @@ public:
 
 	static bool isThereLoggedInUser();
 	static bool isThereOpenedTopic();
+	static bool isThereOpenedDiscussion();
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
@@ -46,7 +47,9 @@ public:
 
 	void editUserAsModerator();
 
-	void createTopic();
+	Topic createTopic();
+
+	void addTopic(const Topic& newTopic);
 
 	void searchTopic();
 
@@ -60,6 +63,9 @@ public:
 
 	void openDiscussion();
 
+	Comment createComment();
+
+	void addComment(const Comment& newComment); //can use move semantics here
 	//add other commands down here....
 
 private:

@@ -183,3 +183,15 @@ bool InputValidator::isValidContent(const CustomString& content)
 
     return true;
 }
+
+bool InputValidator::isValidCommentTextInput(const CustomString& text)
+{
+    if (doesStringContainNonAsciiChars(text))
+        return false;
+
+    if (text[0] == '\0') {
+        return false;
+    }
+
+    return true;
+}

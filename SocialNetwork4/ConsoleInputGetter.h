@@ -25,19 +25,19 @@ public:
 	static void recievePasswordInput(User& newUser);
 	static void recieveAnswerInputForEditing(short& answer);
 	static void recieveIdInputForEditUserAsModerator(size_t& id);
-	static void recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus);
+	static void recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus); //TODO: change this method's name
 
 	//Recieve Topic Input data
 	static void recieveTitleInput(Topic& newTopic);
 	static void recieveDescriptionInput(Topic& newTopic);
 
 	//Recieve Discussion Input data
-	static void recieveTitleInput(Discussion& newDiscussion);
-	static void recieveContentInput(Discussion& newDiscussion);
+	static void recieveDiscussionTitleInput(Discussion& newDiscussion);
+	static void recieveDiscussionContentInput(Discussion& newDiscussion);
 	static void recieveOpenDiscussionIdInput(size_t& id);
 
 	//Recieve Comment Input data
-	//.....
+	static void recieveCommentTextInput(Comment& newComment);
 
 	static CustomString& getSocialNetworkDirectoryInput();
 

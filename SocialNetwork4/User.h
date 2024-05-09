@@ -8,19 +8,19 @@ public:
 
 	User(const CustomString& firstName, const CustomString& lastName,
 		const CustomString& userName, const CustomString& password,
-		const unsigned id);
+		const size_t id);
 
 	User(const char* firstName, const char* lastName,
 		const char* userName, const char* password,
-		const unsigned id);
+		const size_t id);
 
 	User(const CustomString& firstName, const CustomString& lastName,
 		const CustomString& userName, const CustomString& password,
-		const unsigned id, const unsigned points, const bool isModerator); //for reading files
+		const size_t id, const int points, const bool isModerator); //for reading files
 
 	User(const char* firstName, const char* lastName,
 		const char* userName, const char* password,
-		const unsigned id, const unsigned points, const bool isModerator); //for reading files
+		const size_t id, const int points, const bool isModerator); //for reading files
 
 	User(const User& other);
 
@@ -30,8 +30,8 @@ public:
 	const CustomString& getLastName() const;
 	const CustomString& getUserName() const;
 	const CustomString& getPassword() const;
-	const unsigned getId() const;
-	const unsigned getPoints() const;
+	const size_t getId() const;
+	const int getPoints() const;
 	const bool getModeratorStatus() const;
 
 	void clearUser();
@@ -48,8 +48,8 @@ public:
 	void setPassword(const CustomString& newPassword);
 	void setPassword(const char* newPassword);
 
-	void setId(const unsigned newId);
-	void setPoints(const unsigned newPoints);
+	void setId(const size_t newId);
+	void setPoints(const int newPoints);
 	void setModeratorStatus(const bool newStatus);
 
 
@@ -65,7 +65,7 @@ private:
 	CustomString lastName;
 	CustomString userName;
 	CustomString password;
-	unsigned id;
-	unsigned points;
+	size_t id;
+	int points;
 	bool isModerator;
 };

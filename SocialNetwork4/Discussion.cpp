@@ -3,12 +3,12 @@
 Discussion::Discussion() : title(nullptr), content(nullptr), topicId(0), creatorId(0), id(0), comments() {}
 
 Discussion::Discussion(CustomString& title,
-	CustomString& content, unsigned topicId,
-	unsigned creatorId, unsigned id) :
+	CustomString& content, size_t topicId,
+	size_t creatorId, size_t id) :
 	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
 
 Discussion::Discussion(const char* title, const char* content,
-	unsigned topicId, unsigned creatorId, unsigned id) :
+	size_t topicId, size_t creatorId, size_t id) :
 	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
 
 Discussion::Discussion(const Discussion& other) :
@@ -29,17 +29,17 @@ const CustomString& Discussion::getContent() const
 	return content;
 }
 
-const unsigned Discussion::getTopicId() const
+const size_t Discussion::getTopicId() const
 {
 	return topicId;
 }
 
-const unsigned Discussion::getCreatorId() const
+const size_t Discussion::getCreatorId() const
 {
 	return creatorId;
 }
 
-const unsigned Discussion::getId() const
+const size_t Discussion::getId() const
 {
 	return id;
 }
@@ -59,7 +59,7 @@ void Discussion::setTitle(const char* title)
 	this->title = title;
 }
 
-void Discussion::setTitle(CustomString& title)
+void Discussion::setTitle(const CustomString& title)
 {
 	this->title = title;
 }
@@ -69,27 +69,27 @@ void Discussion::setContent(const char* content)
 	this->content = content;
 }
 
-void Discussion::setContent(CustomString& content)
+void Discussion::setContent(const CustomString& content)
 {
 	this->content = content;
 }
 
-void Discussion::setTopicId(unsigned topicId)
+void Discussion::setTopicId(size_t topicId)
 {
 	this->topicId = topicId;
 }
 
-void Discussion::setCreatorId(unsigned creatorId)
+void Discussion::setCreatorId(size_t creatorId)
 {
 	this->creatorId = creatorId;
 }
 
-void Discussion::setId(unsigned id)
+void Discussion::setId(size_t id)
 {
 	this->id = id;
 }
 
-void Discussion::addComment(Comment& newComment)
+void Discussion::addComment(const Comment& newComment)
 {
 	comments.pushBack(newComment);
 }
