@@ -28,7 +28,7 @@ void PrintHandler::printTopic(const Topic& topic)
 void PrintHandler::printDiscussion(const Discussion& discussion)
 {
 	std::cout << "\nTitle:" << discussion.getTitle() << std::endl
-		<< "Description:" << discussion.getDescription() << std::endl
+		<< "Content:" << discussion.getContent() << std::endl
 		<< "Topic Id:" << discussion.getTopicId() << std::endl
 		<< "Creator Id: " << discussion.getCreatorId() << std::endl
 		<< "ID:" << discussion.getId() << std::endl

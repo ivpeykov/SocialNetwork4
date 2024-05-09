@@ -320,23 +320,31 @@ void ConsoleInputGetter::recieveTitleInput(Discussion& newDiscussion)
     newDiscussion.setTitle(newTitle);
 }
 
-void ConsoleInputGetter::recieveDescriptionInput(Discussion& newDiscussion)
+void ConsoleInputGetter::recieveContentInput(Discussion& newDiscussion)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Description: "; //prnthndler
+    std::cout << "\nEnter Content: "; //prnthndler
 
-    char newDescription[Configuration::DISCUSSION_DESCRIPTION_MAX_LENGTH];
+    char* newContent = new char[Configuration::DISCUSSION_CONTENT_MAX_LENGTH]; //add exception handling
 
-    std::cin.getline(newDescription, Configuration::DISCUSSION_DESCRIPTION_MAX_LENGTH);
+    std::cin.getline(newContent, Configuration::DISCUSSION_CONTENT_MAX_LENGTH);
 
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    newDiscussion.setDescription(newDescription);
+    try {
+        newDiscussion.setContent(newContent);
+    }
+    catch (...) {
+        delete[] newContent;
+        throw;
+    }
+
+    delete[] newContent;
 }
 
 void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)

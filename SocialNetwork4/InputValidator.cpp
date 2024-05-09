@@ -171,3 +171,15 @@ bool InputValidator::isValidDescription(const CustomString& description)
 
     return true;
 }
+
+bool InputValidator::isValidContent(const CustomString& content)
+{
+    if (doesStringContainNonAsciiChars(content))
+        return false;
+
+    if (content[0] == '\0') {
+        return false;
+    }
+
+    return true;
+}

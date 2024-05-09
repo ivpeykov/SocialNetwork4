@@ -182,11 +182,11 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 		newDiscussion.setTitle(string);
 		delete[] string;
 
-		//load description
+		//load Content
 		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
 		string = new char[strLength];
 		socialNetworkFile.read(string, strLength);
-		newDiscussion.setDescription(string);
+		newDiscussion.setContent(string);
 		delete[] string;
 
 
@@ -363,10 +363,10 @@ void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, const Vector
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
 		socialNetworkFile.write(discussions[i].getTitle().getString(), strLength);
 
-		//save description
-		strLength = discussions[i].getDescription().length();
+		//save content
+		strLength = discussions[i].getContent().length();
 		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
-		socialNetworkFile.write(discussions[i].getDescription().getString(), strLength);
+		socialNetworkFile.write(discussions[i].getContent().getString(), strLength);
 
 
 		//save topicId, creatorId, id

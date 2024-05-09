@@ -1,18 +1,18 @@
 #include "Discussion.h"
 
-Discussion::Discussion() : title(nullptr), description(nullptr), topicId(0), creatorId(0), id(0), comments() {}
+Discussion::Discussion() : title(nullptr), content(nullptr), topicId(0), creatorId(0), id(0), comments() {}
 
 Discussion::Discussion(CustomString& title,
-	CustomString& description, unsigned topicId,
+	CustomString& content, unsigned topicId,
 	unsigned creatorId, unsigned id) :
-	title(title), description(description), topicId(topicId), creatorId(creatorId), id(id), comments() {}
+	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
 
-Discussion::Discussion(const char* title, const char* description,
+Discussion::Discussion(const char* title, const char* content,
 	unsigned topicId, unsigned creatorId, unsigned id) :
-	title(title), description(description), topicId(topicId), creatorId(creatorId), id(id), comments() {}
+	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
 
 Discussion::Discussion(const Discussion& other) :
-	title(other.title), description(other.description), topicId(other.topicId),
+	title(other.title), content(other.content), topicId(other.topicId),
 	creatorId(other.creatorId), id(other.id), comments(other.comments) {}
 
 Discussion::~Discussion()
@@ -24,9 +24,9 @@ const CustomString& Discussion::getTitle() const
 	return title;
 }
 
-const CustomString& Discussion::getDescription() const
+const CustomString& Discussion::getContent() const
 {
-	return description;
+	return content;
 }
 
 const unsigned Discussion::getTopicId() const
@@ -64,14 +64,14 @@ void Discussion::setTitle(CustomString& title)
 	this->title = title;
 }
 
-void Discussion::setDescription(const char* description)
+void Discussion::setContent(const char* content)
 {
-	this->description = description;
+	this->content = content;
 }
 
-void Discussion::setDescription(CustomString& description)
+void Discussion::setContent(CustomString& content)
 {
-	this->description = description;
+	this->content = content;
 }
 
 void Discussion::setTopicId(unsigned topicId)
@@ -97,7 +97,7 @@ void Discussion::addComment(Comment& newComment)
 bool Discussion::isEqualWithoutId(const Discussion& other) const
 {
 	return (title == other.title &&
-		description == other.description &&
+		content == other.content &&
 		topicId == other.topicId &&
 		creatorId == other.creatorId &&
 		comments == other.comments);
@@ -112,7 +112,7 @@ Discussion& Discussion::operator=(const Discussion& other)
 {
 	if (this != &other) {
 		title = other.title;
-		description = other.description;
+		content = other.content;
 		topicId = other.topicId;
 		creatorId = other.creatorId;
 		id = other.id;

@@ -11,10 +11,10 @@ public:
 
 	Discussion();
 
-	Discussion(CustomString& title, CustomString& description,
+	Discussion(CustomString& title, CustomString& content,
 		unsigned topicId, unsigned creatorId, unsigned id);
 
-	Discussion(const char* title, const char* description,
+	Discussion(const char* title, const char* content,
 		unsigned topicId, unsigned creatorId, unsigned id);
 
 	Discussion(const Discussion& other);
@@ -23,7 +23,7 @@ public:
 
 
 	const CustomString& getTitle() const;
-	const CustomString& getDescription() const;
+	const CustomString& getContent() const;
 	const unsigned getTopicId() const;
 	const unsigned getCreatorId() const;
 	const unsigned getId() const;
@@ -33,8 +33,8 @@ public:
 	void setTitle(const char* title);
 	void setTitle(CustomString& title);
 
-	void setDescription(const char* description);
-	void setDescription(CustomString& description);
+	void setContent(const char* content);
+	void setContent(CustomString& content);
 
 	void setTopicId(unsigned topicId);
 	void setCreatorId(unsigned creatorId);
@@ -50,7 +50,7 @@ public:
 
 private:
 	CustomString title;
-	CustomString description;
+	CustomString content;
 	unsigned topicId;
 	unsigned creatorId;
 	unsigned id;

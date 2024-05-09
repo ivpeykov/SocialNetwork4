@@ -586,11 +586,11 @@ Discussion SocialNetwork::createDiscussion()
 		throw std::runtime_error("Discussion could not be created! Invalid Title!");
 	}
 
-	//Description
-	ConsoleInputGetter::recieveDescriptionInput(newDiscussion);
-	if (!InputValidator::isValidDescription(newDiscussion.getDescription())) {
+	//Content
+	ConsoleInputGetter::recieveContentInput(newDiscussion);
+	if (!InputValidator::isValidContent(newDiscussion.getContent())) {
 		PrintHandler::printErrorCreateDescriptionDiscussion();
-		throw std::runtime_error("Discussion could not be created! Invalid Description!");
+		throw std::runtime_error("Discussion could not be created! Invalid Content!");
 	}
 
 	//topicId
@@ -674,7 +674,10 @@ void SocialNetwork::openDiscussion()
 		if (id == openedTopic.getDiscussions()[i].getId()) {
 			openedDiscussion = openedTopic.getDiscussions()[i];
 			discussionOpened = true;
-			std::cout << "Successfully opened discussion ''" << openedDiscussion.getTitle() << "''!" << std::endl;
+			std::cout << "Successfully opened discussion ''" << openedDiscussion.getTitle() << "''!" << std::endl
+				<< openedDiscussion.getContent() << std::endl
+				<< "Number of answers: " << openedDiscussion.getComments().getSize() << std::endl;
+			
 			return;
 		}
 
