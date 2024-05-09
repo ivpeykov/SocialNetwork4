@@ -4,10 +4,9 @@
 #include "PrintHandler.h"
 
 int main(){
-	
-	//BUG: spamming enter leads to unexpected call command signup
 
 	bool networkLoaded = false;
+	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
 		PrintHandler::printEnterCommandPrompt();
@@ -17,6 +16,10 @@ int main(){
 			ConsoleInputGetter::resetCommandInput();
 		}
 
+		else if (CommandsHandler::getCurrCommand() == Help) {
+			PrintHandler::printCommands(CommandsHandler::commandsList, CommandsCount);
+		}
+	
 		else if (CommandsHandler::getCurrCommand() == Load){
 
 			if (networkLoaded) {

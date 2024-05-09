@@ -20,6 +20,7 @@ enum Command { //don't change order!
 	Post,
 	List,
 	PostOpen,
+	Help,
 	Exit,
 
 	CommandsCount

@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "help", "exit" };
 
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
@@ -11,8 +11,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
     //add more commands here
     switch (currCommand) {
 
-    case Load: // bring the input getting and avlidation into the load method
-        //BUG: when loading a second time, clear the currentData so it is ready for the new data. Also ask user if he is sure he wants to load new data
+    case Load:
        
         ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
         if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
@@ -83,6 +82,10 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 
     case PostOpen:
         currSocialNetwork.openDiscussion();
+        break;
+
+    case Help:
+        PrintHandler::printCommands(commandsList, CommandsCount);
         break;
 
     case Exit: //TODO: all changes must be saved!

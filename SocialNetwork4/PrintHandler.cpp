@@ -4,6 +4,14 @@ void PrintHandler::printEnterCommandPrompt() {
 	std::cout << "\nEnter command: ";
 }
 
+void PrintHandler::printCommands(const CustomString* commandsList, size_t commandsCount)
+{
+	std::cout << "Avalible commands:" << std::endl;
+	for (int i = 0; i < commandsCount; ++i) {
+		std::cout << commandsList[i] << std::endl;
+	}
+}
+
 void PrintHandler::printUser(const User& user)
 {
 	std::cout << "\nFirst name:" << user.getFirstName() << std::endl
