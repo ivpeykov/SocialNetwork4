@@ -16,7 +16,7 @@ public:
 
 	static bool isFileEmpty(const char* fileName); 
 
-	static void loadSocialNetwork(SocialNetwork& socialNetworkToLoad);
+	static void loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& loadedStatus);
 
 	static void loadUsers(std::fstream& socialNetworkFile, Vector<User>& users);
 

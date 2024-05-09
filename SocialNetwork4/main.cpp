@@ -5,7 +5,6 @@
 
 int main(){
 
-	bool networkLoaded = false;
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
@@ -15,31 +14,7 @@ int main(){
 		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
 			ConsoleInputGetter::resetCommandInput();
 		}
-
-		else if (CommandsHandler::getCurrCommand() == Help) {
-			PrintHandler::printCommands(CommandsHandler::commandsList, CommandsCount);
-		}
-	
-		else if (CommandsHandler::getCurrCommand() == Load){
-
-			if (networkLoaded) {
-				std::cout << "Network already loaded! Please restart program and load again!"
-					<< std::endl;
-				continue;
-			}
-
-			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
-			networkLoaded = true;
-		}
-
-		else if (CommandsHandler::getCurrCommand() != Load && networkLoaded) {
-			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
-		}
-
-		else if (CommandsHandler::getCurrCommand() != Exit){
-			std::cout << "Please load a Social Network first!" << std::endl;
-		}
-
+		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 	}
 
 	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
@@ -47,11 +22,11 @@ int main(){
 	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
 
-	std::cout << "Opened Topic: " << std::endl;
-	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
+	//std::cout << "Opened Topic: " << std::endl;
+	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
 
-	std::cout << "Opened Discussion: " << std::endl;
-	PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
+	//std::cout << "Opened Discussion: " << std::endl;
+	//PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
 
 	return 0;
 }

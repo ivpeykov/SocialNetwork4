@@ -4,6 +4,8 @@ unsigned short CommandsHandler::currCommand = 999;
 
 const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "help", "exit" };
 
+bool CommandsHandler::networkLoaded = false;
+
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
     //consider adding failed tries
@@ -12,7 +14,13 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
     switch (currCommand) {
 
     case Load:
-       
+
+        if (networkLoaded) {
+            std::cout << "Network already loaded! Please restart program and load again!"
+                << std::endl;
+            return;
+        }
+      
         ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
         if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
 
@@ -25,49 +33,94 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         }
 
         currSocialNetwork.setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
-        FileHandler::loadSocialNetwork(currSocialNetwork);
+        FileHandler::loadSocialNetwork(currSocialNetwork, networkLoaded);
         break;
 
     case Signup:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.signup();
         break;
 
     case Login:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.login();
         break;
 
     case Logout:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.logout();
         break;
 
     case Edit:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.editLoggedInUser();
         break;
 
     case EditAsModerator:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.editUserAsModerator();
         break;
 
     case Create:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.createTopic();
         break;
 
     case Save: //TODO: print saved successfully message
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         FileHandler::saveSocialNetwork(currSocialNetwork);
         break;
     case SaveAs: //TODO: print saved successfully message
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         //FileHandler::saveAsSocialNetwork();
         break;
 
     case Search:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.searchTopic();
+
         break;
 
     case Open:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.openTopic();
         break;
 
-    case Post:  
+    case Post:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         try {
             currSocialNetwork.postDiscussion(currSocialNetwork.createDiscussion());
         }
@@ -77,10 +130,18 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
         break;
 
     case List:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.listDiscussionsInOpenedTopic();
         break;
 
     case PostOpen:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
         currSocialNetwork.openDiscussion();
         break;
 

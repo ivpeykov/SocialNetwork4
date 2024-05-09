@@ -14,7 +14,7 @@ bool FileHandler::isFileEmpty(const char* fileName)
 	return file.peek() == std::ifstream::traits_type::eof();
 }
 
-void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad)
+void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& loadedStatus)
 {
 	const char* filePath = socialNetworkToLoad.getDirectory().getString();
 
@@ -29,12 +29,15 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad)
 			return;
 		}
 		socialNetworkToLoad.setDirectory(filePath);
+		loadedStatus = true;
 		return;
 	}
 
 	//If file exists, but is empty currSocialNetwork remains empty
-	if (isFileEmpty(filePath))
+	if (isFileEmpty(filePath)) {
+		loadedStatus = true;
 		return;
+	}
 
 	//If file exists and isnt empty, read it...
 	socialNetworkToLoad.getCurrUsers().clear();
@@ -49,6 +52,8 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad)
 	loadTopics(socialNetworkFile, socialNetworkToLoad.getCurrTopics());
 
 	socialNetworkFile.close();
+
+	loadedStatus = true;
 }
 
 void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users)

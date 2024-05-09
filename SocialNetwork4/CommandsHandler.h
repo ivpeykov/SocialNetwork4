@@ -39,6 +39,8 @@ public:
 
 	static const CustomString commandsList[CommandsCount];
 
+	static bool networkLoaded;
+
 private:
 	static unsigned short currCommand;
 };
