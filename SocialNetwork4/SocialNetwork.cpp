@@ -96,6 +96,45 @@ bool SocialNetwork::isThereOpenedDiscussion()
 	return openedDiscussion.getTitle() != nullptr;
 }
 
+bool SocialNetwork::isLoginSuccessful(User& user)
+{
+	size_t usersSize = currUsers.getSize();
+
+	for (int i = 0; i < usersSize; i++) {
+
+		if (user.getUserName() == currUsers[i].getUserName()
+			&& user.getPassword() == currUsers[i].getPassword()) {
+			user = currUsers[i];
+			return true;
+		}
+	}
+	return false;
+
+}
+
+bool SocialNetwork::doesUsernameExist(const CustomString& userName)
+{
+	size_t usersSize = currUsers.getSize();
+
+	for (int i = 0; i < usersSize; i++) {
+		if (userName == currUsers[i].getUserName())
+			return true;
+	}
+	return false;
+}
+
+bool SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments)
+{
+	size_t commentsSize = comments.getSize();
+
+	for (int i = 0; i < commentsSize; ++i) {
+		if (id == comments[i].getId())
+			return true;
+	}
+
+	return false;
+}
+
 SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
 	if (this != &other) {
 
@@ -173,7 +212,7 @@ void SocialNetwork::login()
 		return;
 	}
 
-	if (CurrentData::isLoginSuccessful(newUser)) {
+	if (isLoginSuccessful(newUser)) {
 		loggedInUser = newUser;
 		std::cout << "Login Successful!" << std::endl;
 		return;
@@ -694,7 +733,7 @@ void SocialNetwork::openDiscussion()
 	}
 }
 
-Comment SocialNetwork::createComment() //continue here...
+Comment SocialNetwork::createComment() 
 {
 	if (!isThereLoggedInUser()) {
 		throw std::runtime_error("Comment could not be created! Please log in before commenting!");
@@ -730,7 +769,6 @@ Comment SocialNetwork::createComment() //continue here...
 
 void SocialNetwork::addComment(const Comment& newComment)
 {
-
 	//Find corresponding topic
 	size_t searchedTopicId = openedTopic.getId();
 	size_t topicsSize = currTopics.getSize();
@@ -768,4 +806,25 @@ void SocialNetwork::addComment(const Comment& newComment)
 	}
 
 	openedDiscussion.addComment(newComment);
+
+	std::cout << "Successfully commented!" << std::endl;
+}
+
+void SocialNetwork::replyToComment()
+{
+	size_t parentId = ConsoleInputGetter::recieveIdInputForCommentReply();
+
+	if (!doesCommentExist(parentId, openedDiscussion.getComments())) {
+		throw std::runtime_error("Comment not found!");
+	}
+
+	Comment reply = createComment(); //try catch?
+
+	
+	//add reply to the parent comment's replies vector both in the openedDiscussion and in the currentData!
+	//continue here....
+
+
+
+	std::cout << "Successfully replied!" << std::endl;
 }

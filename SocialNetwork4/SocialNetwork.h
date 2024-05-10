@@ -35,6 +35,11 @@ public:
 	static bool isThereOpenedTopic();
 	static bool isThereOpenedDiscussion();
 
+	bool isLoginSuccessful(User& user);
+
+	bool doesUsernameExist(const CustomString& userName);
+	bool doesCommentExist(const size_t id, const Vector<Comment>& comments);
+
 	SocialNetwork& operator=(const SocialNetwork& other);
 
 	void signup();
@@ -66,6 +71,9 @@ public:
 	Comment createComment();
 
 	void addComment(const Comment& newComment); //can use move semantics here
+
+	void replyToComment();
+
 	//add other commands down here....
 
 private:

@@ -109,7 +109,7 @@ bool InputValidator::isValidUserNameSignup(const CustomString& userName)
         return false;
     }
    
-    if (CurrentData::doesUsernameExist(userName))
+    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName))
         return false;
         
     return true;
@@ -124,7 +124,7 @@ bool InputValidator::isValidUserNameLogin(const CustomString& userName) //sugges
         return false;
     }
 
-    if (!CurrentData::doesUsernameExist(userName))
+    if (!CurrentData::getCurrSocialNetwork().doesUsernameExist(userName))
         return false;
 
     return true;

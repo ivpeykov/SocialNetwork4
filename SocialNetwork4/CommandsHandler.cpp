@@ -2,7 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = 999;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "comment", "help", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "comment", "reply", "help", "exit" };
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -161,6 +161,23 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Error: " << error.what() << std::endl;
+        }
+        break;
+
+    case ReplyToComment:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
+            
+        try { 
+            currSocialNetwork.replyToComment(); 
+        }
+        catch (const std::runtime_error& error) {
+            std::cerr << "Could not reply! " << error.what() << std::endl;
+        }
+        catch (std::exception error) {
+            std::cerr << "Could not reply! " << error.what() << std::endl;
         }
         break;
 

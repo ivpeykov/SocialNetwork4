@@ -360,7 +360,7 @@ void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)
 
     std::cout << "Enter ID: ";
 
-    char* input = new char[inputBuffer];
+    char* input = new char[inputBuffer]; //Potential optimisation? : dynamic because Configuration::MAX_DIGITS_INPUT cannot be used as const, can it ?
 
     std::cin.getline(input, inputBuffer);
     if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
@@ -400,6 +400,42 @@ void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
     }
 
     newComment.setText(comment);
+}
+
+size_t ConsoleInputGetter::recieveIdInputForCommentReply()
+{
+    if (isBufferOverfilled()) {
+        flushInputBuffer();
+    }
+
+    short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
+
+    size_t id = SIZE_MAX;
+
+    std::cout << "Enter comment ID: ";
+
+    char* input = new char[inputBuffer]; //Potential optimisation? : dynamic because Configuration::MAX_DIGITS_INPUT cannot be used as const, can it ?
+
+    std::cin.getline(input, inputBuffer);
+    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
+        delete[] input;
+        input = nullptr;
+        throw std::exception("Invalid Id input!");
+    }
+
+    CustomString strInput = input;
+
+    try {
+        id = strInput.toNum();
+    }
+    catch (std::exception e) {
+        delete[] input;
+        throw e;
+    }
+
+    delete[] input;
+
+    return id;
 }
 
 CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
