@@ -32,7 +32,7 @@ CustomString::CustomString(CustomString&& other) noexcept
 	swap(*this, other);
 }
 
-CustomString::CustomString(const size_t size) //don't know if this is ok
+CustomString::CustomString(const size_t size) //TODO: don't know if this is ok
 {
 	if (size == 0) {
 		throw std::out_of_range("Trying allocate CustomString with 0 size");
@@ -195,7 +195,7 @@ bool CustomString::isDigit() const
 //operators
 CustomString& CustomString::operator=(const CustomString& other) {
 
-	if (other.string == nullptr) { // is this ok?
+	if (other.string == nullptr) {
 		return *this;
 	}
 
@@ -293,12 +293,12 @@ CustomString& CustomString::operator+(const char* str) {
 	return *this;
 }
 
-CustomString& CustomString::operator+=(const CustomString& other) //NOT FINISHED
+CustomString& CustomString::operator+=(const CustomString& other) //TODO NOT FINISHED
 {
 	return *this;
 }
 
-CustomString& CustomString::operator+=(const char* str) //NOT FINISHED
+CustomString& CustomString::operator+=(const char* str) //TODO NOT FINISHED
 {
 	return *this;
 }

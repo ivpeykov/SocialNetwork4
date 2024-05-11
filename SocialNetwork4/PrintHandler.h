@@ -28,19 +28,4 @@ public:
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
 	static void printDiscussionsForList(const Vector<Discussion>& discussions);
-
-	//Errors
-	static void printErrorSignupFirstName();
-	static void printErrorSignupLastName();
-	static void printErrorSignupUserName();
-	static void printErrorSignupPassword();
-
-	static void printErrorLoginUserName();
-	static void printErrorLoginPassword();
-
-	static void printErrorCreateTitleTopic();
-	static void printErrorCreateDescriptionTopic();
-
-	static void printErrorCreateTitleDiscussion();
-	static void printErrorCreateDescriptionDiscussion();
-};
+}

@@ -5,7 +5,7 @@
 
 class Reply;
 
-class Comment //change loading, saving of comments, creating of comments
+class Comment
 {
 public:
 

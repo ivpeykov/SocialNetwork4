@@ -16,10 +16,9 @@ public:
 		const size_t creatorId, const size_t id);
 
 	Topic(const char* title, const char* description,
-		const size_t creatorId, const size_t id, const Vector<Discussion>& discussions); //const vector?
+		const size_t creatorId, const size_t id, const Vector<Discussion>& discussions);
 
 	Topic(const Topic& other);
-
 
 	~Topic();
 

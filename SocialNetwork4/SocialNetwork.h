@@ -6,7 +6,7 @@
 #include "User.h"
 #include "Topic.h"
 #include "Discussion.h"
-//Suggestion: create a new class object Creator and create objects there
+//TODO: create a new class object Creator and create objects there
 class SocialNetwork
 {
 public:

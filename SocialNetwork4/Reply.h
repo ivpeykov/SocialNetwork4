@@ -10,7 +10,6 @@ public:
 
 	Reply();
 
-
 	Reply(const CustomString& author, const CustomString& text,
 		const int score, const size_t id, const size_t discussionId,
 		const size_t parentCommentId);

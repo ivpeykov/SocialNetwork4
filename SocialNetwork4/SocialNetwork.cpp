@@ -157,7 +157,7 @@ void SocialNetwork::signup()
 	switch (userNameStatus) {
 
 	case 0:
-		PrintHandler::printErrorSignupUserName();
+		std::cerr << "\nError creating Account! Invalid Username!" << std::endl;
 		return;
 	case 1:
 		break;
@@ -171,21 +171,21 @@ void SocialNetwork::signup()
 	//Password
 	ConsoleInputGetter::recievePasswordInput(newUser);
 	if (!InputValidator::isValidPassword(newUser.getPassword())) {
-		PrintHandler::printErrorSignupPassword();
+		std::cerr << "\nError creating Account! Invalid Password!" << std::endl;
 		return;
 	}
 
 	//FirstName
 	ConsoleInputGetter::recieveFirstNameInput(newUser);
 	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
-		PrintHandler::printErrorSignupFirstName();
+		std::cerr << "\nError creating Account! Invalid First Name!" << std::endl;
 		return;
 	}
 
 	//LastName
 	ConsoleInputGetter::recieveLastNameInput(newUser);
 	if (!InputValidator::isValidLastName(newUser.getLastName())) {
-		PrintHandler::printErrorSignupLastName();
+		std::cerr << "\nError creating Account! Invalid Last Name!" << std::endl;;
 		return;
 	}
 
@@ -216,14 +216,14 @@ void SocialNetwork::login()
 	//UserName
 	ConsoleInputGetter::recieveUserNameInput(newUser);
 	if (!InputValidator::isValidUserNameLogin(newUser.getUserName())) {
-		PrintHandler::printErrorLoginUserName();
+		std::cerr << "\nInvalid Username!" << std::endl;
 		return;
 	}
 
 	//Password
 	ConsoleInputGetter::recievePasswordInput(newUser);
 	if (!InputValidator::isValidPassword(newUser.getPassword())) {
-		PrintHandler::printErrorLoginPassword();
+		std::cerr << "\nInvalid Password!" << std::endl;
 		return;
 	}
 
@@ -533,7 +533,6 @@ Topic SocialNetwork::createTopic()
 	//Title
 	ConsoleInputGetter::recieveTitleInput(newTopic);
 	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
-		PrintHandler::printErrorCreateTitleTopic();
 		throw std::runtime_error("Topic could not be created! Invalid Title!");
 	}
 
@@ -651,7 +650,6 @@ void SocialNetwork::openTopic(){
 	}
 
 	std::cout << "Could not open topic! Invalid title or id!" << std::endl;
-
 }
 
 Discussion SocialNetwork::createDiscussion()
@@ -677,7 +675,6 @@ Discussion SocialNetwork::createDiscussion()
 	//Content
 	ConsoleInputGetter::recieveDiscussionContentInput(newDiscussion);
 	if (!InputValidator::isValidContent(newDiscussion.getContent())) {
-		PrintHandler::printErrorCreateDescriptionDiscussion();
 		throw std::runtime_error("Discussion could not be created! Invalid Content!");
 	}
 

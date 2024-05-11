@@ -5,7 +5,7 @@
 #include "User.h"
 #include "Topic.h"
 
-#include <iostream>
+#include <iostream> //remove?
 
 class ConsoleInputGetter
 {

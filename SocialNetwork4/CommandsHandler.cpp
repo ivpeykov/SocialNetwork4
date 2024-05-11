@@ -89,7 +89,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
         break;
 
-    case Save: //TODO: print saved successfully message
+    case Save:
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;

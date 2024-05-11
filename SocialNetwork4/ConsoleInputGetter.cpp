@@ -68,7 +68,7 @@ void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter user first name: "; //prnthndler
+    std::cout << "\nEnter user first name: "; 
 
     char newName[Configuration::FIRST_NAME_MAX_LENGTH];
 
@@ -87,7 +87,7 @@ void ConsoleInputGetter::recieveLastNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter user last name: "; //prnthndler
+    std::cout << "\nEnter user last name: ";
 
     char newName[Configuration::LAST_NAME_MAX_LENGTH];
 
@@ -106,7 +106,7 @@ void ConsoleInputGetter::recieveUserNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter username: "; //prnthndler
+    std::cout << "\nEnter username: "; 
 
     char newName[Configuration::USER_NAME_MAX_LENGTH];
 
@@ -125,7 +125,7 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter user password: "; //prnthndler
+    std::cout << "\nEnter user password: ";
 
     char newPass[Configuration::PASSWORD_MAX_LENGTH];
 
@@ -269,7 +269,7 @@ void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter title: "; //prnthndler
+    std::cout << "\nEnter title: ";
 
     char newTitle[Configuration::TOPIC_TITLE_MAX_LENGTH];
 
@@ -289,7 +289,7 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Description: "; //prnthndler
+    std::cout << "\nEnter Description: ";
 
     char newDescription[Configuration::TOPIC_DESCRIPTION_MAX_LENGTH];
 
@@ -308,7 +308,7 @@ void ConsoleInputGetter::recieveDiscussionTitleInput(Discussion& newDiscussion)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter title: "; //prnthndler
+    std::cout << "\nEnter title: ";
 
     char newTitle[Configuration::DISCUSSION_TITLE_MAX_LENGTH];
 
@@ -327,7 +327,7 @@ void ConsoleInputGetter::recieveDiscussionContentInput(Discussion& newDiscussion
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Content: "; //prnthndler
+    std::cout << "\nEnter Content: ";
 
     char* newContent = new char[Configuration::DISCUSSION_CONTENT_MAX_LENGTH]; //add exception handling
 

@@ -5,8 +5,7 @@ bool FileHandler::isFileEmpty(const char* fileName)
 	std::ifstream file(fileName, std::ios::binary);
 
 	if (!file.is_open()) {
-		//printHandler cries error!
-		std::cout << "\nError opening !" << fileName << " by isFileEmpty"; //remove
+		std::cout << "\nError opening !" << fileName << " by isFileEmpty";
 		return true;
 	}
 
@@ -277,7 +276,7 @@ void FileHandler::loadReplies(std::fstream& socialNetworkFile, Comment& comment)
 
 	Reply newReply;
 	int score = 0;
-	size_t id = 0, discussionId = 0, parentCommentId = 0; //TOOD: Iinitialise with SIZE_MAX everywhere
+	size_t id = SIZE_MAX, discussionId = SIZE_MAX, parentCommentId = SIZE_MAX; //TOOD: Iinitialise with SIZE_MAX everywhere
 
 	char* string = nullptr;
 
@@ -323,7 +322,7 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	std::ofstream socialNetworkFile(filepath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "Error opening users file for saving!" << std::endl;
-		//exception? handle this somehow
+		//TODO: exception? handle this somehow
 		return;
 	}
 
@@ -474,8 +473,6 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Co
 		//save replies
 		saveReplies(socialNetworkFile, comments[i].getReplies());
 	}
-
-	
 }
 
 void FileHandler::saveReplies(std::ofstream& socialNetworkFile, const Vector<Reply>& replies)
@@ -510,5 +507,4 @@ void FileHandler::saveReplies(std::ofstream& socialNetworkFile, const Vector<Rep
 		socialNetworkFile.write(reinterpret_cast<const char*>(&parentCommentId), sizeof(parentCommentId));
 
 	}
-
 }

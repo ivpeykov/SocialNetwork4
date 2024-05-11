@@ -59,7 +59,7 @@ bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& dire
         return false;
     }
 
-    if (directoryInput[0] == '\0') { //remove?
+    if (directoryInput[0] == '\0') {
         return false;
     }
 

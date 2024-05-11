@@ -10,8 +10,8 @@ constexpr short Configuration::calculate_MAX_DIGITS_INPUT()
 
 	// Increment count until num becomes zero
 	while (num != 0) {
-		num /= 10; // Divide num by 10
-		count++;   // Increment count
+		num /= 10; 
+		count++;  
 	}
 
 	return count;
