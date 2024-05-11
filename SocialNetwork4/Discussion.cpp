@@ -1,15 +1,15 @@
 #include "Discussion.h"
 
-Discussion::Discussion() : title(nullptr), content(nullptr), topicId(0), creatorId(0), id(0), comments() {}
+Discussion::Discussion() : title(nullptr), content(nullptr), topicId(SIZE_MAX), creatorId(SIZE_MAX), id(SIZE_MAX), comments(1) {}
 
 Discussion::Discussion(CustomString& title,
 	CustomString& content, size_t topicId,
 	size_t creatorId, size_t id) :
-	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
+	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments(1) {}
 
 Discussion::Discussion(const char* title, const char* content,
 	size_t topicId, size_t creatorId, size_t id) :
-	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments() {}
+	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments(1) {}
 
 Discussion::Discussion(const Discussion& other) :
 	title(other.title), content(other.content), topicId(other.topicId),

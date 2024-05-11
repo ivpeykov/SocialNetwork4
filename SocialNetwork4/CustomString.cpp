@@ -87,12 +87,12 @@ void CustomString::setString(const char* inputString) {
 
 	string = new char[newSize];
 	size = newSize;
-	for (int i = 0; i < newSize; i++) {
+	for (size_t i = 0; i < newSize; i++) {
 		string[i] = inputString[i];
 	}
 }
 
-bool CustomString::find(const char* substr) const //study this
+bool CustomString::find(const char* substr) const //"Naive" algorithm
 {
 	size_t sublen = strlen(substr);
 	size_t len = size - 1;
@@ -111,12 +111,11 @@ bool CustomString::find(const char* substr) const //study this
 			return true; // substring found
 		}
 	}
-	return false; // substring not found
+	return false; 
 }
 
-bool CustomString::find(const CustomString& substr) const //TODO: study how this works
+bool CustomString::find(const CustomString& substr) const
 {
-
 	size_t sublen = substr.length() - 1;
 	size_t len = size - 1;
 
@@ -134,7 +133,7 @@ bool CustomString::find(const CustomString& substr) const //TODO: study how this
 			return true; // substring found
 		}
 	}
-	return false; // substring not found
+	return false; 
 }
 
 size_t CustomString::toNum() const
@@ -157,7 +156,7 @@ bool CustomString::isDigit() const
 		return false;
 	}
 
-	for (int i = 0; i < size - 1; i++) {
+	for (size_t i = 0; i < size - 1; i++) {
 		if (!isdigit(string[i]))
 			return false;
 	}
@@ -204,7 +203,7 @@ CustomString& CustomString::operator=(const char* str)
 		string = new char[size];
 	}
 
-	for (int i = 0; i < strSize; i++) {
+	for (size_t i = 0; i < strSize; i++) {
 		string[i] = str[i];
 	}
 	return *this;

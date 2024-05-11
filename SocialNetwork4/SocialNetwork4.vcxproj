@@ -138,6 +138,7 @@
     <ClCompile Include="InputValidator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PrintHandler.cpp" />
+    <ClCompile Include="Reply.cpp" />
     <ClCompile Include="SocialNetwork.cpp" />
     <ClCompile Include="Topic.cpp" />
     <ClCompile Include="User.cpp" />
@@ -153,6 +154,7 @@
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="InputValidator.h" />
     <ClInclude Include="PrintHandler.h" />
+    <ClInclude Include="Reply.h" />
     <ClInclude Include="SocialNetwork.h" />
     <ClInclude Include="Topic.h" />
     <ClInclude Include="User.h" />

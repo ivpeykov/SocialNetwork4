@@ -1,14 +1,14 @@
 #include "Topic.h"
 
-Topic::Topic() : title(nullptr), description(nullptr), creatorId(0), id(0), discussions() {}
+Topic::Topic() : title(nullptr), description(nullptr), creatorId(SIZE_MAX), id(SIZE_MAX), discussions(1) {}
 
 Topic::Topic(const CustomString& title, const CustomString& description,
     const size_t creatorId, const size_t id) :
-    title(title), description(description), creatorId(creatorId), id(id), discussions() {}
+    title(title), description(description), creatorId(creatorId), id(id), discussions(1) {}
 
 Topic::Topic(const char* title, const char* description,
     const size_t creatorId, const size_t id) :
-    title(title), description(description), creatorId(creatorId), id(id), discussions() {}
+    title(title), description(description), creatorId(creatorId), id(id), discussions(1) {}
 
 Topic::Topic(const char* title, const char* description, 
     const size_t creatorId, const size_t id, const Vector<Discussion>& discussions) : title(title), description(description), creatorId(creatorId), id(id), discussions(discussions)

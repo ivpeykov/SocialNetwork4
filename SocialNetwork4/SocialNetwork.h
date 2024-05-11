@@ -6,7 +6,7 @@
 #include "User.h"
 #include "Topic.h"
 #include "Discussion.h"
-
+//Suggestion: create a new class object Creator and create objects there
 class SocialNetwork
 {
 public:
@@ -37,8 +37,8 @@ public:
 
 	bool isLoginSuccessful(User& user);
 
-	bool doesUsernameExist(const CustomString& userName);
-	bool doesCommentExist(const size_t id, const Vector<Comment>& comments);
+	size_t doesUsernameExist(const CustomString& userName);
+	size_t doesCommentExist(const size_t id, const Vector<Comment>& comments);
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
@@ -72,8 +72,9 @@ public:
 
 	void addComment(const Comment& newComment); //can use move semantics here
 
-	void replyToComment();
+	void replyToComment(const size_t parentId);
 
+	Reply createReply(const Reply& parentCommentLastReply, const size_t parentCommentId);
 	//add other commands down here....
 
 private:

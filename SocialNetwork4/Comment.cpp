@@ -1,14 +1,25 @@
 #include "Comment.h"
 
-Comment::Comment() : author(nullptr), text(nullptr), score(0), id(0), discussionId(0) {}
+Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), discussionId(SIZE_MAX), replies(1) {
+    replies.back().setParentCommentId(id);
+}
 
 Comment::Comment(const CustomString& author, const CustomString& text,
     const int score, const size_t id, const size_t discussionId) :
-    author(author), text(text), score(score), id(id), discussionId(discussionId) {}
+    author(author), text(text), score(score), id(id), discussionId(discussionId), replies(1) {
+
+    replies.back().setParentCommentId(id);
+}
 
 Comment::Comment(const char* author, const char* text,
     const int score, const size_t id, const size_t discussionId) :
-    author(author), text(text), score(score), id(id), discussionId(discussionId) {}
+    author(author), text(text), score(score), id(id), discussionId(discussionId), replies(1) {
+    replies.back().setParentCommentId(id);
+}
+
+Comment::Comment(const Comment& other) : author(other.author), text(other.text), score(other.score), id(other.id), discussionId(other.discussionId), replies(other.replies)
+{
+}
 
 const CustomString& Comment::getAuthor() const
 {
@@ -33,6 +44,16 @@ const size_t Comment::getId() const
 const size_t Comment::getDiscussionId() const
 {
     return discussionId;
+}
+
+const Vector<Reply>& Comment::getReplies() const
+{
+    return replies;
+}
+
+Vector<Reply>& Comment::getReplies()
+{
+    return replies;
 }
 
 void Comment::setAuthor(const char* newAuthor)
@@ -70,12 +91,23 @@ void Comment::setDiscussionId(const size_t newDiscussionId)
     discussionId = newDiscussionId;
 }
 
+void Comment::setReplies(const Vector<Reply>& newReplies)
+{
+    replies = newReplies;
+}
+
+void Comment::addReply(const Reply& newReply)
+{
+    replies.pushBack(newReply);
+}
+
 bool Comment::isEqualWithoutId(const Comment& other) const
 {
     return (author == other.author &&
         text == other.text &&
         score == other.score &&
-        discussionId == other.discussionId);
+        discussionId == other.discussionId &&
+        replies == other.replies);
 }
 
 bool Comment::isNotEqualWithoutId(const Comment& other) const
@@ -92,6 +124,7 @@ Comment& Comment::operator=(const Comment& other)
         score = other.score;
         id = other.id;
         discussionId = other.discussionId;
+        replies = other.replies; 
     }
     return *this;
 }

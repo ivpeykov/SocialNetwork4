@@ -75,6 +75,9 @@
     <ClCompile Include="Configuration.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
+    <ClCompile Include="Reply.cpp">
+      <Filter>Source Files\Business Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomString.h">
@@ -118,6 +121,9 @@
     </ClInclude>
     <ClInclude Include="FileHandler.h">
       <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Reply.h">
+      <Filter>Header Files\Business Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

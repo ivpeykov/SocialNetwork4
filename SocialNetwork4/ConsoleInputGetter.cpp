@@ -404,6 +404,7 @@ void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
 
 size_t ConsoleInputGetter::recieveIdInputForCommentReply()
 {
+
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }

@@ -18,11 +18,13 @@ public:
 	static void printTopic(const Topic& topic);
 	static void printDiscussion(const Discussion& discussion);
 	static void printComment(const Comment& comment);
+	static void printReply(const Reply& reply);
 
 	static void printUsers(const Vector<User>& users);
 	static void printTopics(const Vector<Topic>& topics);
 	static void printDiscussions(const Topic& topic);
 	static void printComments(const Discussion& discussion);
+	static void printReplies(const Comment& comment);
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
 	static void printDiscussionsForList(const Vector<Discussion>& discussions);

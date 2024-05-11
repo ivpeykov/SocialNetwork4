@@ -50,7 +50,19 @@ void PrintHandler::printComment(const Comment& comment)
 		<< "Text:" << comment.getText() << std::endl
 		<< "Score:" << comment.getScore() << std::endl
 		<< "ID:" << comment.getId() << std::endl
-		<< "Discussion ID: " << comment.getDiscussionId() << std::endl;
+		<< "Discussion ID: " << comment.getDiscussionId() << std::endl
+		<< "Replies..." << std::endl;
+	printReplies(comment);
+}
+
+void PrintHandler::printReply(const Reply& reply)
+{
+	std::cout << "\nAuthor:" << reply.getAuthor() << std::endl
+		<< "Text:" << reply.getText() << std::endl
+		<< "Score:" << reply.getScore() << std::endl
+		<< "ID:" << reply.getId() << std::endl
+		<< "Discussion ID: " << reply.getDiscussionId() << std::endl
+		<< "Parent comment: " << reply.getParentCommentId() << std::endl;
 }
 
 void PrintHandler::printUsers(const Vector<User>& users)
@@ -59,46 +71,73 @@ void PrintHandler::printUsers(const Vector<User>& users)
 
 	size_t usersSize = users.getSize();
 
-	for (int i = 0; i < usersSize; i++) {
+	if (usersSize == 0) {
+		std::cout << "No users!" << std::endl;
+		return;
+	}
+
+	for (size_t i = 0; i < usersSize; i++) {
 		printUser(users[i]);
 	}
 }
 
 void PrintHandler::printTopics(const Vector<Topic>& topics)
 {
-	std::cout <<  std::endl << "Printing Topics..." << std::endl;
 
 	size_t topicsSize = topics.getSize();
 
-	for (int i = 0; i < topicsSize; i++) {
-		printTopic(topics[i]);
+	if (topicsSize == 0) {
+		std::cout << "No topics!" << std::endl;
+		return;
 	}
 
+	for (size_t i = 0; i < topicsSize; i++) {
+		printTopic(topics[i]);
+	}
 }
 
 void PrintHandler::printDiscussions(const Topic& topic)
 {
-	std::cout << std::endl << "Printing Discussions..." << std::endl;
 
 	size_t discussionsSize = topic.getDiscussions().getSize();
 
 	if (discussionsSize == 0) {
+		std::cout << "No Discussions!" << std::endl;
 		return;
 	}
 
-	for (int i = 0; i < discussionsSize; i++) {
+	for (size_t i = 0; i < discussionsSize; i++) {
 		printDiscussion(topic.getDiscussions()[i]);
 	}
-
 }
 
 void PrintHandler::printComments(const Discussion& discussion)
 {
 	size_t commentsSize = discussion.getComments().getSize();
 
-	for (int i = 0; i < commentsSize; i++) {
+	if (commentsSize == 0) {
+		std::cout << "No Comments!" << std::endl;
+		return;
+	}
+
+	for (size_t i = 0; i < commentsSize; i++) {
 		printComment(discussion.getComments()[i]);
 	}
+}
+
+void PrintHandler::printReplies(const Comment& comment)
+{
+	size_t repliesCount = comment.getReplies().getSize();
+
+	if (repliesCount == 0) {
+		std::cout << "No Replies!" << std::endl;
+		return;
+	}
+
+	for (size_t i = 0; i < repliesCount; i++) {
+		printReply(comment.getReplies()[i]);
+	}
+
 }
 
 void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
@@ -110,7 +149,7 @@ void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
 	}
 
 
-	for (int i = 0; i < topicsSize; i++) {
+	for (size_t i = 0; i < topicsSize; i++) {
 		std::cout << topics[i].getTitle() << " {id: " << topics[i].getId() << "}" << std::endl;
 	}
 
@@ -124,7 +163,7 @@ void PrintHandler::printDiscussionsForList(const Vector<Discussion>& discussions
 		std::cout << "No discussions avalible in this topic!" << std::endl;
 	}
 
-	for (int i = 0; i < discussionsSize; ++i) {
+	for (size_t i = 0; i < discussionsSize; ++i) {
 
 		std::cout << discussions[i].getTitle() << " {id: "
 			<< discussions[i].getId() << "}" << std::endl;

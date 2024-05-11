@@ -100,7 +100,7 @@ bool SocialNetwork::isLoginSuccessful(User& user)
 {
 	size_t usersSize = currUsers.getSize();
 
-	for (int i = 0; i < usersSize; i++) {
+	for (size_t i = 0; i < usersSize; i++) {
 
 		if (user.getUserName() == currUsers[i].getUserName()
 			&& user.getPassword() == currUsers[i].getPassword()) {
@@ -112,27 +112,27 @@ bool SocialNetwork::isLoginSuccessful(User& user)
 
 }
 
-bool SocialNetwork::doesUsernameExist(const CustomString& userName)
+size_t SocialNetwork::doesUsernameExist(const CustomString& userName)
 {
 	size_t usersSize = currUsers.getSize();
 
-	for (int i = 0; i < usersSize; i++) {
+	for (size_t i = 0; i < usersSize; i++) {
 		if (userName == currUsers[i].getUserName())
-			return true;
+			return i;
 	}
-	return false;
+	return SIZE_MAX;
 }
 
-bool SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments)
+size_t SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments)
 {
 	size_t commentsSize = comments.getSize();
 
-	for (int i = 0; i < commentsSize; ++i) {
+	for (size_t i = 0; i < commentsSize; ++i) {
 		if (id == comments[i].getId())
-			return true;
+			return i;
 	}
 
-	return false;
+	return SIZE_MAX;
 }
 
 SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
@@ -152,9 +152,20 @@ void SocialNetwork::signup()
 
 	//UserName
 	ConsoleInputGetter::recieveUserNameInput(newUser);
-	if (!InputValidator::isValidUserNameSignup(newUser.getUserName())) {
+	size_t userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
+
+	switch (userNameStatus) {
+
+	case 0:
 		PrintHandler::printErrorSignupUserName();
 		return;
+	case 1:
+		break;
+	case 2:
+		std::cout << "User already exists!" << std::endl;
+		return;
+	default:
+		throw std::exception("Error with usersStatus when signing up!");
 	}
 
 	//Password
@@ -184,6 +195,10 @@ void SocialNetwork::signup()
 		//ID
 		size_t lastUserId = currUsers.back().getId();
 		newUser.setId(lastUserId + 1); 
+	}
+
+	else {
+		newUser.setId(0);
 	}
 
 	//Points are automatically 0 when creating a user
@@ -235,7 +250,7 @@ void SocialNetwork::logout()
 	std::cout << "Logged out successfully!" << std::endl;
 }
 
-void SocialNetwork::editLoggedInUser() //BUG: Everywhere where we iterate through users we need to do it with size_t i not int i
+void SocialNetwork::editLoggedInUser()
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Only logged in users can edit their profiles! Please login first!" << std::endl;
@@ -280,15 +295,27 @@ void SocialNetwork::editLoggedInUser() //BUG: Everywhere where we iterate throug
 
 		User newUser;
 
+		size_t userNameStatus = SIZE_MAX;
 		switch (answer) {
 
 		case 0:
 			//UserName
 			ConsoleInputGetter::recieveUserNameInput(newUser);
-			if (!InputValidator::isValidUserNameSignup(newUser.getUserName())) {
-				std::cout << "Could not edit user! Invalid username!"; //suggestion: specify if username already exists
+			userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
+			if (userNameStatus == 0) {
+				std::cout << "Could not edit user! Invalid username!" << std::endl;
 				return;
 			}
+
+			else if (userNameStatus == 2) {
+				std::cout << "Could not edit user! Username already exists!" << std::endl;
+				return;
+			}
+
+			else if (userNameStatus != 1) {
+				throw std::exception("Unknown problem with username status by editing user!");
+			}
+
 			loggedInUser.setUserName(newUser.getUserName());
 			currUsers[userPos].setUserName(newUser.getUserName());
 			CurrentData::setChangesMadeStatus(true);
@@ -403,16 +430,28 @@ void SocialNetwork::editUserAsModerator()
 		}
 
 		User newUser;
+		size_t userNameStatus = SIZE_MAX;
 
 		switch (answer) {
 
 		case 0:
 			//UserName
 			ConsoleInputGetter::recieveUserNameInput(newUser);
-			if (!InputValidator::isValidUserNameSignup(newUser.getUserName())) {
-				std::cout << "Could not edit user! Invalid username!"; //suggestion: specify if username already exists
+			userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
+			if (userNameStatus == 0) {
+				std::cout << "Could not edit user! Invalid username!" << std::endl;
 				return;
 			}
+
+			else if (userNameStatus == 2) {
+				std::cout << "Could not edit user! username already exists!" << std::endl;
+				return;
+			}
+
+			else if (userNameStatus != 1) {
+				throw std::exception("Unknown problem with username status by editing user (moderator)!");
+			}
+
 			loggedInUser.setUserName(newUser.getUserName());
 			currUsers[userPos].setUserName(newUser.getUserName());
 			CurrentData::setChangesMadeStatus(true);
@@ -513,6 +552,10 @@ Topic SocialNetwork::createTopic()
 		newTopic.setId(lastTopicId + 1);
 	}
 
+	else {
+		newTopic.setId(0);
+	}
+
 	return newTopic;
 }
 
@@ -543,7 +586,7 @@ void SocialNetwork::searchTopic()
 
 	size_t topicsToSearchSize = currTopics.getSize();
 
-	for (int i = 0; i < topicsToSearchSize; ++i) {
+	for (size_t i = 0; i < topicsToSearchSize; ++i) {
 
 		lhsString = currTopics[i].getTitle().getString();
 		lhsStringLength = lhsString.length();
@@ -581,7 +624,7 @@ void SocialNetwork::openTopic(){
 
 		size_t queryId = query.toNum();
 
-		for (int i = 0; i < topicsSize; ++i) {
+		for (size_t i = 0; i < topicsSize; ++i) {
 
 			if (queryId == currTopics[i].getId()) {
 				openedTopic = currTopics[i];
@@ -595,7 +638,7 @@ void SocialNetwork::openTopic(){
 
 	else {
 
-		for (int i = 0; i < topicsSize; ++i) {
+		for (size_t i = 0; i < topicsSize; ++i) {
 
 			if (query == currTopics[i].getTitle()) {
 				openedTopic = currTopics[i];
@@ -648,6 +691,10 @@ Discussion SocialNetwork::createDiscussion()
 	if (openedTopic.getDiscussions().back().getTitle() != nullptr) {
 		size_t lastDiscussionId = openedTopic.getDiscussions().back().getId();
 		newDiscussion.setId(lastDiscussionId + 1);
+	}
+
+	else {
+		newDiscussion.setId(0);
 	}
 
 	return newDiscussion;
@@ -714,7 +761,7 @@ void SocialNetwork::openDiscussion()
 	size_t discussionsSize = openedTopic.getDiscussions().getSize();
 	bool discussionOpened = false;
 
-	for (int i = 0; i < discussionsSize; ++i) {
+	for (size_t i = 0; i < discussionsSize; ++i) {
 
 		if (id == openedTopic.getDiscussions()[i].getId()) {
 			openedDiscussion = openedTopic.getDiscussions()[i];
@@ -761,6 +808,10 @@ Comment SocialNetwork::createComment()
 	if (openedDiscussion.getComments().back().getAuthor() != nullptr) {
 		size_t lastCommentId = openedDiscussion.getComments().back().getId();
 		newComment.setId(lastCommentId + 1);
+	}
+
+	else {
+		newComment.setId(0);
 	}
 	
 	return newComment;
@@ -810,21 +861,108 @@ void SocialNetwork::addComment(const Comment& newComment)
 	std::cout << "Successfully commented!" << std::endl;
 }
 
-void SocialNetwork::replyToComment()
+void SocialNetwork::replyToComment(const size_t parentId)
 {
-	size_t parentId = ConsoleInputGetter::recieveIdInputForCommentReply();
-
-	if (!doesCommentExist(parentId, openedDiscussion.getComments())) {
-		throw std::runtime_error("Comment not found!");
+	if (!isThereLoggedInUser()) {
+		throw std::runtime_error("Could not reply! Please log in before replying!");
 	}
 
-	Comment reply = createComment(); //try catch?
+	if (!isThereOpenedTopic()) {
+		throw std::runtime_error("Could not reply! Please open a topic before replying!");
+	}
 
+	if (!isThereOpenedDiscussion()) {
+		throw std::runtime_error("Could not reply! Please open a discussion before replying!");
+	}
+
+	size_t commentPosition = doesCommentExist(parentId, openedDiscussion.getComments());
+
+	if (commentPosition == SIZE_MAX) {
+		throw std::runtime_error("Comment not found!");
+	}
 	
-	//add reply to the parent comment's replies vector both in the openedDiscussion and in the currentData!
-	//continue here....
+	Reply parentCommentLastReply = openedDiscussion.getComments()[commentPosition].getReplies().back();
+	Reply newReply = createReply(parentCommentLastReply, parentId);
 
 
+	//Find corresponding topic
+	size_t searchedTopicId = openedTopic.getId();
+	size_t topicsSize = currTopics.getSize();
+	bool topicFound = false;
+
+	size_t topicPos = 0;
+	for (topicPos; topicPos < topicsSize; ++topicPos) {
+
+		if (searchedTopicId == currTopics[topicPos].getId()) {
+			topicFound = true;
+			break;
+		}
+	}
+
+	if (topicFound == false) {
+		throw std::runtime_error("Topic not found");
+	}
+
+
+	//Find corresponding discussion
+	size_t searchedDiscussionId = openedDiscussion.getId();
+	size_t discussionsSize = currTopics[topicPos].getDiscussions().getSize();
+	bool discussionFound = false;
+
+	size_t discussionPos = 0;
+	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
+		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
+			currTopics[topicPos].getDiscussions()[discussionPos].getComments()[commentPosition].addReply(newReply);
+			CurrentData::setChangesMadeStatus(true);
+			discussionFound = true;
+		}
+	}
+
+	if (discussionFound == false) {
+		throw std::runtime_error("Discussion not found");
+	}
+
+	openedDiscussion.getComments()[commentPosition].addReply(newReply);
 
 	std::cout << "Successfully replied!" << std::endl;
+}
+
+Reply SocialNetwork::createReply(const Reply& parentCommentLastReply, const size_t parentCommentId)
+{
+	if (!isThereLoggedInUser()) {
+		throw std::runtime_error("Reply could not be created! Please log in before replying!");
+	}
+
+	if (!isThereOpenedTopic()) {
+		throw std::runtime_error("Reply could not be created! Please open a topic before replying!");
+	}
+
+	if (!isThereOpenedDiscussion()) {
+		throw std::runtime_error("Comment could not be created! Please open a discussion before replying!");
+	}
+
+	Comment newComment;
+
+	ConsoleInputGetter::recieveCommentTextInput(newComment);
+	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
+		throw std::runtime_error("Comment could not be created! Invalid input!");
+	}
+
+	newComment.setAuthor(loggedInUser.getUserName());
+	newComment.setScore(0);
+	newComment.setDiscussionId(openedDiscussion.getId());
+
+	if (parentCommentLastReply.getAuthor() != nullptr) {
+		newComment.setId(parentCommentLastReply.getId() + 1);
+	}
+
+	else {
+		newComment.setId(0);
+	}
+
+	Reply newReply = newComment;
+
+	newReply.setParentCommentId(parentCommentId);
+
+	return newReply;
 }

@@ -73,7 +73,7 @@ void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users
 	User newUser;
 	char* string = nullptr;
 
-	for (int i = 0; i < usersCount; i++) {
+	for (size_t i = 0; i < usersCount; i++) {
 
 		//load firstName
 		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
@@ -130,7 +130,7 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& top
 
 	char* string = nullptr;
 
-	for (int i = 0; i < topicsCount; i++) {
+	for (size_t i = 0; i < topicsCount; i++) {
 
 		//load title
 		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
@@ -179,7 +179,7 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 
 	char* string = nullptr;
 
-	for (int i = 0; i < discussionsCount; i++) {
+	for (size_t i = 0; i < discussionsCount; i++) {
 
 		//load title
 		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
@@ -230,7 +230,7 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 
 	char* string = nullptr;
 
-	for (int i = 0; i < commentsCount; i++) {
+	for (size_t i = 0; i < commentsCount; i++) {
 
 		//load author
 		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
@@ -254,8 +254,60 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 		newComment.setId(id);
 		newComment.setDiscussionId(discussionId);
 
+		//load Replies
+		loadReplies(socialNetworkFile, newComment);
 
 		discussion.addComment(newComment);
+	}
+}
+
+void FileHandler::loadReplies(std::fstream& socialNetworkFile, Comment& comment)
+{
+	size_t repliesCount = 0;
+
+	socialNetworkFile.read(reinterpret_cast<char*>(&repliesCount), sizeof(repliesCount));
+
+
+	if (repliesCount == 0) return;
+
+	comment.getReplies().resize(repliesCount + 10);
+	//add 10 more places to save some time/resources
+
+	size_t strLength = 0;
+
+	Reply newReply;
+	int score = 0;
+	size_t id = 0, discussionId = 0, parentCommentId = 0; //TOOD: Iinitialise with SIZE_MAX everywhere
+
+	char* string = nullptr;
+
+
+	for (size_t i = 0; i < repliesCount; i++) {
+		//load author
+		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
+		string = new char[strLength];
+		socialNetworkFile.read(string, strLength);
+		newReply.setAuthor(string);
+		delete[] string;
+
+		//load text
+		socialNetworkFile.read(reinterpret_cast<char*>(&strLength), sizeof(strLength));
+		string = new char[strLength];
+		socialNetworkFile.read(string, strLength);
+		newReply.setText(string);
+		delete[] string;
+
+		//load score, id, discussionsId, parentCommentId
+		socialNetworkFile.read(reinterpret_cast<char*>(&score), sizeof(score));
+		socialNetworkFile.read(reinterpret_cast<char*>(&id), sizeof(id));
+		socialNetworkFile.read(reinterpret_cast<char*>(&discussionId), sizeof(discussionId));
+		socialNetworkFile.read(reinterpret_cast<char*>(&parentCommentId), sizeof(parentCommentId));
+		newReply.setScore(score);
+		newReply.setId(id);
+		newReply.setDiscussionId(discussionId);
+		newReply.setParentCommentId(parentCommentId);
+
+		comment.addReply(newReply);
 	}
 }
 
@@ -292,7 +344,7 @@ void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>
 	socialNetworkFile.write(reinterpret_cast<const char*>(&usersCount), sizeof(usersCount));
 
 	size_t strLength = 0;
-	for (int i = 0; i < usersCount; i++) {
+	for (size_t i = 0; i < usersCount; i++) {
 
 		//save firstName
 		strLength = users[i].getFirstName().length();
@@ -332,7 +384,7 @@ void FileHandler::saveTopics(std::ofstream& socialNetworkFile, const Vector<Topi
 
 	size_t strLength = 0;
 
-	for (int i = 0; i < topicsCount; i++) {
+	for (size_t i = 0; i < topicsCount; i++) {
 
 		//save title
 		strLength = topics[i].getTitle().length();
@@ -363,7 +415,7 @@ void FileHandler::saveDiscussions(std::ofstream& socialNetworkFile, const Vector
 
 	size_t strLength = 0;
 
-	for (int i = 0; i < discussionsCount; i++) {
+	for (size_t i = 0; i < discussionsCount; i++) {
 
 		//save title
 		strLength = discussions[i].getTitle().length();
@@ -398,7 +450,7 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Co
 
 	size_t strLength = 0;
 
-	for (int i = 0; i < commentsCount; i++) {
+	for (size_t i = 0; i < commentsCount; i++) {
 
 		//save author
 		strLength = comments[i].getAuthor().length();
@@ -418,7 +470,45 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Co
 		socialNetworkFile.write(reinterpret_cast<const char*>(&score), sizeof(score));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&discussionId), sizeof(discussionId));
+
+		//save replies
+		saveReplies(socialNetworkFile, comments[i].getReplies());
 	}
 
 	
+}
+
+void FileHandler::saveReplies(std::ofstream& socialNetworkFile, const Vector<Reply>& replies)
+{
+
+	size_t repliesCount = replies.getSize();
+	socialNetworkFile.write(reinterpret_cast<const char*>(&repliesCount), sizeof(repliesCount));
+
+	size_t strLength = 0;
+
+	for (size_t i = 0; i < repliesCount; i++) {
+
+		//save author
+		strLength = replies[i].getAuthor().length();
+		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
+		socialNetworkFile.write(replies[i].getAuthor().getString(), strLength);
+
+		//save text
+		strLength = replies[i].getText().length();
+		socialNetworkFile.write(reinterpret_cast<const char*>(&strLength), sizeof(strLength));
+		socialNetworkFile.write(replies[i].getText().getString(), strLength);
+
+		//save score, id, discussionId, parentCommentId
+		int score = replies[i].getScore();
+		size_t id = replies[i].getId();
+		size_t discussionId = replies[i].getDiscussionId();
+		size_t parentCommentId = replies[i].getParentCommentId();
+
+		socialNetworkFile.write(reinterpret_cast<const char*>(&score), sizeof(score));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&discussionId), sizeof(discussionId));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&parentCommentId), sizeof(parentCommentId));
+
+	}
+
 }

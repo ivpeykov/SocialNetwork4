@@ -1,7 +1,7 @@
 #include "User.h"
 
 User::User() : firstName(nullptr), lastName(nullptr),
-userName(nullptr), password(nullptr), id(0), points(0), isModerator(true) {} //for initialisation
+userName(nullptr), password(nullptr), id(SIZE_MAX), points(0), isModerator(true) {} //for initialisation
 
 User::User(const CustomString& firstName, const CustomString& lastName,
 	const CustomString& userName, const CustomString& password,

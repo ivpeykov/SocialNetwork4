@@ -171,7 +171,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
             
         try { 
-            currSocialNetwork.replyToComment(); 
+            currSocialNetwork.replyToComment(ConsoleInputGetter::recieveIdInputForCommentReply());
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Could not reply! " << error.what() << std::endl;

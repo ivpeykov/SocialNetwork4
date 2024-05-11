@@ -29,7 +29,7 @@ public:
 
         resize(capacity);
 
-        for (int i = 0; i < other.size; i++) {
+        for (size_t i = 0; i < other.size; i++) {
             data[i] = other.data[i];
         }
     }
@@ -125,7 +125,7 @@ public:
             return false;
         }
 
-        for (int i = 0; i < size; i++) {
+        for (size_t i = 0; i < size; i++) {
             if (data[i] != rhs.data[i])
                 return false;
         }
@@ -149,7 +149,7 @@ public:
                 resize(capacity);
             }
 
-            for (int i = 0; i < rhs.size; i++) {
+            for (size_t i = 0; i < rhs.size; i++) {
                 data[i] = rhs.data[i];
             }
 

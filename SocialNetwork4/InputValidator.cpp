@@ -3,7 +3,7 @@
 bool InputValidator::doesStringContainNonAsciiChars(const CustomString& string)
 {
     size_t strLen = string.length();
-    for (int i = 0; i < strLen; i++) {
+    for (size_t i = 0; i < strLen; i++) {
         if (static_cast<unsigned char>(string[i]) > 127) {
             return true;
         }
@@ -14,7 +14,7 @@ bool InputValidator::doesStringContainNonAsciiChars(const CustomString& string)
 bool InputValidator::doesStringContainNonAsciiChars(const char* string)
 {
     size_t strLen = strlen(string) + 1;
-    for (int i = 0; i < strLen; i++) {
+    for (size_t i = 0; i < strLen; i++) {
         if (static_cast<unsigned char>(string[i]) > 127) {
             return true;
         }
@@ -75,7 +75,7 @@ bool InputValidator::isValidFirstName(const CustomString& firstName)
         return false;
     }
 
-    for (int i = 0; i < firstName.length() - 1; i++) {
+    for (size_t i = 0; i < firstName.length() - 1; i++) {
         if (!isalpha(firstName[i]))
             return false;
     }
@@ -92,7 +92,7 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
         return false;
     }
 
-    for (int i = 0; i < lastName.length() - 1; i++) {
+    for (size_t i = 0; i < lastName.length() - 1; i++) {
         if (!isalpha(lastName[i]))
             return false;
     }
@@ -100,19 +100,19 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
     return true;
 }
 
-bool InputValidator::isValidUserNameSignup(const CustomString& userName)
+size_t InputValidator::isValidUserNameSignup(const CustomString& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
-        return false;
+        return 0;
 
     if (userName[0] == '\0') {
-        return false;
+        return 0;
     }
    
-    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName))
-        return false;
+    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName) != SIZE_MAX)
+        return 2; //userName Exists
         
-    return true;
+    return 1;
 }
 
 bool InputValidator::isValidUserNameLogin(const CustomString& userName) //suggestion: check for existance elsewhere
@@ -124,7 +124,7 @@ bool InputValidator::isValidUserNameLogin(const CustomString& userName) //sugges
         return false;
     }
 
-    if (!CurrentData::getCurrSocialNetwork().doesUsernameExist(userName))
+    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName) == SIZE_MAX)
         return false;
 
     return true;
