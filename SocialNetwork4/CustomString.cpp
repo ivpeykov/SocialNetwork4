@@ -92,7 +92,7 @@ void CustomString::setString(const char* inputString) {
 	}
 }
 
-bool CustomString::find(const char* substr) const //"Naive" algorithm
+bool CustomString::find(const char* substr) const //Boyer Moore Horspool Algorithm
 {
 	size_t sublen = strlen(substr);
 	size_t len = size - 1;
@@ -100,21 +100,35 @@ bool CustomString::find(const char* substr) const //"Naive" algorithm
 	if (sublen > len)
 		return false;
 
-	for (size_t i = 0; i <= len - sublen; ++i) {
-		size_t j;
-		for (j = 0; j < sublen; ++j) {
-			if (string[i + j] != substr[j]) {
-				break;
-			}
+	int bad_char[256];
+
+	// Preprocessing: Initialize bad character array
+	for (int i = 0; i < 256; ++i)
+		bad_char[i] = -1;
+
+	for (size_t i = 0; i < sublen; ++i)
+		bad_char[(unsigned char)substr[i]] = i;
+
+	size_t shift = 0;
+	while (shift <= len - sublen) {
+		int j = sublen - 1;
+
+		while (j >= 0 && substr[j] == string[shift + j])
+			--j;
+
+		if (j < 0) {
+			// Substring found
+			return true;
 		}
-		if (j == sublen) {
-			return true; // substring found
+		else {
+			// Shift based on bad character heuristic
+			shift += std::max(1, static_cast<int>(j - bad_char[(unsigned char)string[shift + j]]));
 		}
 	}
-	return false; 
+	return false;
 }
 
-bool CustomString::find(const CustomString& substr) const
+bool CustomString::find(const CustomString& substr) const //Boyer Moore Horspool Algorithm
 {
 	size_t sublen = substr.length() - 1;
 	size_t len = size - 1;
@@ -122,18 +136,32 @@ bool CustomString::find(const CustomString& substr) const
 	if (sublen > len)
 		return false;
 
-	for (size_t i = 0; i <= len - sublen; ++i) {
-		size_t j;
-		for (j = 0; j < sublen; ++j) {
-			if (string[i + j] != substr[j]) {
-				break;
-			}
+	int bad_char[256];
+
+	// Preprocessing: Initialize bad character array
+	for (int i = 0; i < 256; ++i)
+		bad_char[i] = -1;
+
+	for (size_t i = 0; i < sublen; ++i)
+		bad_char[(unsigned char)substr[i]] = i;
+
+	size_t shift = 0;
+	while (shift <= len - sublen) {
+		int j = sublen - 1;
+
+		while (j >= 0 && substr[j] == string[shift + j])
+			--j;
+
+		if (j < 0) {
+			// Substring found
+			return true;
 		}
-		if (j == sublen) {
-			return true; // substring found
+		else {
+			// Shift based on bad character heuristic
+			shift += std::max(1, static_cast<int>(j - bad_char[(unsigned char)string[shift + j]]));
 		}
 	}
-	return false; 
+	return false;
 }
 
 size_t CustomString::toNum() const
