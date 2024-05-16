@@ -25,5 +25,8 @@ public:
 	static const short MAX_DIGITS_INPUT;
 
 	static constexpr short calculate_MAX_DIGITS_INPUT();
+
+private:
+	Configuration();
 };
 

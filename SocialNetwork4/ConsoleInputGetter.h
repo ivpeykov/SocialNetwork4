@@ -5,8 +5,6 @@
 #include "User.h"
 #include "Topic.h"
 
-#include <iostream> //remove?
-
 class ConsoleInputGetter
 {
 public:
@@ -49,6 +47,9 @@ public:
 	static void resetSocialNetworkDirectoryInput();
 
 private:
+
+	ConsoleInputGetter();
+
 	static CustomString commandInput;
 	static CustomString socialNetworkDirectoryInput;
 };

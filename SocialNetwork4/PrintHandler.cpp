@@ -4,11 +4,11 @@ void PrintHandler::printEnterCommandPrompt() {
 	std::cout << "\nEnter command: ";
 }
 
-void PrintHandler::printCommands(const CustomString* commandsList, size_t commandsCount)
+void PrintHandler::printCommands(const CustomString* commandsList, const CustomString* commandsDescriptions, const size_t commandsCount)
 {
-	std::cout << "Avalible commands:" << std::endl;
+	std::cout << "Available commands:" << std::endl;
 	for (int i = 0; i < commandsCount; ++i) {
-		std::cout << commandsList[i] << std::endl;
+		std::cout << commandsList[i] << " - " << commandsDescriptions[i] << std::endl;
 	}
 }
 
@@ -62,7 +62,7 @@ void PrintHandler::printReply(const Reply& reply)
 		<< "Score:" << reply.getScore() << std::endl
 		<< "ID:" << reply.getId() << std::endl
 		<< "Discussion ID: " << reply.getDiscussionId() << std::endl
-		<< "Parent comment: " << reply.getParentCommentId() << std::endl;
+		<< "Parent comment ID: " << reply.getParentCommentId() << std::endl;
 }
 
 void PrintHandler::printUsers(const Vector<User>& users)
@@ -145,7 +145,7 @@ void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
 	size_t topicsSize = topics.getSize();
 
 	if (topicsSize == 0) {
-		std::cout << "No strings found containing that string!" << std::endl;
+		std::cout << "No topics found containing that title!" << std::endl;
 	}
 
 
@@ -160,7 +160,7 @@ void PrintHandler::printDiscussionsForList(const Vector<Discussion>& discussions
 	size_t discussionsSize = discussions.getSize();
 
 	if (discussionsSize == 0) {
-		std::cout << "No discussions avalible in this topic!" << std::endl;
+		std::cout << "No discussions available in this topic!" << std::endl;
 	}
 
 	for (size_t i = 0; i < discussionsSize; ++i) {

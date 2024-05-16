@@ -38,4 +38,7 @@ public:
 
 	//Comment Data Validation
 	static bool isValidCommentTextInput(const CustomString& text);
+
+private:
+	InputValidator();
 };
