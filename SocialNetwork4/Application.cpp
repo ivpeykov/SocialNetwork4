@@ -2,7 +2,6 @@
 
 void Application::run()
 {
-
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
@@ -19,7 +18,7 @@ void Application::run()
 
 	//Debugging prints...
 
-	//PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
+	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
 
 	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 

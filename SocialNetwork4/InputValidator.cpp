@@ -60,6 +60,7 @@ bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& dire
     }
 
     if (directoryInput[0] == '\0') {
+        std::cout << "Invalid directory!" << std::endl;
         return false;
     }
 

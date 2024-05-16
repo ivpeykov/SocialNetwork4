@@ -222,16 +222,12 @@ CustomString& CustomString::operator=(const char* str)
 {
 	size_t strSize = strlen(str) + 1;
 
-	if (size > strSize) {
+	if (size != strSize) {
 		delete[] string;
 		string = nullptr;
 		size = strSize;
 
 		string = new char[size];
-	}
-
-	else {
-		size = strSize;
 	}
 
 	for (size_t i = 0; i < strSize; i++) {
