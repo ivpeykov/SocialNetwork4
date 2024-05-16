@@ -2,7 +2,6 @@
 
 void Application::run()
 {
-
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {

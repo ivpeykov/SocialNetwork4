@@ -612,51 +612,6 @@ void SocialNetwork::openTopic(){
 	std::cout << "Could not open topic! Invalid title or id!" << std::endl;
 }
 
-Discussion SocialNetwork::createDiscussion()
-{
-
-	if (!isThereLoggedInUser()) {
-		throw std::runtime_error("Discussion could not be created! Please log in before posting!");
-	}
-
-	if (!isThereOpenedTopic()) {
-		throw std::runtime_error("Discussion could not be created! Please open a topic before posting!");
-	}
-
-	
-	Discussion newDiscussion; //optimisation: create an empty discussion ( no comments)
-
-	//Title
-	ConsoleInputGetter::recieveDiscussionTitleInput(newDiscussion);
-	if (!InputValidator::isValidTitle(newDiscussion.getTitle())) {
-		throw std::runtime_error("Discussion could not be created! Invalid Title!");
-	}
-
-	//Content
-	ConsoleInputGetter::recieveDiscussionContentInput(newDiscussion);
-	if (!InputValidator::isValidContent(newDiscussion.getContent())) {
-		throw std::runtime_error("Discussion could not be created! Invalid Content!");
-	}
-
-	//topicId
-	newDiscussion.setTopicId(openedTopic.getId());
-
-	//creatorId
-	newDiscussion.setCreatorId(loggedInUser.getId());
-
-	//id
-	if (openedTopic.getDiscussions().back().getTitle() != nullptr) {
-		size_t lastDiscussionId = openedTopic.getDiscussions().back().getId();
-		newDiscussion.setId(lastDiscussionId + 1);
-	}
-
-	else {
-		newDiscussion.setId(0);
-	}
-
-	return newDiscussion;
-}
-
 void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 {
 	size_t topicId = openedTopic.getId();
@@ -743,44 +698,6 @@ void SocialNetwork::openDiscussion()
 	}
 }
 
-Comment SocialNetwork::createComment() 
-{
-	if (!isThereLoggedInUser()) {
-		throw std::runtime_error("Comment could not be created! Please log in before commenting!");
-	}
-
-	if (!isThereOpenedTopic()) {
-		throw std::runtime_error("Comment could not be created! Please open a topic before commenting!");
-	}
-
-	if (!isThereOpenedDiscussion()) {
-		throw std::runtime_error("Comment could not be created! Please open a discussion before commenting!");
-	}
-
-	Comment newComment;
-
-	ConsoleInputGetter::recieveCommentTextInput(newComment);
-	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
-		throw std::runtime_error("Comment could not be created! Invalid input!");
-	}
-
-	newComment.setAuthor(loggedInUser.getUserName());
-	newComment.setScore(0);
-	newComment.setDiscussionId(openedDiscussion.getId());
-
-	if (openedDiscussion.getComments().back().getAuthor() != nullptr) {
-		size_t lastCommentId = openedDiscussion.getComments().back().getId();
-		newComment.setId(lastCommentId + 1);
-	}
-
-	else {
-		newComment.setId(0);
-	}
-	
-	return newComment;
-}
-
-
 void SocialNetwork::addComment(const Comment& newComment)
 {
 	//Find corresponding topic
@@ -845,7 +762,7 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	}
 	
 	Reply parentCommentLastReply = openedDiscussion.getComments()[commentPosition].getReplies().back();
-	Reply newReply = createReply(parentCommentLastReply, parentId);
+	Reply newReply = ObjectFactory::createReply(*this, parentCommentLastReply, parentId);
 
 
 	//Find corresponding topic
@@ -888,44 +805,4 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	openedDiscussion.getComments()[commentPosition].addReply(newReply);
 
 	std::cout << "Successfully replied!" << std::endl;
-}
-
-Reply SocialNetwork::createReply(const Reply& parentCommentLastReply, const size_t parentCommentId)
-{
-	if (!isThereLoggedInUser()) {
-		throw std::runtime_error("Reply could not be created! Please log in before replying!");
-	}
-
-	if (!isThereOpenedTopic()) {
-		throw std::runtime_error("Reply could not be created! Please open a topic before replying!");
-	}
-
-	if (!isThereOpenedDiscussion()) {
-		throw std::runtime_error("Comment could not be created! Please open a discussion before replying!");
-	}
-
-	Comment newComment;
-
-	ConsoleInputGetter::recieveCommentTextInput(newComment);
-	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
-		throw std::runtime_error("Comment could not be created! Invalid input!");
-	}
-
-	newComment.setAuthor(loggedInUser.getUserName());
-	newComment.setScore(0);
-	newComment.setDiscussionId(openedDiscussion.getId());
-
-	if (parentCommentLastReply.getAuthor() != nullptr) {
-		newComment.setId(parentCommentLastReply.getId() + 1);
-	}
-
-	else {
-		newComment.setId(0);
-	}
-
-	Reply newReply = newComment;
-
-	newReply.setParentCommentId(parentCommentId);
-
-	return newReply;
 }

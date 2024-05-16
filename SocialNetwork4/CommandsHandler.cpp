@@ -135,7 +135,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             break;
         }
         try {
-            currSocialNetwork.postDiscussion(currSocialNetwork.createDiscussion());
+            currSocialNetwork.postDiscussion(ObjectFactory::createDiscussion(currSocialNetwork));
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Error: " << error.what() << std::endl;
@@ -165,7 +165,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
 
         try {
-            currSocialNetwork.addComment(currSocialNetwork.createComment());
+            currSocialNetwork.addComment(ObjectFactory::createComment(currSocialNetwork));
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Error: " << error.what() << std::endl;

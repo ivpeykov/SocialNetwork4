@@ -58,21 +58,15 @@ public:
 
 	void openTopic();
 
-	Discussion createDiscussion();
-
 	void postDiscussion(const Discussion& newDiscussion); //can use move semantics here
 
 	void listDiscussionsInOpenedTopic();
 
 	void openDiscussion();
 
-	Comment createComment();
-
 	void addComment(const Comment& newComment); //can use move semantics here
 
 	void replyToComment(const size_t parentId);
-
-	Reply createReply(const Reply& parentCommentLastReply, const size_t parentCommentId);
 	//add other commands down here....
 
 private:

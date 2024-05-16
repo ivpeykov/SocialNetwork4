@@ -11,6 +11,12 @@ public:
 
 	static Topic createTopic(const SocialNetwork& socialNetwork);
 
+	static Discussion createDiscussion(const SocialNetwork& socialNetwork);
+
+	static Comment createComment(const SocialNetwork& socialNetwork);
+
+	static Reply createReply(const SocialNetwork& socialNetwork, const Reply& parentCommentLastReply, const size_t parentCommentId);
+
 private:
 	ObjectFactory();
 };
