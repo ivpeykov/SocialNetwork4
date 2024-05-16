@@ -181,7 +181,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         PrintHandler::printCommands(commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
         break;
 
-    case Exit: //TODO: all changes must be saved!
+    case Exit: //TODO: ask if user wants to save changes if there are any
         std::cout << "\nExiting program..." << std::endl; //send to printhandler
         //currSocialNetwork.exitNetwork();
 

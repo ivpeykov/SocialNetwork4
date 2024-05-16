@@ -146,14 +146,8 @@ public:
             if (rhs.size == 0) {
                 this->clear();
                 data = new T[1];
+                capacity = 1;
                 return *this;
-            }
-
-            if (capacity >= rhs.size) {
-                size = rhs.size;
-                for (size_t i = 0; i < size; ++i) {
-                    data[i] = rhs.data[i];
-                }
             }
 
             else {
@@ -163,7 +157,7 @@ public:
                 size = rhs.size;
                 data = new T[capacity];
 
-                for (size_t i = 0; i < size; ++i) {
+                for (size_t i = 0; i < rhs.size; ++i) {
                     data[i] = rhs.data[i];
                 }
             }

@@ -47,14 +47,6 @@ public:
 	String& operator=(String&& _other) noexcept;
 	String& operator=(const char* str);
 
-	String& operator+(const String& other); //String reference or no reference ?
-	String& operator+(const char* str);
-
-	String& operator+=(const String& other); //not finished
-	String& operator+=(const char* str); //not finished
-
-	//add += ; 
-
 	char& operator[](const size_t index); //do we need both?
 
 	char operator[](const size_t index) const;
