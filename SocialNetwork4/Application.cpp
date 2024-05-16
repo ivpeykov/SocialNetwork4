@@ -3,7 +3,6 @@
 void Application::run()
 {
 
-	//MAJOR BUG: Discussions, Comments, Replies are transferring between topics! After replying i think
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
