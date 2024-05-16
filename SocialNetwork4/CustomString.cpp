@@ -195,17 +195,16 @@ bool CustomString::isDigit() const
 //operators
 CustomString& CustomString::operator=(const CustomString& other) {
 
-	if (other.string == nullptr) {
-		return *this;
-	}
-
 	if (this != &other) {
 		delete[] string;
 		string = nullptr;
 
 		size = other.size;
-		string = new char[size];
-		strncpy_s(string, size, other.string, other.size - 1);
+
+		if (other.string != nullptr) {
+			string = new char[size];
+			strncpy_s(string, size, other.string, other.size - 1);
+		}
 	}
 
 	return *this;

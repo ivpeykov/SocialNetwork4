@@ -43,7 +43,7 @@ public:
 
         if (size == capacity) {
 
-            if (size == 1) {
+            if (size == 1 || capacity == 0) {
                 resize(3);
             }
 
@@ -56,6 +56,9 @@ public:
 
     void resize(const size_t new_capacity) {
 
+        if (new_capacity == 0) {
+            throw std::invalid_argument("Cannot resize vector with new capacity equal to 0");
+        }
         T* new_data = new T[new_capacity];
 
         for (size_t i = 0; i < size; ++i) {
@@ -88,13 +91,18 @@ public:
         --size;
     }
 
-    void clear() {
+    void clear() { //clear vector completely?
 
         delete[] data;
-        //data = nullptr; ?
+        data = nullptr;
+        size = 0;
+        capacity = 0;
+        
+       /* delete[] data;
         data = new T[1];
         size = 0;
         capacity = 1;
+        */
     }
 
     void printVectorToConsole() {
@@ -141,22 +149,37 @@ public:
 
     Vector& operator=(const Vector& rhs)
     {
-
         if (this != &rhs) {
-            if (rhs.size > size) {
 
-                capacity = rhs.size + 3;
-                resize(capacity);
+            if (rhs.size == 0) {
+                this->clear();
+                data = new T[1];
+                return *this;
             }
 
-            for (size_t i = 0; i < rhs.size; i++) {
-                data[i] = rhs.data[i];
+            if (capacity >= rhs.size) {
+                size = rhs.size;
+                for (size_t i = 0; i < size; ++i) {
+                    data[i] = rhs.data[i];
+                }
             }
 
-            size = rhs.size;
+            else {
+                // Deallocate existing memory
+                delete[] data;
+
+                // Allocate new memory
+                capacity = rhs.capacity;
+                size = rhs.size;
+                data = new T[capacity];
+
+                // Copy elements from rhs to *this
+                for (size_t i = 0; i < size; ++i) {
+                    data[i] = rhs.data[i];
+                }
+            }
         }
-
-        return *this;
+        return *this;    
     }
 
     T& front() const
@@ -186,3 +209,4 @@ private:
     size_t capacity;
     size_t size; // Number of elements currently stored
 };
+

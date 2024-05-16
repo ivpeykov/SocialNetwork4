@@ -138,7 +138,7 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
     newUser.setPassword(newPass);
 }
 
-void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer)
+void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer, const short optionsCount)
 {
 
     if (isBufferOverfilled()) {
@@ -148,7 +148,7 @@ void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer)
     short inputBuffer = 2; //1 for the digit , 2 for the null char
     size_t tempAnswer = 0;
 
-    std::cout << "Please enter number from 0 to 5 to edit: ";
+    std::cout << "Please enter number from 0 to " << optionsCount << " to edit : ";
     char* input = new char[inputBuffer];
     std::cin.getline(input, inputBuffer);
 

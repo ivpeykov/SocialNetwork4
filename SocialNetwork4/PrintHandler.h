@@ -28,4 +28,4 @@ public:
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
 	static void printDiscussionsForList(const Vector<Discussion>& discussions);
-}
+};

@@ -23,7 +23,7 @@ public:
 	static void recieveLastNameInput(User& newUser);
 	static void recieveUserNameInput(User& newUser);
 	static void recievePasswordInput(User& newUser);
-	static void recieveAnswerInputForEditing(short& answer);
+	static void recieveAnswerInputForEditing(short& answer, const short optionsCount);
 	static void recieveIdInputForEditUserAsModerator(size_t& id);
 	static void recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus); //TODO: change this method's name
 

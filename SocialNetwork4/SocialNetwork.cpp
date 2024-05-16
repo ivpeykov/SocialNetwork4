@@ -280,9 +280,8 @@ void SocialNetwork::editLoggedInUser()
 
 	while (answer != 4) {
 		
-		std::cout << "Please enter number from 0 to 4 to edit: ";
 		try {
-			ConsoleInputGetter::recieveAnswerInputForEditing(answer);
+			ConsoleInputGetter::recieveAnswerInputForEditing(answer, 4);
 		}
 		catch (std::exception e) {
 			std::cout << e.what() << "\nExiting menu!" << std::endl;
@@ -418,7 +417,7 @@ void SocialNetwork::editUserAsModerator()
 		}
 
 		try {
-			ConsoleInputGetter::recieveAnswerInputForEditing(answer);
+			ConsoleInputGetter::recieveAnswerInputForEditing(answer, 5);
 		}
 		catch (std::exception e) {
 			std::cout << e.what() << "\nExiting menu!" << std::endl;
@@ -732,6 +731,9 @@ void SocialNetwork::listDiscussionsInOpenedTopic()
 		return;
 	}
 
+	//remove...
+	std::cout << "Current opened Topic: " << openedTopic.getTitle() << std::endl;
+
 	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
 }
 
@@ -742,6 +744,9 @@ void SocialNetwork::openDiscussion()
 			<< std::endl;
 		return;
 	}
+
+	//remove...
+	std::cout << "Current opened Topic: " << openedTopic.getTitle() << std::endl;
 
 	size_t id = 0;
 

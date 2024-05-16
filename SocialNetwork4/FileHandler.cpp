@@ -50,6 +50,13 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 	//LOAD TOPICS.......................................................//
 	loadTopics(socialNetworkFile, socialNetworkToLoad.getCurrTopics());
 
+	//remove...
+	std::cout << "Loaded those topics: ";
+	for (int i = 0; i < socialNetworkToLoad.getCurrTopics().getSize(); i++) {
+		std::cout << "Printing topic" << i << ":\n";
+		PrintHandler::printTopic(socialNetworkToLoad.getCurrTopics()[i]);
+	}
+
 	socialNetworkFile.close();
 
 	loadedStatus = true;
@@ -151,6 +158,10 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& top
 		newTopic.setCreatorId(creatorId);
 		newTopic.setId(id);
 
+		if (i != 0) {
+			newTopic.getDiscussions().clear();
+		}
+
 		//load discussions into topic
 		loadDiscussions(socialNetworkFile, newTopic);
 
@@ -203,6 +214,9 @@ void FileHandler::loadDiscussions(std::fstream& socialNetworkFile, Topic& topic)
 		newDiscussion.setCreatorId(creatorId);
 		newDiscussion.setId(id);
 
+		if (i != 0) { //This is done because we don't want to drag the discussions from the previous iteration
+			newDiscussion.getComments().clear();
+		}
 		//load comments
 		loadComments(socialNetworkFile, newDiscussion);
 
@@ -253,6 +267,9 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Discussion& disc
 		newComment.setId(id);
 		newComment.setDiscussionId(discussionId);
 
+		if (i != 0) {
+			newComment.getReplies().clear();
+		}
 		//load Replies
 		loadReplies(socialNetworkFile, newComment);
 
@@ -329,7 +346,16 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	//SAVE USERS
 	saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
 
-	//SAVE TOPICS
+	//SAVE 
+
+	//remove
+	std::cout << "Going to save those topics :";
+	for (int i = 0; i < socialNetwork.getCurrTopics().getSize(); i++) {
+		std::cout << "Topic " << i << ":\n";
+		PrintHandler::printTopic(socialNetwork.getCurrTopics()[i]);
+	}
+
+
 	saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
 
 	socialNetworkFile.close();
