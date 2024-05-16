@@ -20,6 +20,8 @@ public:
 
 private:
 
+	CurrentData();
+
 	static SocialNetwork currSocialNetwork;
 	static bool changesMade;
 

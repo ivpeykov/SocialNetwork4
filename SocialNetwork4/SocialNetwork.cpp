@@ -35,17 +35,17 @@ const Vector<Topic>& SocialNetwork::getCurrTopics() const
 	return currTopics;
 }
 
-User& SocialNetwork::getLoggedInUser()
+const User& SocialNetwork::getLoggedInUser() const
 {
 	return loggedInUser;
 }
 
-Topic& SocialNetwork::getOpenedTopic()
+const Topic& SocialNetwork::getOpenedTopic() const
 {
 	return openedTopic;
 }
 
-Discussion& SocialNetwork::getOpenedDiscussion()
+const Discussion& SocialNetwork::getOpenedDiscussion() const
 {
 	return openedDiscussion;
 }
@@ -81,17 +81,17 @@ void SocialNetwork::setOpenedTopic(const Topic& newTopic)
 	openedTopic = newTopic;
 }
 
-bool SocialNetwork::isThereLoggedInUser()
+bool SocialNetwork::isThereLoggedInUser() const
 {
 	return loggedInUser.getFirstName() != nullptr;
 }
 
-bool SocialNetwork::isThereOpenedTopic()
+bool SocialNetwork::isThereOpenedTopic() const
 {
 	return openedTopic.getTitle() != nullptr;
 }
 
-bool SocialNetwork::isThereOpenedDiscussion()
+bool SocialNetwork::isThereOpenedDiscussion() const
 {
 	return openedDiscussion.getTitle() != nullptr;
 }
@@ -517,45 +517,6 @@ void SocialNetwork::editUserAsModerator()
 
 	}
 
-}
-
-Topic SocialNetwork::createTopic()
-{
-	//Ensure a logged in user creates the topic
-	if (!isThereLoggedInUser()) {
-		throw std::runtime_error("Topic could not be created! Please log in before creating!");
-	}
-
-	//advice recieved: get input for all the metadata and create a topic, then add it to the currTopics vector
-	
-	Topic newTopic;
-
-	//Title
-	ConsoleInputGetter::recieveTitleInput(newTopic);
-	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
-		throw std::runtime_error("Topic could not be created! Invalid Title!");
-	}
-
-	//Description
-	ConsoleInputGetter::recieveDescriptionInput(newTopic);
-	if (!InputValidator::isValidDescription(newTopic.getDescription())) {
-		throw std::runtime_error("Topic could not be created! Invalid Description!");
-	}
-
-	//CreatorId
-	newTopic.setCreatorId(loggedInUser.getId());
-
-	//id
-	if (currTopics.back().getTitle() != nullptr) {
-		size_t lastTopicId = currTopics.back().getId();
-		newTopic.setId(lastTopicId + 1);
-	}
-
-	else {
-		newTopic.setId(0);
-	}
-
-	return newTopic;
 }
 
 void SocialNetwork::addTopic(const Topic& newTopic)

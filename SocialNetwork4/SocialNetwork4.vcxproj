@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Application.cpp" />
     <ClCompile Include="CommandsHandler.cpp" />
     <ClCompile Include="Comment.cpp" />
     <ClCompile Include="Configuration.cpp" />
@@ -137,6 +138,7 @@
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="InputValidator.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectFactory.cpp" />
     <ClCompile Include="PrintHandler.cpp" />
     <ClCompile Include="Reply.cpp" />
     <ClCompile Include="SocialNetwork.cpp" />
@@ -144,6 +146,7 @@
     <ClCompile Include="User.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Application.h" />
     <ClInclude Include="CommandsHandler.h" />
     <ClInclude Include="Comment.h" />
     <ClInclude Include="Configuration.h" />
@@ -153,6 +156,7 @@
     <ClInclude Include="Discussion.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="InputValidator.h" />
+    <ClInclude Include="ObjectFactory.h" />
     <ClInclude Include="PrintHandler.h" />
     <ClInclude Include="Reply.h" />
     <ClInclude Include="SocialNetwork.h" />

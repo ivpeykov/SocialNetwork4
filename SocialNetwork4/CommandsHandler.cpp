@@ -1,8 +1,16 @@
 #include "CommandsHandler.h"
 
-unsigned short CommandsHandler::currCommand = 999;
+unsigned short CommandsHandler::currCommand = Undefined;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login","logout", "edit", "edit id", "create", "save", "save as", "search", "open", "post", "list", "post_open", "comment", "reply", "help", "exit" };
+const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
+"open", "post", "list", "post_open", "comment", "reply", "help", "exit" }; //TODO: change order to be more grouped
+
+const CustomString CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
+"Log user out", "Edit user data", "Edit selected user data",
+"Create a topic", "Save data" , "Save data as",
+"Search for a topic by title", "Open a topic", "Post a discussion",
+"List posted discussions in a topic", "Open a discussion", "Comment on a discussion",
+"Reply to a comment in a discussion", "List available commands", "Exit from program" };
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -15,19 +23,19 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
 
     case Load:
 
-        if (networkLoaded) {
+        if (networkLoaded) { //TODO: Extract this into its own method
             std::cout << "Network already loaded! Please restart program and load again!"
                 << std::endl;
             return;
         }
       
         ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
-        if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
+        if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) { // TODO : move this code into the load method
 
             ConsoleInputGetter::resetSocialNetworkDirectoryInput();
 
             ConsoleInputGetter::resetCommandInput();
-            currCommand = 999;
+            currCommand = Undefined;
 
             return;
         }
@@ -82,7 +90,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             break;
         }
         try {
-            currSocialNetwork.addTopic(currSocialNetwork.createTopic());
+            currSocialNetwork.addTopic(ObjectFactory::createTopic(currSocialNetwork));
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Error: " << error.what() << std::endl;
@@ -182,7 +190,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         break;
 
     case Help:
-        PrintHandler::printCommands(commandsList, CommandsCount);
+        PrintHandler::printCommands(commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
         break;
 
     case Exit: //TODO: all changes must be saved!

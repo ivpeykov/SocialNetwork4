@@ -39,4 +39,7 @@ public:
 	static void saveComments(std::ofstream& socialNetworkFile, const Vector<Comment>& comments);
 
 	static void saveReplies(std::ofstream& socialNetworkFile, const Vector<Reply>& replies);
+
+private:
+	FileHandler();
 };

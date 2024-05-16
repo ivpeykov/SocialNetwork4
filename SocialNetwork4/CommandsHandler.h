@@ -3,6 +3,7 @@
 #include "InputValidator.h"
 #include "FileHandler.h"
 #include "SocialNetwork.h"
+#include "ObjectFactory.h"
 
 enum Command { //don't change order!
 
@@ -24,8 +25,9 @@ enum Command { //don't change order!
 	ReplyToComment,
 	Help,
 	Exit,
+	CommandsCount,
 
-	CommandsCount
+	Undefined = 999
 };
 
 class SocialNetwork;
@@ -41,8 +43,13 @@ public:
 
 	static const CustomString commandsList[CommandsCount];
 
+	static const CustomString commandsDescriptions[CommandsCount];
+
 	static bool networkLoaded;
 
 private:
+
+	CommandsHandler();
+
 	static unsigned short currCommand;
 };

@@ -12,7 +12,7 @@ public:
 	//TODO :: Add exception handling for everything that tries to print nullptr
 
 	static void printEnterCommandPrompt();
-	static void printCommands(const CustomString* commandsList, size_t commandsCount);
+	static void printCommands(const CustomString* commandsList, const CustomString* commandsDescriptions, const size_t commandsCount);
 
 	static void printUser(const User& user);
 	static void printTopic(const Topic& topic);
@@ -28,4 +28,7 @@ public:
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
 	static void printDiscussionsForList(const Vector<Discussion>& discussions);
-}
+
+private:
+	PrintHandler();
+};

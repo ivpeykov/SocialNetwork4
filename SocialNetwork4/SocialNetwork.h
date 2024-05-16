@@ -6,7 +6,7 @@
 #include "User.h"
 #include "Topic.h"
 #include "Discussion.h"
-//TODO: create a new class object Creator and create objects there
+
 class SocialNetwork
 {
 public:
@@ -20,20 +20,20 @@ public:
 	Vector<Topic>& getCurrTopics();
 	const Vector<Topic>& getCurrTopics() const;
 
-	static User& getLoggedInUser();
-	static Topic& getOpenedTopic();
-	static Discussion& getOpenedDiscussion();
+	const User& getLoggedInUser() const;
+	const Topic& getOpenedTopic() const;
+	const Discussion& getOpenedDiscussion() const;
 
 	void setDirectory(const CustomString& newDirectory);
 	void setDirectory(const char* newDirectory);
 	void setCurrUsers(const Vector<User>& newUsers);
 	void setCurrTopics(const Vector<Topic>& newTopics);
-	static void setLoggedInUser(const User& newUser);
-	static void setOpenedTopic(const Topic& newTopic);
+	void setLoggedInUser(const User& newUser);
+	void setOpenedTopic(const Topic& newTopic);
 
-	static bool isThereLoggedInUser();
-	static bool isThereOpenedTopic();
-	static bool isThereOpenedDiscussion();
+	bool isThereLoggedInUser() const;
+	bool isThereOpenedTopic() const;
+	bool isThereOpenedDiscussion() const;
 
 	bool isLoginSuccessful(User& user);
 
@@ -51,8 +51,6 @@ public:
 	void editLoggedInUser();
 
 	void editUserAsModerator();
-
-	Topic createTopic();
 
 	void addTopic(const Topic& newTopic);
 
