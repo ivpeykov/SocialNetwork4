@@ -1,6 +1,6 @@
 #pragma once
 #include "Vector.h"
-#include "CustomString.h"
+#include "String.h"
 #include "Discussion.h"
 
 class Topic
@@ -9,7 +9,7 @@ public:
 
 	Topic();
 
-	Topic(const CustomString& title, const CustomString& description,
+	Topic(const String& title, const String& description,
 		const size_t creatorId, const size_t id);
 
 	Topic(const char* title, const char* description,
@@ -22,18 +22,18 @@ public:
 
 	~Topic();
 
-	const CustomString& getTitle() const;
-	const CustomString& getDescription() const;
+	const String& getTitle() const;
+	const String& getDescription() const;
 	const size_t getCreatorId() const;
 	const size_t getId() const;
 	Vector<Discussion>& getDiscussions();
 	const Vector<Discussion>& getDiscussions() const;
 
 	void setTitle(const char* newTitle);
-	void setTitle(const CustomString& newTitle);
+	void setTitle(const String& newTitle);
 
 	void setDescription(const char* newDescription);
-	void setDescription(const CustomString& newDescription);
+	void setDescription(const String& newDescription);
 
 	void setCreatorId(const size_t newCreatorId);
 	void setId(const size_t newId);
@@ -47,8 +47,8 @@ public:
 	bool operator!=(const Topic& other) const;
 
 private:
-	CustomString title;
-	CustomString description;
+	String title;
+	String description;
 	size_t creatorId;
 	size_t id;
 	Vector<Discussion> discussions;

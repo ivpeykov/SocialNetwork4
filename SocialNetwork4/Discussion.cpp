@@ -2,8 +2,8 @@
 
 Discussion::Discussion() : title(nullptr), content(nullptr), topicId(SIZE_MAX), creatorId(SIZE_MAX), id(SIZE_MAX), comments(1) {}
 
-Discussion::Discussion(CustomString& title,
-	CustomString& content, size_t topicId,
+Discussion::Discussion(String& title,
+	String& content, size_t topicId,
 	size_t creatorId, size_t id) :
 	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments(1) {}
 
@@ -19,12 +19,12 @@ Discussion::~Discussion()
 {
 }
 
-const CustomString& Discussion::getTitle() const
+const String& Discussion::getTitle() const
 {
 	return title;
 }
 
-const CustomString& Discussion::getContent() const
+const String& Discussion::getContent() const
 {
 	return content;
 }
@@ -59,7 +59,7 @@ void Discussion::setTitle(const char* title)
 	this->title = title;
 }
 
-void Discussion::setTitle(const CustomString& title)
+void Discussion::setTitle(const String& title)
 {
 	this->title = title;
 }
@@ -69,7 +69,7 @@ void Discussion::setContent(const char* content)
 	this->content = content;
 }
 
-void Discussion::setContent(const CustomString& content)
+void Discussion::setContent(const String& content)
 {
 	this->content = content;
 }

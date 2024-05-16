@@ -1,5 +1,5 @@
 #pragma once
-#include "CustomString.h"
+#include "String.h"
 #include "Configuration.h"
 #include "InputValidator.h"
 #include "User.h"
@@ -38,9 +38,9 @@ public:
 	static void recieveCommentTextInput(Comment& newComment);
 	static size_t recieveIdInputForCommentReply();
 
-	static CustomString& getSocialNetworkDirectoryInput();
+	static String& getSocialNetworkDirectoryInput();
 
-	static CustomString& getCommandInput();
+	static String& getCommandInput();
 
 	static void resetCommandInput();
 
@@ -50,7 +50,7 @@ private:
 
 	ConsoleInputGetter();
 
-	static CustomString commandInput;
-	static CustomString socialNetworkDirectoryInput;
+	static String commandInput;
+	static String socialNetworkDirectoryInput;
 };
 

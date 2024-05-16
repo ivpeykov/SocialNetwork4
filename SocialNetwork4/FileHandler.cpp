@@ -15,7 +15,18 @@ bool FileHandler::isFileEmpty(const char* fileName)
 
 void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& loadedStatus)
 {
-	const char* filePath = socialNetworkToLoad.getDirectory().getString();
+
+	ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
+	if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) { // TODO : move this code into the load method
+
+		ConsoleInputGetter::resetSocialNetworkDirectoryInput();
+
+		return;
+	}
+
+	socialNetworkToLoad.setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
+
+	const char* filePath = ConsoleInputGetter::getSocialNetworkDirectoryInput().getString();
 
 	std::fstream socialNetworkFile(filePath, std::ios::binary | std::ios::in);
 
@@ -49,13 +60,6 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 
 	//LOAD TOPICS.......................................................//
 	loadTopics(socialNetworkFile, socialNetworkToLoad.getCurrTopics());
-
-	//remove...
-	std::cout << "Loaded those topics: ";
-	for (int i = 0; i < socialNetworkToLoad.getCurrTopics().getSize(); i++) {
-		std::cout << "Printing topic" << i << ":\n";
-		PrintHandler::printTopic(socialNetworkToLoad.getCurrTopics()[i]);
-	}
 
 	socialNetworkFile.close();
 
@@ -346,15 +350,7 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	//SAVE USERS
 	saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
 
-	//SAVE 
-
-	//remove
-	std::cout << "Going to save those topics :";
-	for (int i = 0; i < socialNetwork.getCurrTopics().getSize(); i++) {
-		std::cout << "Topic " << i << ":\n";
-		PrintHandler::printTopic(socialNetwork.getCurrTopics()[i]);
-	}
-
+	//SAVE TOPICS
 
 	saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
 

@@ -4,7 +4,7 @@ Reply::Reply() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), discuss
 {
 }
 
-Reply::Reply(const CustomString& author, const CustomString& text, const int score, const size_t id, 
+Reply::Reply(const String& author, const String& text, const int score, const size_t id, 
 	const size_t discussionId, const size_t parentCommentId) : 
 	author(author), text(text), score(score), id(id), discussionId(discussionId),
 	parentCommentId(parentCommentId)
@@ -35,12 +35,12 @@ Reply::~Reply()
 {
 }
 
-const CustomString& Reply::getAuthor() const
+const String& Reply::getAuthor() const
 {
 	return author;
 }
 
-const CustomString& Reply::getText() const
+const String& Reply::getText() const
 {
 	return text;
 }
@@ -70,7 +70,7 @@ void Reply::setAuthor(const char* newAuthor)
 	author = newAuthor;
 }
 
-void Reply::setAuthor(const CustomString& newAuthor)
+void Reply::setAuthor(const String& newAuthor)
 {
 	author = newAuthor;
 }
@@ -80,7 +80,7 @@ void Reply::setText(const char* newText)
 	text = newText;
 }
 
-void Reply::setText(const CustomString& newText)
+void Reply::setText(const String& newText)
 {
 	text = newText;
 }

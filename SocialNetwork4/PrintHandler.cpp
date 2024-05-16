@@ -4,7 +4,7 @@ void PrintHandler::printEnterCommandPrompt() {
 	std::cout << "\nEnter command: ";
 }
 
-void PrintHandler::printCommands(const CustomString* commandsList, const CustomString* commandsDescriptions, const size_t commandsCount)
+void PrintHandler::printCommands(const String* commandsList, const String* commandsDescriptions, const size_t commandsCount)
 {
 	std::cout << "Available commands:" << std::endl;
 	for (int i = 0; i < commandsCount; ++i) {

@@ -1,10 +1,10 @@
-#include "CustomString.h"
+#include "String.h"
 
 //constructors & destructor
-CustomString::CustomString() : size(0), string(nullptr) {
+String::String() : size(0), string(nullptr) {
 }
 
-CustomString::CustomString(const char* inputString) :
+String::String(const char* inputString) :
 	size(0), string(nullptr) {
 
 	if (inputString == nullptr) {
@@ -16,7 +16,7 @@ CustomString::CustomString(const char* inputString) :
 	strncpy_s(string, size, inputString, size - 1);
 }
 
-CustomString::CustomString(const CustomString& other) :
+String::String(const String& other) :
 	size(other.size), string(nullptr) {
 
 	if (other.string == nullptr)
@@ -26,16 +26,16 @@ CustomString::CustomString(const CustomString& other) :
 	strncpy_s(string, size, other.string, other.size - 1);
 }
 
-CustomString::CustomString(CustomString&& other) noexcept
-	: CustomString()
+String::String(String&& other) noexcept
+	: String()
 {
 	swap(*this, other);
 }
 
-CustomString::CustomString(const size_t size) //TODO: don't know if this is ok
+String::String(const size_t size) //TODO: don't know if this is ok
 {
 	if (size == 0) {
-		throw std::out_of_range("Trying allocate CustomString with 0 size");
+		throw std::out_of_range("Trying allocate String with 0 size");
 	}
 
 	//delete[] string; ?
@@ -44,13 +44,13 @@ CustomString::CustomString(const size_t size) //TODO: don't know if this is ok
 	string[size] = '\0';
 }
 
-CustomString::~CustomString() {
+String::~String() {
 	delete[] string;
 	string = nullptr;
 }
 
 
-void swap(CustomString& lhs, CustomString& rhs) noexcept
+void swap(String& lhs, String& rhs) noexcept
 {
 	using std::swap;
 	swap(lhs.size, rhs.size);
@@ -59,7 +59,7 @@ void swap(CustomString& lhs, CustomString& rhs) noexcept
 
 
 //methods
-void CustomString::clearString() {
+void String::clearString() {
 
 	delete[] string;
 	string = nullptr;
@@ -67,19 +67,19 @@ void CustomString::clearString() {
 
 }
 
-const size_t CustomString::length() const {
+const size_t String::length() const {
 	return size;
 }
 
-const char* CustomString::getString() const {
+const char* String::getString() const {
 	return string;
 }
 
-void CustomString::setLength(const size_t inputLenght) {
+void String::setLength(const size_t inputLenght) {
 	size = inputLenght;
 }
 
-void CustomString::setString(const char* inputString) {
+void String::setString(const char* inputString) {
 	delete[] string;
 	string = nullptr; //QUESTION: should I do that?
 
@@ -92,7 +92,7 @@ void CustomString::setString(const char* inputString) {
 	}
 }
 
-bool CustomString::find(const char* substr) const //Boyer Moore Horspool Algorithm
+bool String::find(const char* substr) const //Boyer Moore Horspool Algorithm
 {
 	size_t sublen = strlen(substr);
 	size_t len = size - 1;
@@ -128,7 +128,7 @@ bool CustomString::find(const char* substr) const //Boyer Moore Horspool Algorit
 	return false;
 }
 
-bool CustomString::find(const CustomString& substr) const //Boyer Moore Horspool Algorithm
+bool String::find(const String& substr) const //Boyer Moore Horspool Algorithm
 {
 	size_t sublen = substr.length() - 1;
 	size_t len = size - 1;
@@ -164,7 +164,7 @@ bool CustomString::find(const CustomString& substr) const //Boyer Moore Horspool
 	return false;
 }
 
-size_t CustomString::toNum() const
+size_t String::toNum() const
 {
 	size_t result = 0;
 	for (size_t i = 0; i < size && string[i] != '\0'; ++i) {
@@ -178,7 +178,7 @@ size_t CustomString::toNum() const
 	return result;
 }
 
-bool CustomString::isDigit() const
+bool String::isDigit() const
 {
 	if (size == 0) {
 		return false;
@@ -193,7 +193,7 @@ bool CustomString::isDigit() const
 }
 
 //operators
-CustomString& CustomString::operator=(const CustomString& other) {
+String& String::operator=(const String& other) {
 
 	if (this != &other) {
 		delete[] string;
@@ -210,7 +210,7 @@ CustomString& CustomString::operator=(const CustomString& other) {
 	return *this;
 }
 
-CustomString& CustomString::operator=(CustomString&& other) noexcept
+String& String::operator=(String&& other) noexcept
 {
 	if (this != &other) {
 		swap(*this, other);
@@ -218,7 +218,7 @@ CustomString& CustomString::operator=(CustomString&& other) noexcept
 	return *this;
 }
 
-CustomString& CustomString::operator=(const char* str)
+String& String::operator=(const char* str)
 {
 	size_t strSize = strlen(str) + 1;
 
@@ -236,10 +236,10 @@ CustomString& CustomString::operator=(const char* str)
 	return *this;
 }
 
-CustomString& CustomString::operator+(const CustomString& other) {
+String& String::operator+(const String& other) {
 
 
-	CustomString tempString(*this);
+	String tempString(*this);
 
 	delete[] string;
 
@@ -264,9 +264,9 @@ CustomString& CustomString::operator+(const CustomString& other) {
 	return *this;
 }
 
-CustomString& CustomString::operator+(const char* str) {
+String& String::operator+(const char* str) {
 
-	CustomString tempString(*this);
+	String tempString(*this);
 
 	delete[] string;
 
@@ -292,34 +292,34 @@ CustomString& CustomString::operator+(const char* str) {
 	return *this;
 }
 
-CustomString& CustomString::operator+=(const CustomString& other) //TODO NOT FINISHED
+String& String::operator+=(const String& other) //TODO NOT FINISHED
 {
 	return *this;
 }
 
-CustomString& CustomString::operator+=(const char* str) //TODO NOT FINISHED
+String& String::operator+=(const char* str) //TODO NOT FINISHED
 {
 	return *this;
 }
 
-char& CustomString::operator[](const size_t index) {
+char& String::operator[](const size_t index) {
 
 	return string[index];
 }
 
-char CustomString::operator[](const size_t index) const {
+char String::operator[](const size_t index) const {
 
 	return string[index];
 }
 
 
-bool CustomString::operator==(const CustomString& other) const {
+bool String::operator==(const String& other) const {
 	if (size != other.size) return false;
 
 	return strcmp(string, other.string) == 0;
 }
 
-bool CustomString::operator==(const char* str) const {
+bool String::operator==(const char* str) const {
 
 	if (str == nullptr) {
 		if (string == nullptr)
@@ -332,22 +332,22 @@ bool CustomString::operator==(const char* str) const {
 	return strcmp(string, str) == 0;
 }
 
-bool CustomString::operator!=(const CustomString& other) const
+bool String::operator!=(const String& other) const
 {
 	return !(*this == other);
 }
 
-bool CustomString::operator!=(const char* str) const
+bool String::operator!=(const char* str) const
 {
 	return !(*this == str);
 }
 
-std::ostream& operator<<(std::ostream& os, const CustomString& str)
+std::ostream& operator<<(std::ostream& os, const String& str)
 {
 	if (str.getString() != nullptr)
 		os << str.getString();
 	else
-		throw std::runtime_error("Trying to output a nullptr CustomString");
+		throw std::runtime_error("Trying to output a nullptr String");
 
 	return os;
 }

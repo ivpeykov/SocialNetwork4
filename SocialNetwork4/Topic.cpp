@@ -2,7 +2,7 @@
 
 Topic::Topic() : title(nullptr), description(nullptr), creatorId(SIZE_MAX), id(SIZE_MAX), discussions(1) {}
 
-Topic::Topic(const CustomString& title, const CustomString& description,
+Topic::Topic(const String& title, const String& description,
     const size_t creatorId, const size_t id) :
     title(title), description(description), creatorId(creatorId), id(id), discussions(1) {}
 
@@ -23,12 +23,12 @@ Topic::~Topic()
 {
 }
 
-const CustomString& Topic::getTitle() const
+const String& Topic::getTitle() const
 {
     return title;
 }
 
-const CustomString& Topic::getDescription() const
+const String& Topic::getDescription() const
 {
     return description;
 }
@@ -58,7 +58,7 @@ void Topic::setTitle(const char* newTitle)
     title = newTitle;
 }
 
-void Topic::setTitle(const CustomString& newTitle)
+void Topic::setTitle(const String& newTitle)
 {
     title = newTitle;
 }
@@ -68,7 +68,7 @@ void Topic::setDescription(const char* newDescription)
     description = newDescription;
 }
 
-void Topic::setDescription(const CustomString& newDescription)
+void Topic::setDescription(const String& newDescription)
 {
     description = newDescription;
 }

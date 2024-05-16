@@ -4,7 +4,7 @@ Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), dis
     replies.back().setParentCommentId(id);
 }
 
-Comment::Comment(const CustomString& author, const CustomString& text,
+Comment::Comment(const String& author, const String& text,
     const int score, const size_t id, const size_t discussionId) :
     author(author), text(text), score(score), id(id), discussionId(discussionId), replies(1) {
 
@@ -21,12 +21,12 @@ Comment::Comment(const Comment& other) : author(other.author), text(other.text),
 {
 }
 
-const CustomString& Comment::getAuthor() const
+const String& Comment::getAuthor() const
 {
     return author;
 }
 
-const CustomString& Comment::getText() const
+const String& Comment::getText() const
 {
     return text;
 }
@@ -61,7 +61,7 @@ void Comment::setAuthor(const char* newAuthor)
     author = newAuthor;
 }
 
-void Comment::setAuthor(const CustomString& newAuthor)
+void Comment::setAuthor(const String& newAuthor)
 {
     author = newAuthor;
 }
@@ -71,7 +71,7 @@ void Comment::setText(const char* newText)
     text = newText;
 }
 
-void Comment::setText(const CustomString& newText)
+void Comment::setText(const String& newText)
 {
     text = newText;
 }

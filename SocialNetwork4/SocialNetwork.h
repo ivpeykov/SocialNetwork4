@@ -11,10 +11,10 @@ class SocialNetwork
 {
 public:
 
-	SocialNetwork(CustomString& directory);
+	SocialNetwork(String& directory);
 	SocialNetwork(const char* directory);
 
-	const CustomString& getDirectory() const;
+	const String& getDirectory() const;
 	Vector<User>& getCurrUsers();
 	const Vector<User>& getCurrUsers() const;
 	Vector<Topic>& getCurrTopics();
@@ -24,7 +24,7 @@ public:
 	const Topic& getOpenedTopic() const;
 	const Discussion& getOpenedDiscussion() const;
 
-	void setDirectory(const CustomString& newDirectory);
+	void setDirectory(const String& newDirectory);
 	void setDirectory(const char* newDirectory);
 	void setCurrUsers(const Vector<User>& newUsers);
 	void setCurrTopics(const Vector<Topic>& newTopics);
@@ -37,7 +37,7 @@ public:
 
 	bool isLoginSuccessful(User& user);
 
-	size_t doesUsernameExist(const CustomString& userName);
+	size_t doesUsernameExist(const String& userName);
 	size_t doesCommentExist(const size_t id, const Vector<Comment>& comments);
 
 	SocialNetwork& operator=(const SocialNetwork& other);
@@ -60,7 +60,7 @@ public:
 
 	void postDiscussion(const Discussion& newDiscussion); //can use move semantics here
 
-	void listDiscussionsInOpenedTopic();
+	void listDiscussionsInOpenedTopic() const;
 
 	void openDiscussion();
 
@@ -70,7 +70,7 @@ public:
 	//add other commands down here....
 
 private:
-	CustomString directory;
+	String directory;
 	Vector<User> currUsers;
 	Vector<Topic> currTopics;
 

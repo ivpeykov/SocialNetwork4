@@ -1,5 +1,5 @@
 #pragma once
-#include "CustomString.h"
+#include "String.h"
 
 
 //TODO: Try configuring the COMMAND_INPUT_MAX_LENGTH at compile time

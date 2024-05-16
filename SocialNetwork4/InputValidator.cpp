@@ -1,6 +1,6 @@
 #include "InputValidator.h"
 
-bool InputValidator::doesStringContainNonAsciiChars(const CustomString& string)
+bool InputValidator::doesStringContainNonAsciiChars(const String& string)
 {
     size_t strLen = string.length();
     for (size_t i = 0; i < strLen; i++) {
@@ -22,7 +22,7 @@ bool InputValidator::doesStringContainNonAsciiChars(const char* string)
     return false;
 }
 
-bool InputValidator::isValidCommandInput(const CustomString& commandInput)
+bool InputValidator::isValidCommandInput(const String& commandInput)
 {
     if (commandInput == nullptr) {
         std::cout << "\nInvalid command! Try again." << std::endl;
@@ -52,7 +52,7 @@ bool InputValidator::isValidCommandInput(const CustomString& commandInput)
     return false;
 }
 
-bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& directoryInput)
+bool InputValidator::isValidSocialNetworkDirectoryInput(const String& directoryInput)
 {
     if (doesStringContainNonAsciiChars(directoryInput)) {
         std::cout << "Invalid directory!" << std::endl;
@@ -67,7 +67,7 @@ bool InputValidator::isValidSocialNetworkDirectoryInput(const CustomString& dire
     return true;
 }
 
-bool InputValidator::isValidFirstName(const CustomString& firstName)
+bool InputValidator::isValidFirstName(const String& firstName)
 {
     if (doesStringContainNonAsciiChars(firstName))
         return false;
@@ -84,7 +84,7 @@ bool InputValidator::isValidFirstName(const CustomString& firstName)
     return true;
 }
 
-bool InputValidator::isValidLastName(const CustomString& lastName)
+bool InputValidator::isValidLastName(const String& lastName)
 {
     if (doesStringContainNonAsciiChars(lastName))
         return false;
@@ -101,7 +101,7 @@ bool InputValidator::isValidLastName(const CustomString& lastName)
     return true;
 }
 
-size_t InputValidator::isValidUserNameSignup(const CustomString& userName)
+size_t InputValidator::isValidUserNameSignup(const String& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return 0;
@@ -116,7 +116,7 @@ size_t InputValidator::isValidUserNameSignup(const CustomString& userName)
     return 1;
 }
 
-bool InputValidator::isValidUserNameLogin(const CustomString& userName) //suggestion: check for existance elsewhere
+bool InputValidator::isValidUserNameLogin(const String& userName) //suggestion: check for existance elsewhere
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;
@@ -131,7 +131,7 @@ bool InputValidator::isValidUserNameLogin(const CustomString& userName) //sugges
     return true;
 }
 
-bool InputValidator::isValidPassword(const CustomString& password)
+bool InputValidator::isValidPassword(const String& password)
 {
     if (doesStringContainNonAsciiChars(password))
         return false;
@@ -149,7 +149,7 @@ bool InputValidator::isValidAnswerInputForEditing(const short answer, const shor
 }
 
 
-bool InputValidator::isValidTitle(const CustomString& title)
+bool InputValidator::isValidTitle(const String& title)
 {
     if (doesStringContainNonAsciiChars(title))
         return false;
@@ -161,7 +161,7 @@ bool InputValidator::isValidTitle(const CustomString& title)
     return true;
 }
 
-bool InputValidator::isValidDescription(const CustomString& description)
+bool InputValidator::isValidDescription(const String& description)
 {
     if (doesStringContainNonAsciiChars(description))
         return false;
@@ -173,7 +173,7 @@ bool InputValidator::isValidDescription(const CustomString& description)
     return true;
 }
 
-bool InputValidator::isValidContent(const CustomString& content)
+bool InputValidator::isValidContent(const String& content)
 {
     if (doesStringContainNonAsciiChars(content))
         return false;
@@ -185,7 +185,7 @@ bool InputValidator::isValidContent(const CustomString& content)
     return true;
 }
 
-bool InputValidator::isValidCommentTextInput(const CustomString& text)
+bool InputValidator::isValidCommentTextInput(const String& text)
 {
     if (doesStringContainNonAsciiChars(text))
         return false;

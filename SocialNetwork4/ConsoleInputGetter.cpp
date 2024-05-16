@@ -1,7 +1,7 @@
 #include "ConsoleInputGetter.h"
 
-CustomString ConsoleInputGetter::commandInput;
-CustomString ConsoleInputGetter::socialNetworkDirectoryInput;
+String ConsoleInputGetter::commandInput;
+String ConsoleInputGetter::socialNetworkDirectoryInput;
 
 bool ConsoleInputGetter::isBufferOverfilled()
 {
@@ -158,7 +158,7 @@ void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer, const short
         throw std::exception("Invalid answer input!");
     }
 
-    CustomString strInput = input;
+    String strInput = input;
 
     try {
         tempAnswer = strInput.toNum();
@@ -193,7 +193,7 @@ void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id)
         throw std::exception("Invalid Id input!");
     }
 
-    CustomString strInput = input;
+    String strInput = input;
 
     try {
         tempId = strInput.toNum();
@@ -234,7 +234,7 @@ void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool&
         throw std::exception("Invalid moderator status input!");
     }
 
-    CustomString strInput = input;
+    String strInput = input;
 
     try {
         tempStatus = strInput.toNum();
@@ -369,7 +369,7 @@ void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)
         throw std::exception("Invalid Id input!");
     }
 
-    CustomString strInput = input;
+    String strInput = input;
 
     try {
         tempId = strInput.toNum();
@@ -424,7 +424,7 @@ size_t ConsoleInputGetter::recieveIdInputForCommentReply()
         throw std::exception("Invalid Id input!");
     }
 
-    CustomString strInput = input;
+    String strInput = input;
 
     try {
         id = strInput.toNum();
@@ -439,12 +439,12 @@ size_t ConsoleInputGetter::recieveIdInputForCommentReply()
     return id;
 }
 
-CustomString& ConsoleInputGetter::getSocialNetworkDirectoryInput()
+String& ConsoleInputGetter::getSocialNetworkDirectoryInput()
 {
     return socialNetworkDirectoryInput;
 }
 
-CustomString& ConsoleInputGetter::getCommandInput()
+String& ConsoleInputGetter::getCommandInput()
 {
     return commandInput;
 }

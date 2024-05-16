@@ -4,13 +4,13 @@ User SocialNetwork::loggedInUser;
 Topic SocialNetwork::openedTopic;
 Discussion SocialNetwork::openedDiscussion;
 
-SocialNetwork::SocialNetwork(CustomString& directory) : directory(directory),
+SocialNetwork::SocialNetwork(String& directory) : directory(directory),
 currUsers(1), currTopics(1) {}
 
 SocialNetwork::SocialNetwork(const char* directory) : directory(directory),
 currUsers(1), currTopics(1) {}
 
-const CustomString& SocialNetwork::getDirectory() const
+const String& SocialNetwork::getDirectory() const
 {
 	return directory;
 }
@@ -51,7 +51,7 @@ const Discussion& SocialNetwork::getOpenedDiscussion() const
 }
 
 
-void SocialNetwork::setDirectory(const CustomString& newDirectory)
+void SocialNetwork::setDirectory(const String& newDirectory)
 {
 	directory = newDirectory;
 }
@@ -112,7 +112,7 @@ bool SocialNetwork::isLoginSuccessful(User& user)
 
 }
 
-size_t SocialNetwork::doesUsernameExist(const CustomString& userName)
+size_t SocialNetwork::doesUsernameExist(const String& userName)
 {
 	size_t usersSize = currUsers.getSize();
 
@@ -537,10 +537,10 @@ void SocialNetwork::searchTopic()
 		return;
 	}
 
-	CustomString rhsString = tempTopic.getTitle().getString();
+	String rhsString = tempTopic.getTitle().getString();
 	size_t rhsStringLength = rhsString.length();
 
-	CustomString lhsString;
+	String lhsString;
 	size_t lhsStringLength = 0;
 
 	size_t topicsToSearchSize = currTopics.getSize();
@@ -573,7 +573,7 @@ void SocialNetwork::openTopic(){
 		return;
 	}
 
-	CustomString query = tempTopic.getTitle();
+	String query = tempTopic.getTitle();
 
 	bool isQueryDigit = query.isDigit();
 
@@ -587,8 +587,8 @@ void SocialNetwork::openTopic(){
 
 			if (queryId == currTopics[i].getId()) {
 				openedTopic = currTopics[i];
-				std::cout << "Opened Topic:\n"
-					<< currTopics[i].getTitle() << std::endl;
+				std::cout << "Opened Topic:\nName: "
+					<< currTopics[i].getTitle() << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
 			}
 		}
@@ -601,8 +601,8 @@ void SocialNetwork::openTopic(){
 
 			if (query == currTopics[i].getTitle()) {
 				openedTopic = currTopics[i];
-				std::cout << "Opened Topic:\n"
-					<< query << std::endl;
+				std::cout << "Opened Topic:\nName: "
+					<< query << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
 			}
 		}
@@ -639,7 +639,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 	}
 }
 
-void SocialNetwork::listDiscussionsInOpenedTopic()
+void SocialNetwork::listDiscussionsInOpenedTopic() const
 {
 	if (!isThereOpenedTopic()) {
 		std::cout << "Topic not opened! Please open a topic before listing!"
@@ -647,8 +647,7 @@ void SocialNetwork::listDiscussionsInOpenedTopic()
 		return;
 	}
 
-	//remove...
-	std::cout << "Current opened Topic: " << openedTopic.getTitle() << std::endl;
+	std::cout << "Discussions in Topic - " << openedTopic.getTitle() << ":" << std::endl;
 
 	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
 }

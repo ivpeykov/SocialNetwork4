@@ -3,8 +3,8 @@
 User::User() : firstName(nullptr), lastName(nullptr),
 userName(nullptr), password(nullptr), id(SIZE_MAX), points(0), isModerator(true) {} //for initialisation
 
-User::User(const CustomString& firstName, const CustomString& lastName,
-	const CustomString& userName, const CustomString& password,
+User::User(const String& firstName, const String& lastName,
+	const String& userName, const String& password,
 	const size_t id) : firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(0), isModerator(id == 0) {}
 
@@ -13,9 +13,9 @@ User::User(const char* firstName, const char*
 	const size_t id) : firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(0), isModerator(id == 0) {}
 
-User::User(const CustomString& firstName,
-	const CustomString& lastName, const CustomString& userName,
-	const CustomString& password, const size_t id,
+User::User(const String& firstName,
+	const String& lastName, const String& userName,
+	const String& password, const size_t id,
 	const int points, const bool isModerator) :
 	firstName(firstName), lastName(lastName),
 	userName(userName), password(password), id(id), points(points), isModerator(isModerator) {} //for reading from files
@@ -35,22 +35,22 @@ User::~User()
 }
 
 
-const CustomString& User::getFirstName() const
+const String& User::getFirstName() const
 {
 	return firstName;
 }
 
-const CustomString& User::getLastName() const
+const String& User::getLastName() const
 {
 	return lastName;
 }
 
-const CustomString& User::getUserName() const
+const String& User::getUserName() const
 {
 	return userName;
 }
 
-const CustomString& User::getPassword() const
+const String& User::getPassword() const
 {
 	return password;
 }
@@ -82,7 +82,7 @@ void User::clearUser()
 	isModerator = false;
 }
 
-void User::setFirstName(const CustomString& newFirstName)
+void User::setFirstName(const String& newFirstName)
 {
 	firstName = newFirstName;
 }
@@ -92,7 +92,7 @@ void User::setFirstName(const char* newFirstName)
 	firstName = newFirstName;
 }
 
-void User::setLastName(const CustomString& newLastName)
+void User::setLastName(const String& newLastName)
 {
 	lastName = newLastName;
 }
@@ -102,7 +102,7 @@ void User::setLastName(const char* newLastName)
 	lastName = newLastName;
 }
 
-void User::setUserName(const CustomString& newUserName)
+void User::setUserName(const String& newUserName)
 {
 	userName = newUserName;
 }
@@ -112,7 +112,7 @@ void User::setUserName(const char* newUserName)
 	userName = newUserName;
 }
 
-void User::setPassword(const CustomString& newPassword)
+void User::setPassword(const String& newPassword)
 {
 	password = newPassword;
 }

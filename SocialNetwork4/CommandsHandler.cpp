@@ -2,10 +2,10 @@
 
 unsigned short CommandsHandler::currCommand = Undefined;
 
-const CustomString CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
+const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
 "open", "post", "list", "post_open", "comment", "reply", "help", "exit" }; //TODO: change order to be more grouped
 
-const CustomString CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
+const String CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
 "Log user out", "Edit user data", "Edit selected user data",
 "Create a topic", "Save data" , "Save data as",
 "Search for a topic by title", "Open a topic", "Post a discussion",
@@ -29,18 +29,6 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             return;
         }
       
-        ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
-        if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) { // TODO : move this code into the load method
-
-            ConsoleInputGetter::resetSocialNetworkDirectoryInput();
-
-            ConsoleInputGetter::resetCommandInput();
-            currCommand = Undefined;
-
-            return;
-        }
-
-        currSocialNetwork.setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
         FileHandler::loadSocialNetwork(currSocialNetwork, networkLoaded);
         break;
 

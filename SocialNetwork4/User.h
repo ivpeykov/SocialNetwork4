@@ -1,21 +1,21 @@
 #pragma once
-#include "CustomString.h"
+#include "String.h"
 
 class User
 {
 public:
 	User(); //for initialisation
 
-	User(const CustomString& firstName, const CustomString& lastName,
-		const CustomString& userName, const CustomString& password,
+	User(const String& firstName, const String& lastName,
+		const String& userName, const String& password,
 		const size_t id);
 
 	User(const char* firstName, const char* lastName,
 		const char* userName, const char* password,
 		const size_t id);
 
-	User(const CustomString& firstName, const CustomString& lastName,
-		const CustomString& userName, const CustomString& password,
+	User(const String& firstName, const String& lastName,
+		const String& userName, const String& password,
 		const size_t id, const int points, const bool isModerator); //for reading files
 
 	User(const char* firstName, const char* lastName,
@@ -26,26 +26,26 @@ public:
 
 	~User();
 
-	const CustomString& getFirstName() const;
-	const CustomString& getLastName() const;
-	const CustomString& getUserName() const;
-	const CustomString& getPassword() const;
+	const String& getFirstName() const;
+	const String& getLastName() const;
+	const String& getUserName() const;
+	const String& getPassword() const;
 	const size_t getId() const;
 	const int getPoints() const;
 	const bool getModeratorStatus() const;
 
 	void clearUser();
 
-	void setFirstName(const CustomString& newFirstName);
+	void setFirstName(const String& newFirstName);
 	void setFirstName(const char* newFirstName);
 
-	void setLastName(const CustomString& newLastName);
+	void setLastName(const String& newLastName);
 	void setLastName(const char* newLastName);
 
-	void setUserName(const CustomString& newUserName);
+	void setUserName(const String& newUserName);
 	void setUserName(const char* newUserName);
 
-	void setPassword(const CustomString& newPassword);
+	void setPassword(const String& newPassword);
 	void setPassword(const char* newPassword);
 
 	void setId(const size_t newId);
@@ -61,10 +61,10 @@ public:
 	bool operator!=(const User& other) const;
 
 private:
-	CustomString firstName;
-	CustomString lastName;
-	CustomString userName;
-	CustomString password;
+	String firstName;
+	String lastName;
+	String userName;
+	String password;
 	size_t id;
 	int points;
 	bool isModerator;

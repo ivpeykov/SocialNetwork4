@@ -36,7 +36,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CustomString.cpp">
+    <ClCompile Include="String.cpp">
       <Filter>Source Files\Containers</Filter>
     </ClCompile>
     <ClCompile Include="User.cpp">
@@ -86,7 +86,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CustomString.h">
+    <ClInclude Include="String.h">
       <Filter>Header Files\Containers</Filter>
     </ClInclude>
     <ClInclude Include="Vector.h">

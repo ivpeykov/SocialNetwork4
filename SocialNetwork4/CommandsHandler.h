@@ -41,9 +41,9 @@ public:
 
 	static unsigned short getCurrCommand();
 
-	static const CustomString commandsList[CommandsCount];
+	static const String commandsList[CommandsCount];
 
-	static const CustomString commandsDescriptions[CommandsCount];
+	static const String commandsDescriptions[CommandsCount];
 
 	static bool networkLoaded;
 

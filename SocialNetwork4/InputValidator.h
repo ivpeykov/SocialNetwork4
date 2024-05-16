@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include "CustomString.h"
+#include "String.h"
 #include "Configuration.h"
 #include "CommandsHandler.h"
 
@@ -8,36 +8,36 @@ class InputValidator
 {
 public:
 
-	static bool doesStringContainNonAsciiChars(const CustomString& string);
+	static bool doesStringContainNonAsciiChars(const String& string);
 
 	static bool doesStringContainNonAsciiChars(const char* string);
 
-	static bool isValidCommandInput(const CustomString& commandInput);
+	static bool isValidCommandInput(const String& commandInput);
 
-	static bool isValidSocialNetworkDirectoryInput(const CustomString& directoryInput);
+	static bool isValidSocialNetworkDirectoryInput(const String& directoryInput);
 
 
 	//User Data Validation
-	static bool isValidFirstName(const CustomString& firstName);
-	static bool isValidLastName(const CustomString& lastName);
-	static size_t isValidUserNameSignup(const CustomString& userName);
-	static bool isValidUserNameLogin(const CustomString& userName);
-	static bool isValidPassword(const CustomString& password);
+	static bool isValidFirstName(const String& firstName);
+	static bool isValidLastName(const String& lastName);
+	static size_t isValidUserNameSignup(const String& userName);
+	static bool isValidUserNameLogin(const String& userName);
+	static bool isValidPassword(const String& password);
 	static bool isValidAnswerInputForEditing(const short answer, const short maxAnswerValue);
 
 	//Topic Data Validation
-	static bool isValidTitle(const CustomString& title);
-	static bool isValidDescription(const CustomString& description);
+	static bool isValidTitle(const String& title);
+	static bool isValidDescription(const String& description);
 
 
 
 	//Discussion Data Validation
-	static bool isValidContent(const CustomString& content);
+	static bool isValidContent(const String& content);
 
 
 
 	//Comment Data Validation
-	static bool isValidCommentTextInput(const CustomString& text);
+	static bool isValidCommentTextInput(const String& text);
 
 private:
 	InputValidator();
