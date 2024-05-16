@@ -172,7 +172,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         catch (const std::runtime_error& error) {
             std::cerr << "Could not reply! " << error.what() << std::endl;
         }
-        catch (std::exception error) {
+        catch (std::exception error) { //TODO : is this needed?
             std::cerr << "Could not reply! " << error.what() << std::endl;
         }
         break;

@@ -40,12 +40,14 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 		}
 		socialNetworkToLoad.setDirectory(filePath);
 		loadedStatus = true;
+		std::cout << "Successfully opened " << socialNetworkToLoad.getDirectory();
 		return;
 	}
 
 	//If file exists, but is empty currSocialNetwork remains empty
 	if (isFileEmpty(filePath)) {
 		loadedStatus = true;
+		std::cout << "Successfully opened " << socialNetworkToLoad.getDirectory();
 		return;
 	}
 
@@ -64,6 +66,8 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 	socialNetworkFile.close();
 
 	loadedStatus = true;
+
+	std::cout << "Successfully opened " << socialNetworkToLoad.getDirectory();
 }
 
 void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users)
@@ -356,7 +360,7 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 
 	socialNetworkFile.close();
 
-	std::cout << "Successfully saved social network data!" << std::endl;
+	std::cout << "Successfully saved " << socialNetwork.getDirectory() << std::endl;
 }
 
 void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)

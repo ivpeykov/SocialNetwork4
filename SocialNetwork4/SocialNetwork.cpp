@@ -112,7 +112,7 @@ bool SocialNetwork::isLoginSuccessful(User& user)
 
 }
 
-size_t SocialNetwork::doesUsernameExist(const String& userName)
+size_t SocialNetwork::doesUsernameExist(const String& userName) const
 {
 	size_t usersSize = currUsers.getSize();
 
@@ -123,7 +123,7 @@ size_t SocialNetwork::doesUsernameExist(const String& userName)
 	return SIZE_MAX;
 }
 
-size_t SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments)
+size_t SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments) const
 {
 	size_t commentsSize = comments.getSize();
 
@@ -185,7 +185,7 @@ void SocialNetwork::signup()
 	//LastName
 	ConsoleInputGetter::recieveLastNameInput(newUser);
 	if (!InputValidator::isValidLastName(newUser.getLastName())) {
-		std::cerr << "\nError creating Account! Invalid Last Name!" << std::endl;;
+		std::cerr << "\nError creating Account! Invalid Last Name!" << std::endl;
 		return;
 	}
 

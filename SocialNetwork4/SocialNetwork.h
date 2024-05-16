@@ -37,8 +37,8 @@ public:
 
 	bool isLoginSuccessful(User& user);
 
-	size_t doesUsernameExist(const String& userName);
-	size_t doesCommentExist(const size_t id, const Vector<Comment>& comments);
+	size_t doesUsernameExist(const String& userName) const;
+	size_t doesCommentExist(const size_t id, const Vector<Comment>& comments) const;
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
