@@ -6,16 +6,16 @@ template<typename T>
 class Vector {
 
 public:
-    Vector() : capacity(3), size(0) {
+    Vector() : capacity(3), size(0), data(nullptr) {
 
-        data = new T[capacity];
+      data = new T[capacity];
+       
     }
 
-    Vector(const size_t capacity) : size(0) {
+    Vector(const size_t capacity) : size(0), data(nullptr) {
 
-
-        if (capacity <= 0) {
-            throw std::bad_alloc();
+        if (capacity == 0) {
+            throw std::invalid_argument("Cannot initialise vector with 0 value!");
         }
 
         this->capacity = capacity;
@@ -23,8 +23,7 @@ public:
         data = new T[capacity];
     }
 
-    Vector(const T& other)
-        :size(other.size), capacity(other.capacity + 3) {
+    Vector(const T& other) : data(nullptr), size(other.size), capacity(other.capacity + 3) {
 
         resize(capacity);
 
@@ -90,18 +89,12 @@ public:
         --size;
     }
 
-    void clear() { //clear vector completely?
+    void clear() {
 
         delete[] data;
         data = nullptr;
         size = 0;
-        capacity = 0;
-        
-       /* delete[] data;
-        data = new T[1];
-        size = 0;
-        capacity = 1;
-        */
+        capacity = 0;  
     }
 
     void printVectorToConsole() {
@@ -164,15 +157,12 @@ public:
             }
 
             else {
-                // Deallocate existing memory
                 delete[] data;
 
-                // Allocate new memory
                 capacity = rhs.capacity;
                 size = rhs.size;
                 data = new T[capacity];
 
-                // Copy elements from rhs to *this
                 for (size_t i = 0; i < size; ++i) {
                     data[i] = rhs.data[i];
                 }
