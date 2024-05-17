@@ -3,14 +3,14 @@
 unsigned short CommandsHandler::currCommand = Undefined;
 
 const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
-"open", "post", "list", "post_open", "comment", "reply", "help", "exit" }; //TODO: change order to be more grouped
+"open", "post", "list", "post_open", "comment", "reply", "post_quit", "help", "exit" }; //TODO: change order to be more grouped
 
 const String CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
 "Log user out", "Edit user data", "Edit selected user data",
 "Create a topic", "Save data" , "Save data as",
 "Search for a topic by title", "Open a topic", "Post a discussion",
 "List posted discussions in a topic", "Open a discussion", "Comment on a discussion",
-"Reply to a comment in a discussion", "List available commands", "Exit from program" };
+"Reply to a comment in a discussion", "Close opened discussion", "List available commands", "Exit from program" };
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -175,6 +175,14 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         catch (std::exception error) { //TODO : is this needed?
             std::cerr << "Could not reply! " << error.what() << std::endl;
         }
+        break;
+
+    case QuitDiscussion:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
+        currSocialNetwork.quitOpenedDiscussion();
         break;
 
     case Help:

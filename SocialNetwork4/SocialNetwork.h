@@ -67,6 +67,8 @@ public:
 	void addComment(const Comment& newComment); //can use move semantics here
 
 	void replyToComment(const size_t parentId);
+
+	void quitOpenedDiscussion();
 	//add other commands down here....
 
 private:

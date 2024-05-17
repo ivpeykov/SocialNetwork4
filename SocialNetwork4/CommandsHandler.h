@@ -23,6 +23,7 @@ enum Command { //don't change order!
 	PostOpen,
 	AddComment,
 	ReplyToComment,
+	QuitDiscussion,
 	Help,
 	Exit,
 	CommandsCount,

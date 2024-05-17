@@ -624,7 +624,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 	for (i; i < topicsSize; ++i) {
 
 		if (topicId == currTopics[i].getId()) {
-			currTopics[i].addDiscussion(newDiscussion);
+			currTopics[i].addDiscussion(newDiscussion); //update currTopics vector
 			addSuccessful = true;
 			break;
 		}
@@ -632,7 +632,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 
 	if (addSuccessful) {
 		CurrentData::setChangesMadeStatus(true);
-		openedTopic.addDiscussion(newDiscussion);
+		openedTopic.addDiscussion(newDiscussion); //update static object openedTopic
 		std::cout << "Posted Discussion: ''" << newDiscussion.getTitle() << "'' successfully!" << std::endl;
 
 	}
@@ -740,7 +740,7 @@ void SocialNetwork::addComment(const Comment& newComment)
 	size_t discussionPos = 0;
 	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
 		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
-			currTopics[topicPos].getDiscussions()[discussionPos].addComment(newComment);
+			currTopics[topicPos].getDiscussions()[discussionPos].addComment(newComment); // update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
 			discussionFound = true;
 		}
@@ -750,7 +750,8 @@ void SocialNetwork::addComment(const Comment& newComment)
 		throw std::runtime_error("Discussion not found");
 	}
 
-	openedDiscussion.addComment(newComment);
+	openedDiscussion.addComment(newComment); //update static object openedDiscussion
+	openedTopic.getDiscussions()[discussionPos - 1].addComment(newComment); //update static object openedTopic
 
 	std::cout << "Successfully commented!" << std::endl;
 }
@@ -806,7 +807,7 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	size_t discussionPos = 0;
 	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
 		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
-			currTopics[topicPos].getDiscussions()[discussionPos].getComments()[commentPosition].addReply(newReply);
+			currTopics[topicPos].getDiscussions()[discussionPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
 			discussionFound = true;
 		}
@@ -816,7 +817,20 @@ void SocialNetwork::replyToComment(const size_t parentId)
 		throw std::runtime_error("Discussion not found");
 	}
 
-	openedDiscussion.getComments()[commentPosition].addReply(newReply);
+	openedDiscussion.getComments()[commentPosition].addReply(newReply); //update static object openedDiscussion
+	openedTopic.getDiscussions()[discussionPos - 1].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
 
 	std::cout << "Successfully replied!" << std::endl;
+}
+
+void SocialNetwork::quitOpenedDiscussion() 
+{
+	if (!isThereOpenedDiscussion()) {
+		std::cout << "There is no opened discussion to close!" << std::endl;
+		return;
+	}
+
+	std::cout << "Discussion with title: " << openedDiscussion.getTitle() << " - closed!" << std::endl;
+	openedDiscussion.clear();
+	
 }
