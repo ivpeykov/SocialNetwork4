@@ -101,6 +101,15 @@ bool Topic::isNotEqualWithoutId(const Topic& other) const
     return !isEqualWithoutId(other);
 }
 
+void Topic::clear()
+{
+    title.clearString();
+    description.clearString();
+    creatorId = SIZE_MAX;
+    id = SIZE_MAX;
+    posts.clear();
+}
+
 Topic& Topic::operator=(const Topic& other)
 {
     if (this != &other) {

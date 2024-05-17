@@ -115,6 +115,17 @@ bool Comment::isNotEqualWithoutId(const Comment& other) const
     return !isEqualWithoutId(other);
 }
 
+void Comment::clear()
+{
+    author.clearString();
+    text.clearString();
+    score = 0;
+    id = SIZE_MAX;
+    postId = SIZE_MAX;
+
+    replies.clear();
+}
+
 Comment& Comment::operator=(const Comment& other)
 {
     if (this != &other) {

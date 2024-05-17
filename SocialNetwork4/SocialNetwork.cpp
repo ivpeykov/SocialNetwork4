@@ -593,7 +593,6 @@ void SocialNetwork::openTopic(){
 				return;
 			}
 		}
-
 	}
 
 	else {
@@ -833,4 +832,15 @@ void SocialNetwork::quitOpenedPost()
 	std::cout << "Post with title: " << openedPost.getTitle() << " - closed!" << std::endl;
 	openedPost.clear();
 	
+}
+
+void SocialNetwork::quitOpenedTopic()
+{
+	if (!isThereOpenedTopic()) {
+		std::cout << "There is no opened topic to close!" << std::endl;
+		return;
+	}
+
+	std::cout << "Topic with title: " << openedTopic.getTitle() << " - closed!" << std::endl;
+	openedTopic.clear();
 }

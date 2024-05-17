@@ -69,6 +69,8 @@ public:
 	void replyToComment(const size_t parentId);
 
 	void quitOpenedPost();
+
+	void quitOpenedTopic();
 	//add other commands down here....
 
 private:

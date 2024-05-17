@@ -44,10 +44,11 @@ public:
 	bool isEqualWithoutId(const Comment& other) const;
 	bool isNotEqualWithoutId(const Comment& other) const;
 
+	void clear();
+
 	Comment& operator=(const Comment& other);
 	bool operator==(const Comment& other) const;
 	bool operator!=(const Comment& other) const;
-
 
 private:
 	

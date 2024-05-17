@@ -42,6 +42,8 @@ public:
 	bool isEqualWithoutId(const Topic& other) const;
 	bool isNotEqualWithoutId(const Topic& other) const;
 
+	void clear();
+
 	Topic& operator=(const Topic& other);
 	bool operator==(const Topic& other) const;
 	bool operator!=(const Topic& other) const;

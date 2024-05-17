@@ -25,6 +25,7 @@ enum Command { //don't change order!
 	AddComment,
 	ReplyToComment,
 	QuitPost,
+	QuitTopic,
 	Help,
 	Exit,
 	CommandsCount,

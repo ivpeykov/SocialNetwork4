@@ -4,14 +4,14 @@ unsigned short CommandsHandler::currCommand = Undefined;
 
 //Adjust COMMAND_INPUT_MAX_LENGTH in Configuration.h if adding longer commands.
 const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
-"open", "post", "list", "post_open", "comment", "reply", "post_quit", "help", "exit" }; //TODO: change order to be more grouped
+"open", "post", "list", "post_open", "comment", "reply", "post_quit", "quit", "help", "exit" }; //TODO: change order to be more grouped
 
 const String CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
 "Log user out", "Edit user data", "Edit selected user data",
 "Create a topic", "Save data" , "Save data as",
 "Search for a topic by title", "Open a topic", "Post a post",
 "List available posts in a topic", "Open a post", "Comment on a post",
-"Reply to a comment in a post", "Close opened post", "List available commands", "Exit from program" };
+"Reply to a comment in a post", "Close opened post", "Close opened topic", "List available commands", "Exit from program" };
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -181,6 +181,14 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             break;
         }
         currSocialNetwork.quitOpenedPost();
+        break;
+
+    case QuitTopic:
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
+        currSocialNetwork.quitOpenedTopic();
         break;
 
     case Help:
