@@ -108,6 +108,16 @@ bool Discussion::isNotEqualWithoutId(const Discussion& other) const
 	return !isEqualWithoutId(other);
 }
 
+void Discussion::clear()
+{
+	title.clearString();
+	content.clearString();
+	topicId = SIZE_MAX;
+	creatorId = SIZE_MAX;
+	id = SIZE_MAX;
+	comments.clear();
+}
+
 Discussion& Discussion::operator=(const Discussion& other)
 {
 	if (this != &other) {

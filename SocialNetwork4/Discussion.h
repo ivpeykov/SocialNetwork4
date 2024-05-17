@@ -21,7 +21,6 @@ public:
 
 	~Discussion();
 
-
 	const String& getTitle() const;
 	const String& getContent() const;
 	const size_t getTopicId() const;
@@ -44,9 +43,12 @@ public:
 	bool isEqualWithoutId(const Discussion& other) const;
 	bool isNotEqualWithoutId(const Discussion& other) const;
 
+	void clear();
+
 	Discussion& operator=(const Discussion& other);
 	bool operator==(const Discussion& other) const;
 	bool operator!=(const Discussion& other) const;
+
 
 private:
 	String title;

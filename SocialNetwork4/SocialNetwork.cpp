@@ -587,6 +587,7 @@ void SocialNetwork::openTopic(){
 
 			if (queryId == currTopics[i].getId()) {
 				openedTopic = currTopics[i];
+				openedDiscussion.clear();
 				std::cout << "Opened Topic:\nName: "
 					<< currTopics[i].getTitle() << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -601,6 +602,7 @@ void SocialNetwork::openTopic(){
 
 			if (query == currTopics[i].getTitle()) {
 				openedTopic = currTopics[i];
+				openedDiscussion.clear();
 				std::cout << "Opened Topic:\nName: "
 					<< query << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -699,6 +701,19 @@ void SocialNetwork::openDiscussion()
 
 void SocialNetwork::addComment(const Comment& newComment)
 {
+
+	if (!isThereLoggedInUser()) {
+		throw std::runtime_error("Could not comment! Please log in before commenting!");
+	}
+
+	if (!isThereOpenedTopic()) {
+		throw std::runtime_error("Could not comment! Please open a topic before commenting!");
+	}
+
+	if (!isThereOpenedDiscussion()) {
+		throw std::runtime_error("Could not comment! Please open a discussion before commenting!");
+	}
+
 	//Find corresponding topic
 	size_t searchedTopicId = openedTopic.getId();
 	size_t topicsSize = currTopics.getSize();
