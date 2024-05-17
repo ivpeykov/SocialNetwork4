@@ -1,8 +1,15 @@
 #include "Application.h"
 
+Application& Application::getInstance()
+{
+	{
+		static Application instance;
+		return instance;
+	}
+}
+
 void Application::run()
 {
-
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
 	while (CommandsHandler::getCurrCommand() != Command::Exit) {
@@ -29,4 +36,8 @@ void Application::run()
 
 	//std::cout << "Opened Post: " << std::endl;
 	//PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
+}
+
+Application::Application()
+{
 }

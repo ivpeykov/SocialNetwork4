@@ -35,17 +35,17 @@ const Vector<Topic>& SocialNetwork::getCurrTopics() const
 	return currTopics;
 }
 
-const User& SocialNetwork::getLoggedInUser() const
+User& SocialNetwork::getLoggedInUser()
 {
 	return loggedInUser;
 }
 
-const Topic& SocialNetwork::getOpenedTopic() const
+Topic& SocialNetwork::getOpenedTopic()
 {
 	return openedTopic;
 }
 
-const Post& SocialNetwork::getOpenedPost() const
+ Post& SocialNetwork::getOpenedPost()
 {
 	return openedPost;
 }

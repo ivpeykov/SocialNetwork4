@@ -2,8 +2,7 @@
 
 int main(){
 
-	Application app;
-	app.run();
+	Application::getInstance().run();
 
 	return 0;
 }

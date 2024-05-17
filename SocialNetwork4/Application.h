@@ -7,6 +7,15 @@
 class Application
 {
 public:
-	void run();
-};
+   
+    static Application& getInstance();
 
+    void run();
+
+private:
+
+    Application();
+ 
+    Application(const Application&) = delete;
+    Application& operator=(const Application&) = delete;
+};

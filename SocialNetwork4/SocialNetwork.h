@@ -20,9 +20,9 @@ public:
 	Vector<Topic>& getCurrTopics();
 	const Vector<Topic>& getCurrTopics() const;
 
-	const User& getLoggedInUser() const;
-	const Topic& getOpenedTopic() const;
-	const Post& getOpenedPost() const;
+	static User& getLoggedInUser();
+	static Topic& getOpenedTopic();
+	static Post& getOpenedPost();
 
 	void setDirectory(const String& newDirectory);
 	void setDirectory(const char* newDirectory);
