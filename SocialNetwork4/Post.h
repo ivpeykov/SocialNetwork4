@@ -5,21 +5,21 @@
 
 //add move semantics
 
-class Discussion
+class Post
 {
 public:
 
-	Discussion();
+	Post();
 
-	Discussion(String& title, String& content,
+	Post(String& title, String& content,
 		size_t topicId, size_t creatorId, size_t id);
 
-	Discussion(const char* title, const char* content,
+	Post(const char* title, const char* content,
 		size_t topicId, size_t creatorId, size_t id);
 
-	Discussion(const Discussion& other);
+	Post(const Post& other);
 
-	~Discussion();
+	~Post();
 
 	const String& getTitle() const;
 	const String& getContent() const;
@@ -40,14 +40,14 @@ public:
 	void setId(const size_t id);
 	void addComment(const Comment& newComment);
 
-	bool isEqualWithoutId(const Discussion& other) const;
-	bool isNotEqualWithoutId(const Discussion& other) const;
+	bool isEqualWithoutId(const Post& other) const;
+	bool isNotEqualWithoutId(const Post& other) const;
 
 	void clear();
 
-	Discussion& operator=(const Discussion& other);
-	bool operator==(const Discussion& other) const;
-	bool operator!=(const Discussion& other) const;
+	Post& operator=(const Post& other);
+	bool operator==(const Post& other) const;
+	bool operator!=(const Post& other) const;
 
 
 private:

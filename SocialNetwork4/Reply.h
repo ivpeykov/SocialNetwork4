@@ -11,11 +11,11 @@ public:
 	Reply();
 
 	Reply(const String& author, const String& text,
-		const int score, const size_t id, const size_t discussionId,
+		const int score, const size_t id, const size_t postId,
 		const size_t parentCommentId);
 
 	Reply(const char* author, const char* text,
-		const int score, const size_t id, const size_t discussionId,
+		const int score, const size_t id, const size_t postId,
 		const size_t parentCommentId);
 
 	Reply(const Reply& other);
@@ -28,7 +28,7 @@ public:
 	const String& getText() const;
 	const int getScore() const;
 	const size_t getId() const;
-	const size_t getDiscussionId() const;
+	const size_t getPostId() const;
 	const size_t getParentCommentId() const;
 
 	void setAuthor(const char* newAuthor);
@@ -39,7 +39,7 @@ public:
 
 	void setScore(const int newScore);
 	void setId(const size_t newId);
-	void setDiscussionId(const size_t newDiscussionId);
+	void setPostId(const size_t newPostId);
 	void setParentCommentId(const size_t newId);
 
 	bool isEqualWithoutId(const Reply& other) const;
@@ -54,7 +54,7 @@ private:
 	String text;
 	int score;
 	size_t id;
-	size_t discussionId;
+	size_t postId;
 
 	size_t parentCommentId;
 };

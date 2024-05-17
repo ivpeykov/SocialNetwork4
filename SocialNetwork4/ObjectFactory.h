@@ -11,7 +11,7 @@ public:
 
 	static Topic createTopic(const SocialNetwork& socialNetwork);
 
-	static Discussion createDiscussion(const SocialNetwork& socialNetwork);
+	static Post createPost(const SocialNetwork& socialNetwork);
 
 	static Comment createComment(const SocialNetwork& socialNetwork);
 

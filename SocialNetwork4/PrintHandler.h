@@ -1,7 +1,7 @@
 #pragma once
 #include "User.h"
 #include "Topic.h"
-#include "Discussion.h"
+#include "Post.h"
 #include "Comment.h"
 #include "CurrentData.h"
 
@@ -16,18 +16,18 @@ public:
 
 	static void printUser(const User& user);
 	static void printTopic(const Topic& topic);
-	static void printDiscussion(const Discussion& discussion);
+	static void printPost(const Post& post);
 	static void printComment(const Comment& comment);
 	static void printReply(const Reply& reply);
 
 	static void printUsers(const Vector<User>& users);
 	static void printTopics(const Vector<Topic>& topics);
-	static void printDiscussions(const Topic& topic);
-	static void printComments(const Discussion& discussion);
+	static void printPosts(const Topic& topic);
+	static void printComments(const Post& post);
 	static void printReplies(const Comment& comment);
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
-	static void printDiscussionsForList(const Vector<Discussion>& discussions);
+	static void printPostsForList(const Vector<Post>& posts);
 
 private:
 	PrintHandler();

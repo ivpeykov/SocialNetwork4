@@ -31,7 +31,7 @@ public:
 
 
 
-	//Discussion Data Validation
+	//Post Data Validation
 	static bool isValidContent(const String& content);
 
 

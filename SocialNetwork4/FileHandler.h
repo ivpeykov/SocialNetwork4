@@ -4,7 +4,7 @@
 #include "CurrentData.h"
 #include "User.h"
 #include "Topic.h"
-#include "Discussion.h"
+#include "Post.h"
 #include "Comment.h"
 #include "Vector.h"
  
@@ -22,9 +22,9 @@ public:
 
 	static void loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& topics);
 
-	static void loadDiscussions(std::fstream& socialNetworkFile, Topic& topic);
+	static void loadPosts(std::fstream& socialNetworkFile, Topic& topic);
 
-	static void loadComments(std::fstream& socialNetworkFile, Discussion& discussion);
+	static void loadComments(std::fstream& socialNetworkFile, Post& post);
 
 	static void loadReplies(std::fstream& socialNetworkFile, Comment& comment);
 
@@ -34,7 +34,7 @@ public:
 
 	static void saveTopics(std::ofstream& socialNetworkFile, const Vector<Topic>& topics);
 
-	static void saveDiscussions(std::ofstream& socialNetworkFile,const Vector<Discussion>& discussions);
+	static void savePosts(std::ofstream& socialNetworkFile,const Vector<Post>& posts);
 
 	static void saveComments(std::ofstream& socialNetworkFile, const Vector<Comment>& comments);
 

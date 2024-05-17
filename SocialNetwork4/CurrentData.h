@@ -3,7 +3,7 @@
 
 class User;
 class Topic;
-class Discussion;
+class Post;
 class Comment;
 class SocialNetwork;
 

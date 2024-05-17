@@ -26,6 +26,6 @@ void Application::run()
 	//std::cout << "Opened Topic: " << std::endl;
 	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
 
-	//std::cout << "Opened Discussion: " << std::endl;
-	//PrintHandler::printDiscussion(CurrentData::getCurrSocialNetwork().getOpenedDiscussion());
+	//std::cout << "Opened Post: " << std::endl;
+	//PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
 }

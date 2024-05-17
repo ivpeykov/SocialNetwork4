@@ -5,7 +5,7 @@
 #include "CurrentData.h"
 #include "User.h"
 #include "Topic.h"
-#include "Discussion.h"
+#include "Post.h"
 
 class SocialNetwork
 {
@@ -22,7 +22,7 @@ public:
 
 	const User& getLoggedInUser() const;
 	const Topic& getOpenedTopic() const;
-	const Discussion& getOpenedDiscussion() const;
+	const Post& getOpenedPost() const;
 
 	void setDirectory(const String& newDirectory);
 	void setDirectory(const char* newDirectory);
@@ -33,7 +33,7 @@ public:
 
 	bool isThereLoggedInUser() const;
 	bool isThereOpenedTopic() const;
-	bool isThereOpenedDiscussion() const;
+	bool isThereOpenedPost() const;
 
 	bool isLoginSuccessful(User& user);
 
@@ -58,17 +58,17 @@ public:
 
 	void openTopic();
 
-	void postDiscussion(const Discussion& newDiscussion); //can use move semantics here
+	void addPost(const Post& newPost); //can use move semantics here
 
-	void listDiscussionsInOpenedTopic() const;
+	void listPostsInOpenedTopic() const;
 
-	void openDiscussion();
+	void openPost();
 
 	void addComment(const Comment& newComment); //can use move semantics here
 
 	void replyToComment(const size_t parentId);
 
-	void quitOpenedDiscussion();
+	void quitOpenedPost();
 	//add other commands down here....
 
 private:
@@ -78,5 +78,5 @@ private:
 
 	static User loggedInUser;
 	static Topic openedTopic;
-	static Discussion openedDiscussion;
+	static Post openedPost;
 };

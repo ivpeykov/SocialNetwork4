@@ -1,23 +1,23 @@
 #include "Comment.h"
 
-Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), discussionId(SIZE_MAX), replies(1) {
+Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), postId(SIZE_MAX), replies(1) {
     replies.back().setParentCommentId(id);
 }
 
 Comment::Comment(const String& author, const String& text,
-    const int score, const size_t id, const size_t discussionId) :
-    author(author), text(text), score(score), id(id), discussionId(discussionId), replies(1) {
+    const int score, const size_t id, const size_t postId) :
+    author(author), text(text), score(score), id(id), postId(postId), replies(1) {
 
     replies.back().setParentCommentId(id);
 }
 
 Comment::Comment(const char* author, const char* text,
-    const int score, const size_t id, const size_t discussionId) :
-    author(author), text(text), score(score), id(id), discussionId(discussionId), replies(1) {
+    const int score, const size_t id, const size_t postId) :
+    author(author), text(text), score(score), id(id), postId(postId), replies(1) {
     replies.back().setParentCommentId(id);
 }
 
-Comment::Comment(const Comment& other) : author(other.author), text(other.text), score(other.score), id(other.id), discussionId(other.discussionId), replies(other.replies)
+Comment::Comment(const Comment& other) : author(other.author), text(other.text), score(other.score), id(other.id), postId(other.postId), replies(other.replies)
 {
 }
 
@@ -41,9 +41,9 @@ const size_t Comment::getId() const
     return id;
 }
 
-const size_t Comment::getDiscussionId() const
+const size_t Comment::getPostId() const
 {
-    return discussionId;
+    return postId;
 }
 
 const Vector<Reply>& Comment::getReplies() const
@@ -86,9 +86,9 @@ void Comment::setId(const size_t newId)
     id = newId;
 }
 
-void Comment::setDiscussionId(const size_t newDiscussionId)
+void Comment::setPostId(const size_t newPostId)
 {
-    discussionId = newDiscussionId;
+    postId = newPostId;
 }
 
 void Comment::setReplies(const Vector<Reply>& newReplies)
@@ -106,7 +106,7 @@ bool Comment::isEqualWithoutId(const Comment& other) const
     return (author == other.author &&
         text == other.text &&
         score == other.score &&
-        discussionId == other.discussionId &&
+        postId == other.postId &&
         replies == other.replies);
 }
 
@@ -123,7 +123,7 @@ Comment& Comment::operator=(const Comment& other)
         text = other.text;
         score = other.score;
         id = other.id;
-        discussionId = other.discussionId;
+        postId = other.postId;
         replies = other.replies; 
     }
     return *this;

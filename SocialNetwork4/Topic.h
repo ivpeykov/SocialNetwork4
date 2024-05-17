@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector.h"
 #include "String.h"
-#include "Discussion.h"
+#include "Post.h"
 
 class Topic
 {
@@ -16,7 +16,7 @@ public:
 		const size_t creatorId, const size_t id);
 
 	Topic(const char* title, const char* description,
-		const size_t creatorId, const size_t id, const Vector<Discussion>& discussions);
+		const size_t creatorId, const size_t id, const Vector<Post>& posts);
 
 	Topic(const Topic& other);
 
@@ -26,8 +26,8 @@ public:
 	const String& getDescription() const;
 	const size_t getCreatorId() const;
 	const size_t getId() const;
-	Vector<Discussion>& getDiscussions();
-	const Vector<Discussion>& getDiscussions() const;
+	Vector<Post>& getPosts();
+	const Vector<Post>& getPosts() const;
 
 	void setTitle(const char* newTitle);
 	void setTitle(const String& newTitle);
@@ -37,7 +37,7 @@ public:
 
 	void setCreatorId(const size_t newCreatorId);
 	void setId(const size_t newId);
-	void addDiscussion(const Discussion& newDiscussion); // possible move semantics here
+	void addPost(const Post& newPost); // possible move semantics here
 
 	bool isEqualWithoutId(const Topic& other) const;
 	bool isNotEqualWithoutId(const Topic& other) const;
@@ -51,7 +51,7 @@ private:
 	String description;
 	size_t creatorId;
 	size_t id;
-	Vector<Discussion> discussions;
+	Vector<Post> posts;
 
 };
 

@@ -1,33 +1,33 @@
 #include "Reply.h"
 
-Reply::Reply() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), discussionId(SIZE_MAX), parentCommentId(SIZE_MAX)
+Reply::Reply() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), postId(SIZE_MAX), parentCommentId(SIZE_MAX)
 {
 }
 
 Reply::Reply(const String& author, const String& text, const int score, const size_t id, 
-	const size_t discussionId, const size_t parentCommentId) : 
-	author(author), text(text), score(score), id(id), discussionId(discussionId),
+	const size_t postId, const size_t parentCommentId) : 
+	author(author), text(text), score(score), id(id), postId(postId),
 	parentCommentId(parentCommentId)
 {
 }
 
-Reply::Reply(const char* author, const char* text, const int score, const size_t id, const size_t discussionId, const size_t parentCommentId) : 
-	author(author), text(text), score(score), id(id), discussionId(discussionId),
+Reply::Reply(const char* author, const char* text, const int score, const size_t id, const size_t postId, const size_t parentCommentId) : 
+	author(author), text(text), score(score), id(id), postId(postId),
 	parentCommentId(parentCommentId)
 {
 }
 
 Reply::Reply(const Reply& other) : 
-	author(other.author), text(other.text), score(other.score), id(other.id), discussionId(other.discussionId),
+	author(other.author), text(other.text), score(other.score), id(other.id), postId(other.postId),
 	parentCommentId(other.parentCommentId)
 {
 }
 
-Reply::Reply(const Comment& comment) : author(comment.author), text(comment.text), score(comment.score), id(comment.id), discussionId(comment.discussionId), parentCommentId(SIZE_MAX)
+Reply::Reply(const Comment& comment) : author(comment.author), text(comment.text), score(comment.score), id(comment.id), postId(comment.postId), parentCommentId(SIZE_MAX)
 {
 }
 
-Reply::Reply(const Comment& comment, const size_t parentCommentId) : author(comment.author), text(comment.text), score(comment.score), id(comment.id), discussionId(comment.discussionId), parentCommentId(parentCommentId)
+Reply::Reply(const Comment& comment, const size_t parentCommentId) : author(comment.author), text(comment.text), score(comment.score), id(comment.id), postId(comment.postId), parentCommentId(parentCommentId)
 {
 }
 
@@ -55,9 +55,9 @@ const size_t Reply::getId() const
 	return id;
 }
 
-const size_t Reply::getDiscussionId() const
+const size_t Reply::getPostId() const
 {
-	return discussionId;
+	return postId;
 }
 
 const size_t Reply::getParentCommentId() const
@@ -95,9 +95,9 @@ void Reply::setId(const size_t newId)
 	id = newId;
 }
 
-void Reply::setDiscussionId(const size_t newDiscussionId)
+void Reply::setPostId(const size_t newPostId)
 {
-	discussionId = newDiscussionId;
+	postId = newPostId;
 }
 
 void Reply::setParentCommentId(const size_t newId)
@@ -110,7 +110,7 @@ bool Reply::isEqualWithoutId(const Reply& other) const
 	return (author == other.author &&
 		text == other.text &&
 		score == other.score &&
-		discussionId == other.discussionId &&
+		postId == other.postId &&
 		parentCommentId == other.parentCommentId);
 }
 
@@ -127,7 +127,7 @@ Reply& Reply::operator=(const Reply& other)
 		text = other.text;
 		score = other.score;
 		id = other.id;
-		discussionId = other.discussionId;
+		postId = other.postId;
 		parentCommentId = other.parentCommentId;
 	}
 	return *this;

@@ -137,7 +137,7 @@
     <ClCompile Include="ConsoleInputGetter.cpp" />
     <ClCompile Include="CurrentData.cpp" />
     <ClCompile Include="String.cpp" />
-    <ClCompile Include="Discussion.cpp" />
+    <ClCompile Include="Post.cpp" />
     <ClCompile Include="FileHandler.cpp" />
     <ClCompile Include="InputValidator.cpp" />
     <ClCompile Include="main.cpp" />
@@ -156,7 +156,7 @@
     <ClInclude Include="ConsoleInputGetter.h" />
     <ClInclude Include="CurrentData.h" />
     <ClInclude Include="String.h" />
-    <ClInclude Include="Discussion.h" />
+    <ClInclude Include="Post.h" />
     <ClInclude Include="FileHandler.h" />
     <ClInclude Include="InputValidator.h" />
     <ClInclude Include="ObjectFactory.h" />

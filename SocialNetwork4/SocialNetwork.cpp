@@ -2,7 +2,7 @@
 
 User SocialNetwork::loggedInUser;
 Topic SocialNetwork::openedTopic;
-Discussion SocialNetwork::openedDiscussion;
+Post SocialNetwork::openedPost;
 
 SocialNetwork::SocialNetwork(String& directory) : directory(directory),
 currUsers(1), currTopics(1) {}
@@ -45,9 +45,9 @@ const Topic& SocialNetwork::getOpenedTopic() const
 	return openedTopic;
 }
 
-const Discussion& SocialNetwork::getOpenedDiscussion() const
+const Post& SocialNetwork::getOpenedPost() const
 {
-	return openedDiscussion;
+	return openedPost;
 }
 
 
@@ -91,9 +91,9 @@ bool SocialNetwork::isThereOpenedTopic() const
 	return openedTopic.getTitle() != nullptr;
 }
 
-bool SocialNetwork::isThereOpenedDiscussion() const
+bool SocialNetwork::isThereOpenedPost() const
 {
-	return openedDiscussion.getTitle() != nullptr;
+	return openedPost.getTitle() != nullptr;
 }
 
 bool SocialNetwork::isLoginSuccessful(User& user)
@@ -565,7 +565,7 @@ void SocialNetwork::openTopic(){
 
 	std::cout << "Enter full title name or topic id (Note: If title name is a number, please use its id!): ";
 
-	Topic tempTopic; //optimisation: create an empty topic (no discussions, no comments)
+	Topic tempTopic; //optimisation: create an empty topic (no posts, no comments)
 
 	ConsoleInputGetter::recieveTitleInput(tempTopic);
 	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
@@ -587,7 +587,7 @@ void SocialNetwork::openTopic(){
 
 			if (queryId == currTopics[i].getId()) {
 				openedTopic = currTopics[i];
-				openedDiscussion.clear();
+				openedPost.clear();
 				std::cout << "Opened Topic:\nName: "
 					<< currTopics[i].getTitle() << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -602,7 +602,7 @@ void SocialNetwork::openTopic(){
 
 			if (query == currTopics[i].getTitle()) {
 				openedTopic = currTopics[i];
-				openedDiscussion.clear();
+				openedPost.clear();
 				std::cout << "Opened Topic:\nName: "
 					<< query << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -614,7 +614,7 @@ void SocialNetwork::openTopic(){
 	std::cout << "Could not open topic! Invalid title or id!" << std::endl;
 }
 
-void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
+void SocialNetwork::addPost(const Post& newPost)
 {
 	size_t topicId = openedTopic.getId();
 	size_t topicsSize = currTopics.getSize();
@@ -624,7 +624,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 	for (i; i < topicsSize; ++i) {
 
 		if (topicId == currTopics[i].getId()) {
-			currTopics[i].addDiscussion(newDiscussion); //update currTopics vector
+			currTopics[i].addPost(newPost); //update currTopics vector
 			addSuccessful = true;
 			break;
 		}
@@ -632,8 +632,8 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 
 	if (addSuccessful) {
 		CurrentData::setChangesMadeStatus(true);
-		openedTopic.addDiscussion(newDiscussion); //update static object openedTopic
-		std::cout << "Posted Discussion: ''" << newDiscussion.getTitle() << "'' successfully!" << std::endl;
+		openedTopic.addPost(newPost); //update static object openedTopic
+		std::cout << "Added Post: ''" << newPost.getTitle() << "'' successfully!" << std::endl;
 
 	}
 	else {
@@ -641,7 +641,7 @@ void SocialNetwork::postDiscussion(const Discussion& newDiscussion)
 	}
 }
 
-void SocialNetwork::listDiscussionsInOpenedTopic() const
+void SocialNetwork::listPostsInOpenedTopic() const
 {
 	if (!isThereOpenedTopic()) {
 		std::cout << "Topic not opened! Please open a topic before listing!"
@@ -649,15 +649,15 @@ void SocialNetwork::listDiscussionsInOpenedTopic() const
 		return;
 	}
 
-	std::cout << "Discussions in Topic - " << openedTopic.getTitle() << ":" << std::endl;
+	std::cout << "Posts in Topic - " << openedTopic.getTitle() << ":" << std::endl;
 
-	PrintHandler::printDiscussionsForList(openedTopic.getDiscussions());
+	PrintHandler::printPostsForList(openedTopic.getPosts());
 }
 
-void SocialNetwork::openDiscussion()
+void SocialNetwork::openPost()
 {
 	if (!isThereOpenedTopic()) {
-		std::cout << "Could not open discussion! Please open a topic first!"
+		std::cout << "Could not open post! Please open a topic first!"
 			<< std::endl;
 		return;
 	}
@@ -668,34 +668,34 @@ void SocialNetwork::openDiscussion()
 	size_t id = 0;
 
 	try {
-		ConsoleInputGetter::recieveOpenDiscussionIdInput(id);
+		ConsoleInputGetter::recieveOpenPostIdInput(id);
 	}
 
 	catch (std::exception e) {
 		std::cout << e.what() << std::endl;
-		std::cout << "Could not open discussion!" << std::endl;
+		std::cout << "Could not open post!" << std::endl;
 		return;
 	}
 
-	size_t discussionsSize = openedTopic.getDiscussions().getSize();
-	bool discussionOpened = false;
+	size_t postsSize = openedTopic.getPosts().getSize();
+	bool postOpened = false;
 
-	for (size_t i = 0; i < discussionsSize; ++i) {
+	for (size_t i = 0; i < postsSize; ++i) {
 
-		if (id == openedTopic.getDiscussions()[i].getId()) {
-			openedDiscussion = openedTopic.getDiscussions()[i];
-			discussionOpened = true;
-			std::cout << "Successfully opened discussion ''" << openedDiscussion.getTitle() << "''!" << std::endl
-				<< openedDiscussion.getContent() << std::endl
-				<< "Number of answers: " << openedDiscussion.getComments().getSize() << std::endl;
+		if (id == openedTopic.getPosts()[i].getId()) {
+			openedPost = openedTopic.getPosts()[i];
+			postOpened = true;
+			std::cout << "Successfully opened post ''" << openedPost.getTitle() << "''!" << std::endl
+				<< openedPost.getContent() << std::endl
+				<< "Number of answers: " << openedPost.getComments().getSize() << std::endl;
 			
 			return;
 		}
 
 	}
 
-	if (!discussionOpened) {
-		std::cout << "Could not open discussion! No discussion with such id exists!" << std::endl;
+	if (!postOpened) {
+		std::cout << "Could not open post! No post with such id exists!" << std::endl;
 	}
 }
 
@@ -710,8 +710,8 @@ void SocialNetwork::addComment(const Comment& newComment)
 		throw std::runtime_error("Could not comment! Please open a topic before commenting!");
 	}
 
-	if (!isThereOpenedDiscussion()) {
-		throw std::runtime_error("Could not comment! Please open a discussion before commenting!");
+	if (!isThereOpenedPost()) {
+		throw std::runtime_error("Could not comment! Please open a post before commenting!");
 	}
 
 	//Find corresponding topic
@@ -732,26 +732,26 @@ void SocialNetwork::addComment(const Comment& newComment)
 		throw std::runtime_error("Topic not found");
 	}
 
-	//Find corresponding discussion
-	size_t searchedDiscussionId = openedDiscussion.getId();
-	size_t discussionsSize = currTopics[topicPos].getDiscussions().getSize();
-	bool discussionFound = false;
+	//Find corresponding post
+	size_t searchedPostId = openedPost.getId();
+	size_t postsSize = currTopics[topicPos].getPosts().getSize();
+	bool postFound = false;
 
-	size_t discussionPos = 0;
-	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
-		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
-			currTopics[topicPos].getDiscussions()[discussionPos].addComment(newComment); // update currTopics vector
+	size_t postPos = 0;
+	for (postPos; postPos < postsSize; ++postPos) {
+		if (searchedPostId == currTopics[topicPos].getPosts()[postPos].getId()) {
+			currTopics[topicPos].getPosts()[postPos].addComment(newComment); // update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
-			discussionFound = true;
+			postFound = true;
 		}
 	}
 
-	if (discussionFound == false) {
-		throw std::runtime_error("Discussion not found");
+	if (postFound == false) {
+		throw std::runtime_error("Post not found");
 	}
 
-	openedDiscussion.addComment(newComment); //update static object openedDiscussion
-	openedTopic.getDiscussions()[discussionPos - 1].addComment(newComment); //update static object openedTopic
+	openedPost.addComment(newComment); //update static object openedPost
+	openedTopic.getPosts()[postPos - 1].addComment(newComment); //update static object openedTopic
 
 	std::cout << "Successfully commented!" << std::endl;
 }
@@ -766,17 +766,17 @@ void SocialNetwork::replyToComment(const size_t parentId)
 		throw std::runtime_error("Could not reply! Please open a topic before replying!");
 	}
 
-	if (!isThereOpenedDiscussion()) {
-		throw std::runtime_error("Could not reply! Please open a discussion before replying!");
+	if (!isThereOpenedPost()) {
+		throw std::runtime_error("Could not reply! Please open a post before replying!");
 	}
 
-	size_t commentPosition = doesCommentExist(parentId, openedDiscussion.getComments());
+	size_t commentPosition = doesCommentExist(parentId, openedPost.getComments());
 
 	if (commentPosition == SIZE_MAX) {
 		throw std::runtime_error("Comment not found!");
 	}
 	
-	Reply parentCommentLastReply = openedDiscussion.getComments()[commentPosition].getReplies().back();
+	Reply parentCommentLastReply = openedPost.getComments()[commentPosition].getReplies().back();
 	Reply newReply = ObjectFactory::createReply(*this, parentCommentLastReply, parentId);
 
 
@@ -799,38 +799,38 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	}
 
 
-	//Find corresponding discussion
-	size_t searchedDiscussionId = openedDiscussion.getId();
-	size_t discussionsSize = currTopics[topicPos].getDiscussions().getSize();
-	bool discussionFound = false;
+	//Find corresponding post
+	size_t searchedPostId = openedPost.getId();
+	size_t postsSize = currTopics[topicPos].getPosts().getSize();
+	bool postFound = false;
 
-	size_t discussionPos = 0;
-	for (discussionPos; discussionPos < discussionsSize; ++discussionPos) {
-		if (searchedDiscussionId == currTopics[topicPos].getDiscussions()[discussionPos].getId()) {
-			currTopics[topicPos].getDiscussions()[discussionPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
+	size_t postPos = 0;
+	for (postPos; postPos < postsSize; ++postPos) {
+		if (searchedPostId == currTopics[topicPos].getPosts()[postPos].getId()) {
+			currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
-			discussionFound = true;
+			postFound = true;
 		}
 	}
 
-	if (discussionFound == false) {
-		throw std::runtime_error("Discussion not found");
+	if (postFound == false) {
+		throw std::runtime_error("Post not found");
 	}
 
-	openedDiscussion.getComments()[commentPosition].addReply(newReply); //update static object openedDiscussion
-	openedTopic.getDiscussions()[discussionPos - 1].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
+	openedPost.getComments()[commentPosition].addReply(newReply); //update static object openedPost
+	openedTopic.getPosts()[postPos - 1].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
 
 	std::cout << "Successfully replied!" << std::endl;
 }
 
-void SocialNetwork::quitOpenedDiscussion() 
+void SocialNetwork::quitOpenedPost() 
 {
-	if (!isThereOpenedDiscussion()) {
-		std::cout << "There is no opened discussion to close!" << std::endl;
+	if (!isThereOpenedPost()) {
+		std::cout << "There is no opened post to close!" << std::endl;
 		return;
 	}
 
-	std::cout << "Discussion with title: " << openedDiscussion.getTitle() << " - closed!" << std::endl;
-	openedDiscussion.clear();
+	std::cout << "Post with title: " << openedPost.getTitle() << " - closed!" << std::endl;
+	openedPost.clear();
 	
 }

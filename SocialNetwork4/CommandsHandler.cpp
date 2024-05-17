@@ -8,9 +8,9 @@ const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", 
 const String CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
 "Log user out", "Edit user data", "Edit selected user data",
 "Create a topic", "Save data" , "Save data as",
-"Search for a topic by title", "Open a topic", "Post a discussion",
-"List posted discussions in a topic", "Open a discussion", "Comment on a discussion",
-"Reply to a comment in a discussion", "Close opened discussion", "List available commands", "Exit from program" };
+"Search for a topic by title", "Open a topic", "Post a post",
+"List available posts in a topic", "Open a post", "Comment on a post",
+"Reply to a comment in a post", "Close opened post", "List available commands", "Exit from program" };
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -117,13 +117,13 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         currSocialNetwork.openTopic();
         break;
 
-    case Post:
+    case AddPost:
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
         try {
-            currSocialNetwork.postDiscussion(ObjectFactory::createDiscussion(currSocialNetwork));
+            currSocialNetwork.addPost(ObjectFactory::createPost(currSocialNetwork));
         }
         catch (const std::runtime_error& error) {
             std::cerr << "Error: " << error.what() << std::endl;
@@ -135,7 +135,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
-        currSocialNetwork.listDiscussionsInOpenedTopic();
+        currSocialNetwork.listPostsInOpenedTopic();
         break;
 
     case PostOpen:
@@ -143,7 +143,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
-        currSocialNetwork.openDiscussion();
+        currSocialNetwork.openPost();
         break;
 
     case AddComment:
@@ -177,12 +177,12 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
         break;
 
-    case QuitDiscussion:
+    case QuitPost:
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
-        currSocialNetwork.quitOpenedDiscussion();
+        currSocialNetwork.quitOpenedPost();
         break;
 
     case Help:

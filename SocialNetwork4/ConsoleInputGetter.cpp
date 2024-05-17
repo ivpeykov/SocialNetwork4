@@ -302,7 +302,7 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
     newTopic.setDescription(newDescription);
 }
 
-void ConsoleInputGetter::recieveDiscussionTitleInput(Discussion& newDiscussion)
+void ConsoleInputGetter::recievePostTitleInput(Post& newPost)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -310,18 +310,18 @@ void ConsoleInputGetter::recieveDiscussionTitleInput(Discussion& newDiscussion)
 
     std::cout << "\nEnter title: ";
 
-    char newTitle[Configuration::DISCUSSION_TITLE_MAX_LENGTH];
+    char newTitle[Configuration::POST_TITLE_MAX_LENGTH];
 
-    std::cin.getline(newTitle, Configuration::DISCUSSION_TITLE_MAX_LENGTH);
+    std::cin.getline(newTitle, Configuration::POST_TITLE_MAX_LENGTH);
 
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    newDiscussion.setTitle(newTitle);
+    newPost.setTitle(newTitle);
 }
 
-void ConsoleInputGetter::recieveDiscussionContentInput(Discussion& newDiscussion)
+void ConsoleInputGetter::recievePostContentInput(Post& newPost)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -329,16 +329,16 @@ void ConsoleInputGetter::recieveDiscussionContentInput(Discussion& newDiscussion
 
     std::cout << "\nEnter Content: ";
 
-    char* newContent = new char[Configuration::DISCUSSION_CONTENT_MAX_LENGTH]; //add exception handling
+    char* newContent = new char[Configuration::POST_CONTENT_MAX_LENGTH]; //add exception handling
 
-    std::cin.getline(newContent, Configuration::DISCUSSION_CONTENT_MAX_LENGTH);
+    std::cin.getline(newContent, Configuration::POST_CONTENT_MAX_LENGTH);
 
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
     try {
-        newDiscussion.setContent(newContent);
+        newPost.setContent(newContent);
     }
     catch (...) {
         delete[] newContent;
@@ -348,7 +348,7 @@ void ConsoleInputGetter::recieveDiscussionContentInput(Discussion& newDiscussion
     delete[] newContent;
 }
 
-void ConsoleInputGetter::recieveOpenDiscussionIdInput(size_t& id)
+void ConsoleInputGetter::recieveOpenPostIdInput(size_t& id)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();

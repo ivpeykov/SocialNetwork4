@@ -39,48 +39,48 @@ Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 	return newTopic;
 }
 
-Discussion ObjectFactory::createDiscussion(const SocialNetwork& socialNetwork)
+Post ObjectFactory::createPost(const SocialNetwork& socialNetwork)
 {
 	if (!socialNetwork.isThereLoggedInUser()) {
-		throw std::runtime_error("Discussion could not be created! Please log in before posting!");
+		throw std::runtime_error("Post could not be created! Please log in before posting!");
 	}
 
 	if (!socialNetwork.isThereOpenedTopic()) {
-		throw std::runtime_error("Discussion could not be created! Please open a topic before posting!");
+		throw std::runtime_error("Post could not be created! Please open a topic before posting!");
 	}
 
 
-	Discussion newDiscussion; //optimisation: create an empty discussion ( no comments)
+	Post newPost; //optimisation: create an empty post ( no comments)
 
 	//Title
-	ConsoleInputGetter::recieveDiscussionTitleInput(newDiscussion);
-	if (!InputValidator::isValidTitle(newDiscussion.getTitle())) {
-		throw std::runtime_error("Discussion could not be created! Invalid Title!");
+	ConsoleInputGetter::recievePostTitleInput(newPost);
+	if (!InputValidator::isValidTitle(newPost.getTitle())) {
+		throw std::runtime_error("Post could not be created! Invalid Title!");
 	}
 
 	//Content
-	ConsoleInputGetter::recieveDiscussionContentInput(newDiscussion);
-	if (!InputValidator::isValidContent(newDiscussion.getContent())) {
-		throw std::runtime_error("Discussion could not be created! Invalid Content!");
+	ConsoleInputGetter::recievePostContentInput(newPost);
+	if (!InputValidator::isValidContent(newPost.getContent())) {
+		throw std::runtime_error("Post could not be created! Invalid Content!");
 	}
 
 	//topicId
-	newDiscussion.setTopicId(socialNetwork.getOpenedTopic().getId());
+	newPost.setTopicId(socialNetwork.getOpenedTopic().getId());
 
 	//creatorId
-	newDiscussion.setCreatorId(socialNetwork.getLoggedInUser().getId());
+	newPost.setCreatorId(socialNetwork.getLoggedInUser().getId());
 
 	//id
-	if (socialNetwork.getOpenedTopic().getDiscussions().back().getTitle() != nullptr) {
-		size_t lastDiscussionId = socialNetwork.getOpenedTopic().getDiscussions().back().getId();
-		newDiscussion.setId(lastDiscussionId + 1);
+	if (socialNetwork.getOpenedTopic().getPosts().back().getTitle() != nullptr) {
+		size_t lastPostId = socialNetwork.getOpenedTopic().getPosts().back().getId();
+		newPost.setId(lastPostId + 1);
 	}
 
 	else {
-		newDiscussion.setId(0);
+		newPost.setId(0);
 	}
 
-	return newDiscussion;
+	return newPost;
 }
 
 Comment ObjectFactory::createComment(const SocialNetwork& socialNetwork)
@@ -93,8 +93,8 @@ Comment ObjectFactory::createComment(const SocialNetwork& socialNetwork)
 		throw std::runtime_error("Comment could not be created! Please open a topic before commenting!");
 	}
 
-	if (!socialNetwork.isThereOpenedDiscussion()) {
-		throw std::runtime_error("Comment could not be created! Please open a discussion before commenting!");
+	if (!socialNetwork.isThereOpenedPost()) {
+		throw std::runtime_error("Comment could not be created! Please open a post before commenting!");
 	}
 
 	Comment newComment;
@@ -106,10 +106,10 @@ Comment ObjectFactory::createComment(const SocialNetwork& socialNetwork)
 
 	newComment.setAuthor(socialNetwork.getLoggedInUser().getUserName());
 	newComment.setScore(0);
-	newComment.setDiscussionId(socialNetwork.getOpenedDiscussion().getId());
+	newComment.setPostId(socialNetwork.getOpenedPost().getId());
 
-	if (socialNetwork.getOpenedDiscussion().getComments().back().getAuthor() != nullptr) {
-		size_t lastCommentId = socialNetwork.getOpenedDiscussion().getComments().back().getId();
+	if (socialNetwork.getOpenedPost().getComments().back().getAuthor() != nullptr) {
+		size_t lastCommentId = socialNetwork.getOpenedPost().getComments().back().getId();
 		newComment.setId(lastCommentId + 1);
 	}
 
@@ -130,8 +130,8 @@ Reply ObjectFactory::createReply(const SocialNetwork& socialNetwork, const Reply
 		throw std::runtime_error("Reply could not be created! Please open a topic before replying!");
 	}
 
-	if (!socialNetwork.isThereOpenedDiscussion()) {
-		throw std::runtime_error("Comment could not be created! Please open a discussion before replying!");
+	if (!socialNetwork.isThereOpenedPost()) {
+		throw std::runtime_error("Comment could not be created! Please open a post before replying!");
 	}
 
 	Comment newComment;
@@ -143,7 +143,7 @@ Reply ObjectFactory::createReply(const SocialNetwork& socialNetwork, const Reply
 
 	newComment.setAuthor(socialNetwork.getLoggedInUser().getUserName());
 	newComment.setScore(0);
-	newComment.setDiscussionId(socialNetwork.getOpenedDiscussion().getId());
+	newComment.setPostId(socialNetwork.getOpenedPost().getId());
 
 	if (parentCommentLastReply.getAuthor() != nullptr) {
 		newComment.setId(parentCommentLastReply.getId() + 1);

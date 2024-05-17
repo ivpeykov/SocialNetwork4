@@ -1,23 +1,23 @@
 #include "Topic.h"
 
-Topic::Topic() : title(nullptr), description(nullptr), creatorId(SIZE_MAX), id(SIZE_MAX), discussions(1) {}
+Topic::Topic() : title(nullptr), description(nullptr), creatorId(SIZE_MAX), id(SIZE_MAX), posts(1) {}
 
 Topic::Topic(const String& title, const String& description,
     const size_t creatorId, const size_t id) :
-    title(title), description(description), creatorId(creatorId), id(id), discussions(1) {}
+    title(title), description(description), creatorId(creatorId), id(id), posts(1) {}
 
 Topic::Topic(const char* title, const char* description,
     const size_t creatorId, const size_t id) :
-    title(title), description(description), creatorId(creatorId), id(id), discussions(1) {}
+    title(title), description(description), creatorId(creatorId), id(id), posts(1) {}
 
 Topic::Topic(const char* title, const char* description, 
-    const size_t creatorId, const size_t id, const Vector<Discussion>& discussions) : title(title), description(description), creatorId(creatorId), id(id), discussions(discussions)
+    const size_t creatorId, const size_t id, const Vector<Post>& posts) : title(title), description(description), creatorId(creatorId), id(id), posts(posts)
 {
 }
 
 Topic::Topic(const Topic& other) :
     title(other.title), description(other.description), creatorId(other.creatorId),
-    id(other.id), discussions(other.discussions) {}
+    id(other.id), posts(other.posts) {}
 
 Topic::~Topic()
 {
@@ -43,14 +43,14 @@ const size_t Topic::getId() const
     return id;
 }
 
-Vector<Discussion>& Topic::getDiscussions()
+Vector<Post>& Topic::getPosts()
 {
-    return discussions;
+    return posts;
 }
 
-const Vector<Discussion>& Topic::getDiscussions() const
+const Vector<Post>& Topic::getPosts() const
 {
-    return discussions;
+    return posts;
 }
 
 void Topic::setTitle(const char* newTitle)
@@ -83,9 +83,9 @@ void Topic::setId(const size_t newId)
     id = newId;
 }
 
-void Topic::addDiscussion(const Discussion& newDiscussion)
+void Topic::addPost(const Post& newPost)
 {
-    discussions.pushBack(newDiscussion);
+    posts.pushBack(newPost);
 }
 
 bool Topic::isEqualWithoutId(const Topic& other) const
@@ -93,7 +93,7 @@ bool Topic::isEqualWithoutId(const Topic& other) const
     return (title == other.title &&
         description == other.description &&
         creatorId == other.creatorId &&
-        discussions == other.discussions);
+        posts == other.posts);
 }
 
 bool Topic::isNotEqualWithoutId(const Topic& other) const
@@ -108,7 +108,7 @@ Topic& Topic::operator=(const Topic& other)
         description = other.description;
         creatorId = other.creatorId;
         id = other.id;
-        discussions = other.discussions;
+        posts = other.posts;
     }
 
     return *this;

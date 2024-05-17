@@ -1,100 +1,100 @@
-#include "Discussion.h"
+#include "Post.h"
 
-Discussion::Discussion() : title(nullptr), content(nullptr), topicId(SIZE_MAX), creatorId(SIZE_MAX), id(SIZE_MAX), comments(1) {}
+Post::Post() : title(nullptr), content(nullptr), topicId(SIZE_MAX), creatorId(SIZE_MAX), id(SIZE_MAX), comments(1) {}
 
-Discussion::Discussion(String& title,
+Post::Post(String& title,
 	String& content, size_t topicId,
 	size_t creatorId, size_t id) :
 	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments(1) {}
 
-Discussion::Discussion(const char* title, const char* content,
+Post::Post(const char* title, const char* content,
 	size_t topicId, size_t creatorId, size_t id) :
 	title(title), content(content), topicId(topicId), creatorId(creatorId), id(id), comments(1) {}
 
-Discussion::Discussion(const Discussion& other) :
+Post::Post(const Post& other) :
 	title(other.title), content(other.content), topicId(other.topicId),
 	creatorId(other.creatorId), id(other.id), comments(other.comments) {}
 
-Discussion::~Discussion()
+Post::~Post()
 {
 }
 
-const String& Discussion::getTitle() const
+const String& Post::getTitle() const
 {
 	return title;
 }
 
-const String& Discussion::getContent() const
+const String& Post::getContent() const
 {
 	return content;
 }
 
-const size_t Discussion::getTopicId() const
+const size_t Post::getTopicId() const
 {
 	return topicId;
 }
 
-const size_t Discussion::getCreatorId() const
+const size_t Post::getCreatorId() const
 {
 	return creatorId;
 }
 
-const size_t Discussion::getId() const
+const size_t Post::getId() const
 {
 	return id;
 }
 
-Vector<Comment>& Discussion::getComments()
+Vector<Comment>& Post::getComments()
 {
 	return comments;
 }
 
-const Vector<Comment>& Discussion::getComments() const
+const Vector<Comment>& Post::getComments() const
 {
 	return comments;
 }
 
-void Discussion::setTitle(const char* title)
+void Post::setTitle(const char* title)
 {
 	this->title = title;
 }
 
-void Discussion::setTitle(const String& title)
+void Post::setTitle(const String& title)
 {
 	this->title = title;
 }
 
-void Discussion::setContent(const char* content)
+void Post::setContent(const char* content)
 {
 	this->content = content;
 }
 
-void Discussion::setContent(const String& content)
+void Post::setContent(const String& content)
 {
 	this->content = content;
 }
 
-void Discussion::setTopicId(size_t topicId)
+void Post::setTopicId(size_t topicId)
 {
 	this->topicId = topicId;
 }
 
-void Discussion::setCreatorId(size_t creatorId)
+void Post::setCreatorId(size_t creatorId)
 {
 	this->creatorId = creatorId;
 }
 
-void Discussion::setId(size_t id)
+void Post::setId(size_t id)
 {
 	this->id = id;
 }
 
-void Discussion::addComment(const Comment& newComment)
+void Post::addComment(const Comment& newComment)
 {
 	comments.pushBack(newComment);
 }
 
-bool Discussion::isEqualWithoutId(const Discussion& other) const
+bool Post::isEqualWithoutId(const Post& other) const
 {
 	return (title == other.title &&
 		content == other.content &&
@@ -103,12 +103,12 @@ bool Discussion::isEqualWithoutId(const Discussion& other) const
 		comments == other.comments);
 }
 
-bool Discussion::isNotEqualWithoutId(const Discussion& other) const
+bool Post::isNotEqualWithoutId(const Post& other) const
 {
 	return !isEqualWithoutId(other);
 }
 
-void Discussion::clear()
+void Post::clear()
 {
 	title.clearString();
 	content.clearString();
@@ -118,7 +118,7 @@ void Discussion::clear()
 	comments.clear();
 }
 
-Discussion& Discussion::operator=(const Discussion& other)
+Post& Post::operator=(const Post& other)
 {
 	if (this != &other) {
 		title = other.title;
@@ -132,12 +132,12 @@ Discussion& Discussion::operator=(const Discussion& other)
 	return *this;
 }
 
-bool Discussion::operator==(const Discussion& other) const
+bool Post::operator==(const Post& other) const
 {
 	return (id == other.id && isEqualWithoutId(other));
 }
 
-bool Discussion::operator!=(const Discussion& other) const
+bool Post::operator!=(const Post& other) const
 {
 	return !(*this == other);
 }

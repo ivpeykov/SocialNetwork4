@@ -45,7 +45,7 @@
     <ClCompile Include="Topic.cpp">
       <Filter>Source Files\Business Classes</Filter>
     </ClCompile>
-    <ClCompile Include="Discussion.cpp">
+    <ClCompile Include="Post.cpp">
       <Filter>Source Files\Business Classes</Filter>
     </ClCompile>
     <ClCompile Include="Comment.cpp">
@@ -98,7 +98,7 @@
     <ClInclude Include="Topic.h">
       <Filter>Header Files\Business Classes</Filter>
     </ClInclude>
-    <ClInclude Include="Discussion.h">
+    <ClInclude Include="Post.h">
       <Filter>Header Files\Business Classes</Filter>
     </ClInclude>
     <ClInclude Include="Comment.h">

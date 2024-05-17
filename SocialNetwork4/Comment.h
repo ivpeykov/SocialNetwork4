@@ -12,10 +12,10 @@ public:
 	Comment();
 
 	Comment(const String& author, const String& text,
-		const int score, const size_t id, const size_t discussionId);
+		const int score, const size_t id, const size_t postId);
 
 	Comment(const char* author, const char* text,
-		const int score, const size_t id, const size_t discussionId);
+		const int score, const size_t id, const size_t postId);
 
 	Comment(const Comment& other);
 
@@ -23,7 +23,7 @@ public:
 	const String& getText() const;
 	const int getScore() const;
 	const size_t getId() const;
-	const size_t getDiscussionId() const;
+	const size_t getPostId() const;
 
 	const Vector<Reply>& getReplies() const;
 	Vector<Reply>& getReplies();
@@ -36,7 +36,7 @@ public:
 
 	void setScore(const int newScore);
 	void setId(const size_t newId);
-	void setDiscussionId(const size_t newDiscussionId);
+	void setPostId(const size_t newPostId);
 
 	void setReplies(const Vector<Reply>& newReplies);
 	void addReply(const Reply& newReply);
@@ -57,7 +57,7 @@ private:
 	String text;
 	int score;
 	size_t id;
-	size_t discussionId;
+	size_t postId;
 
 	Vector<Reply> replies;
 };

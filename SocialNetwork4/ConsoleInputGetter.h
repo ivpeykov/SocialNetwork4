@@ -5,6 +5,7 @@
 #include "User.h"
 #include "Topic.h"
 
+
 class ConsoleInputGetter
 {
 public:
@@ -29,10 +30,10 @@ public:
 	static void recieveTitleInput(Topic& newTopic);
 	static void recieveDescriptionInput(Topic& newTopic);
 
-	//Recieve Discussion Input data
-	static void recieveDiscussionTitleInput(Discussion& newDiscussion);
-	static void recieveDiscussionContentInput(Discussion& newDiscussion);
-	static void recieveOpenDiscussionIdInput(size_t& id);
+	//Recieve Post Input data
+	static void recievePostTitleInput(Post& newPost);
+	static void recievePostContentInput(Post& newPost);
+	static void recieveOpenPostIdInput(size_t& id);
 
 	//Recieve Comment Input data
 	static void recieveCommentTextInput(Comment& newComment);
