@@ -2,10 +2,8 @@
 
 Application& Application::getInstance()
 {
-	{
-		static Application instance;
-		return instance;
-	}
+	static Application instance;
+	return instance;
 }
 
 void Application::run()
@@ -38,6 +36,4 @@ void Application::run()
 	//PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
 }
 
-Application::Application()
-{
-}
+Application::Application() {}
