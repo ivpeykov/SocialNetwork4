@@ -5,6 +5,7 @@
 #include "SocialNetwork.h"
 #include "ObjectFactory.h"
 
+//Adjust COMMAND_INPUT_MAX_LENGTH in Configuration.h if adding longer commands.
 enum Command { //don't change order!
 
 	Load,

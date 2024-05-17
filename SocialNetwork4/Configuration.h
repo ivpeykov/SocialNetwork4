@@ -1,9 +1,6 @@
 #pragma once
 #include "String.h"
 
-
-//TODO: Try configuring the COMMAND_INPUT_MAX_LENGTH at compile time
-
 class Configuration
 {
 

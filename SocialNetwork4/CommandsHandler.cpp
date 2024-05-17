@@ -2,6 +2,7 @@
 
 unsigned short CommandsHandler::currCommand = Undefined;
 
+//Adjust COMMAND_INPUT_MAX_LENGTH in Configuration.h if adding longer commands.
 const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
 "open", "post", "list", "post_open", "comment", "reply", "post_quit", "help", "exit" }; //TODO: change order to be more grouped
 
@@ -16,9 +17,6 @@ bool CommandsHandler::networkLoaded = false;
 
 void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: ADD exception handling for all commands
 {
-    //consider adding failed tries
-
-    //add more commands here
     switch (currCommand) {
 
     case Load:
