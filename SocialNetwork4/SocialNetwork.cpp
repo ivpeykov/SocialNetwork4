@@ -50,7 +50,6 @@ const Post& SocialNetwork::getOpenedPost() const
 	return openedPost;
 }
 
-
 void SocialNetwork::setDirectory(const String& newDirectory)
 {
 	directory = newDirectory;
@@ -81,17 +80,22 @@ void SocialNetwork::setOpenedTopic(const Topic& newTopic)
 	openedTopic = newTopic;
 }
 
-bool SocialNetwork::isThereLoggedInUser() const
+void SocialNetwork::setOpenedPost(const Post& newPost)
+{
+	openedPost = newPost;
+}
+
+bool SocialNetwork::isThereLoggedInUser()
 {
 	return loggedInUser.getFirstName() != nullptr;
 }
 
-bool SocialNetwork::isThereOpenedTopic() const
+bool SocialNetwork::isThereOpenedTopic()
 {
 	return openedTopic.getTitle() != nullptr;
 }
 
-bool SocialNetwork::isThereOpenedPost() const
+bool SocialNetwork::isThereOpenedPost()
 {
 	return openedPost.getTitle() != nullptr;
 }
@@ -146,63 +150,8 @@ SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
 	return *this;
 }
 
-void SocialNetwork::signup()
+void SocialNetwork::signup(const User& newUser)
 {
-	User newUser;
-
-	//UserName
-	ConsoleInputGetter::recieveUserNameInput(newUser);
-	size_t userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
-
-	switch (userNameStatus) {
-
-	case 0:
-		std::cerr << "\nError creating Account! Invalid Username!" << std::endl;
-		return;
-	case 1:
-		break;
-	case 2:
-		std::cout << "User already exists!" << std::endl;
-		return;
-	default:
-		throw std::exception("Error with usersStatus when signing up!");
-	}
-
-	//Password
-	ConsoleInputGetter::recievePasswordInput(newUser);
-	if (!InputValidator::isValidPassword(newUser.getPassword())) {
-		std::cerr << "\nError creating Account! Invalid Password!" << std::endl;
-		return;
-	}
-
-	//FirstName
-	ConsoleInputGetter::recieveFirstNameInput(newUser);
-	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
-		std::cerr << "\nError creating Account! Invalid First Name!" << std::endl;
-		return;
-	}
-
-	//LastName
-	ConsoleInputGetter::recieveLastNameInput(newUser);
-	if (!InputValidator::isValidLastName(newUser.getLastName())) {
-		std::cerr << "\nError creating Account! Invalid Last Name!" << std::endl;
-		return;
-	}
-
-	//Moderator Status
-	if (currUsers.back().getFirstName() != nullptr) {
-		newUser.setModeratorStatus(false);
-		//ID
-		size_t lastUserId = currUsers.back().getId();
-		newUser.setId(lastUserId + 1); 
-	}
-
-	else {
-		newUser.setId(0);
-	}
-
-	//Points are automatically 0 when creating a user
-
 	currUsers.pushBack(newUser);
 	CurrentData::setChangesMadeStatus(true);
 }

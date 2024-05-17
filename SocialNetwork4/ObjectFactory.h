@@ -8,6 +8,13 @@ class SocialNetwork;
 class ObjectFactory
 {
 public:
+	static size_t getLastSignedUpUserId();
+	static size_t getLastCreatedTopicId();
+
+	static void setLastSignedUpUserId(const size_t newId);
+	static void setLastCreatedTopicId(const size_t newId);
+
+	static User createUser(const SocialNetwork& socialNetwork);
 
 	static Topic createTopic(const SocialNetwork& socialNetwork);
 
@@ -19,5 +26,8 @@ public:
 
 private:
 	ObjectFactory();
+
+	static size_t lastSignedUpUserId;
+	static size_t lastCreatedTopicId;
 };
 

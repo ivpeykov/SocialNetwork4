@@ -1,5 +1,85 @@
 #include "ObjectFactory.h"
 
+size_t ObjectFactory::lastSignedUpUserId = SIZE_MAX;
+size_t ObjectFactory::lastCreatedTopicId = SIZE_MAX;
+
+size_t ObjectFactory::getLastSignedUpUserId()
+{
+	return lastSignedUpUserId;
+}
+
+size_t ObjectFactory::getLastCreatedTopicId()
+{
+	return lastCreatedTopicId;
+}
+
+void ObjectFactory::setLastSignedUpUserId(const size_t newId)
+{
+	lastSignedUpUserId = newId;
+}
+
+void ObjectFactory::setLastCreatedTopicId(const size_t newId)
+{
+	lastCreatedTopicId = newId;
+}
+
+User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
+{
+	User newUser;
+
+	//UserName
+	ConsoleInputGetter::recieveUserNameInput(newUser);
+	size_t userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
+
+	switch (userNameStatus) {
+
+	case 0:
+		throw std::runtime_error("Error creating User! Invalid Username!!");
+		break;
+	case 1:
+		break;
+	case 2:
+		throw std::runtime_error("Error creating User! User already exists!");
+		break;
+	default:
+		throw std::exception("Error with usersStatus when signing up!");
+	}
+
+	//Password
+	ConsoleInputGetter::recievePasswordInput(newUser);
+	if (!InputValidator::isValidPassword(newUser.getPassword())) {
+		throw std::runtime_error("Error creating User! Invalid Password!");
+	}
+
+	//FirstName
+	ConsoleInputGetter::recieveFirstNameInput(newUser);
+	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
+		throw std::runtime_error("Error creating User! Invalid First Name!");
+	}
+
+	//LastName
+	ConsoleInputGetter::recieveLastNameInput(newUser);
+	if (!InputValidator::isValidLastName(newUser.getLastName())) {
+		throw std::runtime_error("Error creating User! Invalid Last Name!");
+	}
+
+	//Moderator Status
+	if (socialNetwork.getCurrUsers().back().getFirstName() != nullptr) {
+		newUser.setModeratorStatus(false);
+		//ID
+		newUser.setId(lastSignedUpUserId + 1);
+	}
+
+	else {
+		newUser.setId(0);
+		lastSignedUpUserId = 0;
+	}
+
+	//Points are automatically 0 when creating a user
+
+	return newUser;
+}
+
 Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 {
 	//Ensure a logged in user creates the topic
@@ -28,12 +108,12 @@ Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 
 	//id
 	if (socialNetwork.getCurrTopics().back().getTitle() != nullptr) {
-		size_t lastTopicId = socialNetwork.getCurrTopics().back().getId();
-		newTopic.setId(lastTopicId + 1);
+		newTopic.setId(lastCreatedTopicId + 1);
 	}
 
 	else {
 		newTopic.setId(0);
+		lastCreatedTopicId = 0;
 	}
 
 	return newTopic;
@@ -71,7 +151,7 @@ Post ObjectFactory::createPost(const SocialNetwork& socialNetwork)
 	newPost.setCreatorId(socialNetwork.getLoggedInUser().getId());
 
 	//id
-	if (socialNetwork.getOpenedTopic().getPosts().back().getTitle() != nullptr) {
+	if (socialNetwork.getOpenedTopic().getPosts().back().getTitle() != nullptr) { 
 		size_t lastPostId = socialNetwork.getOpenedTopic().getPosts().back().getId();
 		newPost.setId(lastPostId + 1);
 	}

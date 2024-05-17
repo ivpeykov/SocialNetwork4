@@ -54,6 +54,5 @@ private:
 	size_t creatorId;
 	size_t id;
 	Vector<Post> posts;
-
 };
 

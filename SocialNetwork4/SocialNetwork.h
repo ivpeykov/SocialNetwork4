@@ -28,12 +28,14 @@ public:
 	void setDirectory(const char* newDirectory);
 	void setCurrUsers(const Vector<User>& newUsers);
 	void setCurrTopics(const Vector<Topic>& newTopics);
-	void setLoggedInUser(const User& newUser);
-	void setOpenedTopic(const Topic& newTopic);
 
-	bool isThereLoggedInUser() const;
-	bool isThereOpenedTopic() const;
-	bool isThereOpenedPost() const;
+	static void setLoggedInUser(const User& newUser);
+	static void setOpenedTopic(const Topic& newTopic);
+	static void setOpenedPost(const Post& newPost);
+
+	static bool isThereLoggedInUser();
+	static bool isThereOpenedTopic();
+	static bool isThereOpenedPost();
 
 	bool isLoginSuccessful(User& user);
 
@@ -42,7 +44,7 @@ public:
 
 	SocialNetwork& operator=(const SocialNetwork& other);
 
-	void signup();
+	void signup(const User& newUser);
 
 	void login();
 

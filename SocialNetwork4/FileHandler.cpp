@@ -127,6 +127,7 @@ void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users
 
 		users.pushBack(newUser);
 	}
+	ObjectFactory::setLastSignedUpUserId(newUser.getId());
 }
 
 void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& topics)
@@ -175,6 +176,7 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& top
 
 		topics.pushBack(newTopic);
 	}
+	ObjectFactory::setLastCreatedTopicId(newTopic.getId());
 }
 
 void FileHandler::loadPosts(std::fstream& socialNetworkFile, Topic& topic)
