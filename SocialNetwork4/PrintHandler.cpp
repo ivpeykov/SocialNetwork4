@@ -25,39 +25,39 @@ void PrintHandler::printUser(const User& user)
 
 void PrintHandler::printTopic(const Topic& topic)
 {
-	std::cout << "\nTitle:" << topic.getTitle() << std::endl
+	std::cout << "\nTOPIC\nTitle:" << topic.getTitle() << std::endl
 		<< "Description:" << topic.getDescription() << std::endl
 		<< "Creator Id:" << topic.getCreatorId() << std::endl
 		<< "ID:" << topic.getId() << std::endl
 		<< "Posts:... " << std::endl;
-	printPosts(topic);
+	printPosts(topic.getPosts());
 }
 
 void PrintHandler::printPost(const Post& post)
 {
-	std::cout << "\nTitle:" << post.getTitle() << std::endl
+	std::cout << "\nPOST\nTitle:" << post.getTitle() << std::endl
 		<< "Content:" << post.getContent() << std::endl
 		<< "Topic Id:" << post.getTopicId() << std::endl
 		<< "Creator Id: " << post.getCreatorId() << std::endl
 		<< "ID:" << post.getId() << std::endl
 		<< "Comments:... " << std::endl;
-	printComments(post);
+	printComments(post.getComments());
 }
 
 void PrintHandler::printComment(const Comment& comment)
 {
-	std::cout << "\nAuthor:" << comment.getAuthor() << std::endl
+	std::cout << "\nCOMMENT\nAuthor:" << comment.getAuthor() << std::endl
 		<< "Text:" << comment.getText() << std::endl
 		<< "Score:" << comment.getScore() << std::endl
 		<< "ID:" << comment.getId() << std::endl
 		<< "Post ID: " << comment.getPostId() << std::endl
 		<< "Replies..." << std::endl;
-	printReplies(comment);
+	printReplies(comment.getReplies());
 }
 
 void PrintHandler::printReply(const Reply& reply)
 {
-	std::cout << "\nAuthor:" << reply.getAuthor() << std::endl
+	std::cout << "\nREPLY\nAuthor:" << reply.getAuthor() << std::endl
 		<< "Text:" << reply.getText() << std::endl
 		<< "Score:" << reply.getScore() << std::endl
 		<< "ID:" << reply.getId() << std::endl
@@ -96,10 +96,10 @@ void PrintHandler::printTopics(const Vector<Topic>& topics)
 	}
 }
 
-void PrintHandler::printPosts(const Topic& topic)
+void PrintHandler::printPosts(const Vector<Post>& posts)
 {
 
-	size_t postsSize = topic.getPosts().getSize();
+	size_t postsSize = posts.getSize();
 
 	if (postsSize == 0) {
 		std::cout << "No Posts!" << std::endl;
@@ -107,13 +107,13 @@ void PrintHandler::printPosts(const Topic& topic)
 	}
 
 	for (size_t i = 0; i < postsSize; i++) {
-		printPost(topic.getPosts()[i]);
+		printPost(posts[i]);
 	}
 }
 
-void PrintHandler::printComments(const Post& post)
+void PrintHandler::printComments(const Vector<Comment>& comments)
 {
-	size_t commentsSize = post.getComments().getSize();
+	size_t commentsSize = comments.getSize();
 
 	if (commentsSize == 0) {
 		std::cout << "No Comments!" << std::endl;
@@ -121,13 +121,13 @@ void PrintHandler::printComments(const Post& post)
 	}
 
 	for (size_t i = 0; i < commentsSize; i++) {
-		printComment(post.getComments()[i]);
+		printComment(comments[i]);
 	}
 }
 
-void PrintHandler::printReplies(const Comment& comment)
+void PrintHandler::printReplies(const Vector<Reply>& replies)
 {
-	size_t repliesCount = comment.getReplies().getSize();
+	size_t repliesCount = replies.getSize();
 
 	if (repliesCount == 0) {
 		std::cout << "No Replies!" << std::endl;
@@ -135,7 +135,7 @@ void PrintHandler::printReplies(const Comment& comment)
 	}
 
 	for (size_t i = 0; i < repliesCount; i++) {
-		printReply(comment.getReplies()[i]);
+		printReply(replies[i]);
 	}
 
 }

@@ -78,6 +78,8 @@ public:
 
 	void replyToComment(const size_t parentId);
 
+	const void printOpenedPostComments() const;
+
 	void upvoteComment();
 
 	void downvoteComment();

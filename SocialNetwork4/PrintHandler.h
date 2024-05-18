@@ -22,9 +22,9 @@ public:
 
 	static void printUsers(const Vector<User>& users);
 	static void printTopics(const Vector<Topic>& topics);
-	static void printPosts(const Topic& topic);
-	static void printComments(const Post& post);
-	static void printReplies(const Comment& comment);
+	static void printPosts(const Vector<Post>& posts);
+	static void printComments(const Vector<Comment>& comments);
+	static void printReplies(const Vector<Reply>& replies);
 
 	static void printTopicsForSearch(const Vector<Topic>& topics);
 	static void printPostsForList(const Vector<Post>& posts);

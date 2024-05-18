@@ -18,7 +18,7 @@ public:
 	static const unsigned POST_CONTENT_MAX_LENGTH = 40000;
 	static const unsigned COMMENT_AUTHOR_NAME_MAX_LENGTH = 128;
 	static const unsigned COMMENT_TEXT_MAX_LENGTH = 10000;
-	static const unsigned short COMMAND_INPUT_MAX_LENGTH = 10; // Longest command + \0 length. Adjust if more commands are added
+	static const unsigned short COMMAND_INPUT_MAX_LENGTH = 15; // Longest command + \0 length. Adjust if more commands are added
 	static const short MAX_DIGITS_INPUT;
 
 	static constexpr short calculate_MAX_DIGITS_INPUT();

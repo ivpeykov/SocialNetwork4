@@ -241,7 +241,7 @@ void SocialNetwork::login()
 	}
 }
 
-void SocialNetwork::logout() //TODO : refactor this to use the ObjectFactory
+void SocialNetwork::logout()
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Couldn't log out! No user is logged in!" << std::endl;
@@ -391,7 +391,7 @@ void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFac
 		return;
 	}
 
-	size_t userPos = 0;
+	size_t userPos = 0; //TODO use findCorrespondingUserPosition
 	bool userFound = false;
 	bool newModeratorStatus = false;
 	size_t usersSize = currUsers.getSize();
@@ -671,9 +671,9 @@ void SocialNetwork::openPost()
 		ConsoleInputGetter::recieveOpenPostIdInput(id);
 	}
 
-	catch (std::exception e) {
-		std::cout << e.what() << std::endl;
-		std::cout << "Could not open post!" << std::endl;
+	catch (const std::exception&) {
+		//std::cout << e.what() << std::endl;
+		std::cout << "Could not open post! Invalid ID input!" << std::endl;
 		return;
 	}
 
@@ -790,6 +790,16 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	std::cout << "Successfully replied!" << std::endl;
 }
 
+const void SocialNetwork::printOpenedPostComments() const
+{
+	if (!isThereOpenedPost()) {
+		std::cout << "Could not print comments and replies! Please open a post first!" << std::endl;
+		return;
+	}
+
+	PrintHandler::printComments(openedPost.getComments());
+}
+
 void SocialNetwork::upvoteComment()
 {
 	if (!isThereLoggedInUser()) {
@@ -807,7 +817,7 @@ void SocialNetwork::upvoteComment()
 	try {
 		commentId = chooseCommentForReaction();
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception&) {
 		std::cout << "Could not upvote comment! " << std::endl;
 		return;
 	}
@@ -836,7 +846,7 @@ void SocialNetwork::upvoteComment()
 
 	size_t topicPos = SIZE_MAX;
 	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId()); //TODO: do this extraction for other methods that use the find
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
 	}
 	catch (const std::runtime_error& e) {
 		std::cout << e.what() << std::endl;
@@ -921,7 +931,7 @@ void SocialNetwork::downvoteComment()
 	try {
 		commentId = chooseCommentForReaction();
 	}
-	catch (const std::exception& e) {
+	catch (const std::exception&) {
 		std::cout << "Could not downvote comment! " << std::endl;
 		return;
 	}
@@ -937,7 +947,7 @@ void SocialNetwork::downvoteComment()
 
 	// check if comment is already reacted to, if upvoted or not reacted - continue, if downvoted - reject operation
 	const Reaction* userReaction = openedPost.getComments()[commentPosition].getUserReaction(loggedInUser.getId());
-	bool reactionType = undefined;
+	ReactionType reactionType = undefined;
 	if (userReaction != nullptr) { //case 0.0: reaction exists
 		reactionType = userReaction->getReactionType();
 		if (reactionType == downvote) { //case 0.1: reaction is upvote - reject
@@ -950,7 +960,7 @@ void SocialNetwork::downvoteComment()
 
 	size_t topicPos = SIZE_MAX;
 	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId()); //TODO: do this extraction for other methods that use the find
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
 	}
 	catch (const std::runtime_error& e) {
 		std::cout << e.what() << std::endl;

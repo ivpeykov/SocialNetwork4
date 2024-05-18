@@ -141,4 +141,3 @@ bool Post::operator!=(const Post& other) const
 {
 	return !(*this == other);
 }
-

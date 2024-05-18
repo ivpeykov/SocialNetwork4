@@ -3,8 +3,6 @@
 #include "String.h"
 #include "Comment.h"
 
-//add move semantics
-
 class Post
 {
 public:

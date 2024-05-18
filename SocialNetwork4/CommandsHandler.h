@@ -22,6 +22,7 @@ enum Command { //don't change order!
 	AddPost,
 	List,
 	PostOpen,
+	PrintPostComments,
 	AddComment,
 	ReplyToComment,
 	Upvote,
@@ -35,7 +36,7 @@ enum Command { //don't change order!
 	Undefined = 999
 };
 
-class SocialNetwork;
+//class SocialNetwork;
 
 class CommandsHandler
 {
