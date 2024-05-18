@@ -701,45 +701,28 @@ void SocialNetwork::addComment(const Comment& newComment)
 		throw std::runtime_error("Could not comment! Please open a post before commenting!");
 	}
 
-	//Find corresponding topic
-	size_t searchedTopicId = openedTopic.getId();
-	size_t topicsSize = currTopics.getSize();
-	bool topicFound = false;
 
-	size_t topicPos = 0;
-	for (topicPos; topicPos < topicsSize; ++topicPos) {
-
-		if (searchedTopicId == currTopics[topicPos].getId()) {
-			topicFound = true;
-			break;
-		}
+	size_t topicPos = SIZE_MAX;
+	try {
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
 	}
-
-	if (topicFound == false) {
-		throw std::runtime_error("Topic not found");
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
 	}
-
-	//Find corresponding post
-	size_t searchedPostId = openedPost.getId();
-	size_t postsSize = currTopics[topicPos].getPosts().getSize();
-	bool postFound = false;
-
-	size_t postPos = 0;
-	for (postPos; postPos < postsSize; ++postPos) {
-		if (searchedPostId == currTopics[topicPos].getPosts()[postPos].getId()) {
-			currTopics[topicPos].getPosts()[postPos].addComment(newComment); // update currTopics vector
-			CurrentData::setChangesMadeStatus(true);
-			postFound = true;
-			break;
-		}
+	size_t postPos = SIZE_MAX;
+	try {
+		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
 	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}	
 
-	if (postFound == false) {
-		throw std::runtime_error("Post not found");
-	}
-
+	currTopics[topicPos].getPosts()[postPos].addComment(newComment); // update currTopics vector
 	openedPost.addComment(newComment); //update static object openedPost
 	openedTopic.getPosts()[postPos].addComment(newComment); //update static object openedTopic
+	CurrentData::setChangesMadeStatus(true);
 
 	std::cout << "Successfully commented!" << std::endl;
 }
@@ -768,46 +751,28 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	Reply newReply = ObjectFactory::createReply(*this, parentCommentLastReply, parentId);
 
 
-	//Find corresponding topic
-	size_t searchedTopicId = openedTopic.getId();
-	size_t topicsSize = currTopics.getSize();
-	bool topicFound = false;
-
-	size_t topicPos = 0;
-	for (topicPos; topicPos < topicsSize; ++topicPos) {
-
-		if (searchedTopicId == currTopics[topicPos].getId()) {
-			topicFound = true;
-			break;
-		}
+	size_t topicPos = SIZE_MAX;
+	try {
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
 	}
 
-	if (topicFound == false) {
-		throw std::runtime_error("Topic not found");
+	size_t postPos = SIZE_MAX;
+	try {
+		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
 	}
 
-
-	//Find corresponding post
-	size_t searchedPostId = openedPost.getId();
-	size_t postsSize = currTopics[topicPos].getPosts().getSize();
-	bool postFound = false;
-
-	size_t postPos = 0;
-	for (postPos; postPos < postsSize; ++postPos) {
-		if (searchedPostId == currTopics[topicPos].getPosts()[postPos].getId()) {
-			currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
-			CurrentData::setChangesMadeStatus(true);
-			postFound = true;
-			break;
-		}
-	}
-
-	if (postFound == false) {
-		throw std::runtime_error("Post not found");
-	}
-
+	currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
 	openedPost.getComments()[commentPosition].addReply(newReply); //update static object openedPost
 	openedTopic.getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
+	CurrentData::setChangesMadeStatus(true);
 
 	std::cout << "Successfully replied!" << std::endl;
 }
