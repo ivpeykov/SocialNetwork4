@@ -50,6 +50,8 @@ public:
 
 	size_t findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos);
 
+	const size_t chooseCommentForReaction() const;
+
 	void signup(const User& newUser);
 
 	void login();

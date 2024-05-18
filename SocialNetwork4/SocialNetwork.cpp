@@ -191,6 +191,19 @@ size_t SocialNetwork::findCorrespondingPostPosition(const size_t searchedPostId,
 	throw std::runtime_error("Post not found");
 }
 
+const size_t SocialNetwork::chooseCommentForReaction() const
+{
+	size_t commentId = SIZE_MAX;
+	try {
+		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+	}
+	catch (const std::exception& e) {
+		std::cout << "Could not choose comment! " << e.what() << std::endl;
+		throw;
+	}
+	return commentId;
+}
+
 void SocialNetwork::signup(const User& newUser)
 {
 	currUsers.pushBack(newUser);
@@ -789,14 +802,13 @@ void SocialNetwork::upvoteComment()
 		return;
 	}
 
-	//choose which comment to upvote TODO: extract this into into its own method
-	std::cout << "Choose comment...\n";
+	//choose which comment to upvote
 	size_t commentId = SIZE_MAX;
 	try {
-		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+		commentId = chooseCommentForReaction();
 	}
 	catch (const std::exception& e) {
-		std::cout << "Could not upvote comment! " << e.what();
+		std::cout << "Could not upvote comment! " << std::endl;
 		return;
 	}
 
@@ -903,14 +915,14 @@ void SocialNetwork::downvoteComment()
 		return;
 	}
 
-	std::cout << "Choose comment...\n";
+
 	//choose which comment to downvote
 	size_t commentId = SIZE_MAX;
 	try {
-		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+		commentId = chooseCommentForReaction();
 	}
 	catch (const std::exception& e) {
-		std::cout << "Could not downvote comment! " << e.what();
+		std::cout << "Could not downvote comment! " << std::endl;
 		return;
 	}
 
