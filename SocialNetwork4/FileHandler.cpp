@@ -17,7 +17,7 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 {
 
 	ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
-	if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) { // TODO : move this code into the load method
+	if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
 
 		ConsoleInputGetter::resetSocialNetworkDirectoryInput();
 
@@ -249,7 +249,7 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Post& post)
 
 	Comment newComment;
 	int score = 0;
-	size_t id = 0, postId = 0;
+	size_t id = 0, postId = 0, authorId = 0;
 
 	char* string = nullptr;
 
@@ -273,15 +273,19 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Post& post)
 		socialNetworkFile.read(reinterpret_cast<char*>(&score), sizeof(score));
 		socialNetworkFile.read(reinterpret_cast<char*>(&id), sizeof(id));
 		socialNetworkFile.read(reinterpret_cast<char*>(&postId), sizeof(postId));
+		socialNetworkFile.read(reinterpret_cast<char*>(&authorId), sizeof(authorId));
 		newComment.setScore(score);
 		newComment.setId(id);
 		newComment.setPostId(postId);
+		newComment.setAuthorId(authorId);
 
 		if (i != 0) {
 			newComment.getReplies().clear();
+			newComment.getReactions().clear();
 		}
 		//load Replies
 		loadReplies(socialNetworkFile, newComment);
+		loadReactions(socialNetworkFile, newComment);
 
 		post.addComment(newComment);
 	}
@@ -334,6 +338,35 @@ void FileHandler::loadReplies(std::fstream& socialNetworkFile, Comment& comment)
 		newReply.setParentCommentId(parentCommentId);
 
 		comment.addReply(newReply);
+	}
+}
+
+void FileHandler::loadReactions(std::fstream& socialNetworkFile, Comment& comment)
+{
+	size_t reactionsCount = 0;
+
+	socialNetworkFile.read(reinterpret_cast<char*>(&reactionsCount), sizeof(reactionsCount));
+
+	if (reactionsCount == 0) return;
+
+	comment.getReactions().resize(reactionsCount + 10);
+	//add 10 more places to save some time/resources
+
+	Reaction newReaction;
+	size_t userId = SIZE_MAX, position = SIZE_MAX;
+	bool reactionType = false;
+
+	for (size_t i = 0; i < reactionsCount; i++) {
+	
+		//load score, id, postsId, parentCommentId
+		socialNetworkFile.read(reinterpret_cast<char*>(&userId), sizeof(userId));
+		socialNetworkFile.read(reinterpret_cast<char*>(&reactionType), sizeof(reactionType));
+		socialNetworkFile.read(reinterpret_cast<char*>(&position), sizeof(position));
+		
+		newReaction.setUserId(userId);
+		newReaction.setReaction(ReactionType(reactionType));
+		newReaction.setPosition(position);
+		comment.addReaction(newReaction);
 	}
 }
 
@@ -493,13 +526,18 @@ void FileHandler::saveComments(std::ofstream& socialNetworkFile, const Vector<Co
 		int score = comments[i].getScore();
 		size_t id = comments[i].getId();
 		size_t postId = comments[i].getPostId();
+		size_t authorId = comments[i].getAuthorId();
 
 		socialNetworkFile.write(reinterpret_cast<const char*>(&score), sizeof(score));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&id), sizeof(id));
 		socialNetworkFile.write(reinterpret_cast<const char*>(&postId), sizeof(postId));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&authorId), sizeof(authorId));
 
 		//save replies
 		saveReplies(socialNetworkFile, comments[i].getReplies());
+
+		//save reactions
+		saveReactions(socialNetworkFile, comments[i].getReactions());
 	}
 }
 
@@ -535,4 +573,22 @@ void FileHandler::saveReplies(std::ofstream& socialNetworkFile, const Vector<Rep
 		socialNetworkFile.write(reinterpret_cast<const char*>(&parentCommentId), sizeof(parentCommentId));
 
 	}
+}
+
+void FileHandler::saveReactions(std::ofstream& socialNetworkFile, const Vector<Reaction>& reactions)
+{
+	size_t reactionsCount = reactions.getSize();
+	socialNetworkFile.write(reinterpret_cast<const char*>(&reactionsCount), sizeof(reactionsCount));
+
+	for (size_t i = 0; i < reactionsCount; i++) {
+	
+		size_t userId = reactions[i].getUserId();
+		bool reaction = reactions[i].getReactionType();
+		size_t position = reactions[i].getPosition();
+
+		socialNetworkFile.write(reinterpret_cast<const char*>(&userId), sizeof(userId));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&reaction), sizeof(reaction));
+		socialNetworkFile.write(reinterpret_cast<const char*>(&position), sizeof(position));
+	}
+
 }

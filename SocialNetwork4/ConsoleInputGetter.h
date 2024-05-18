@@ -37,7 +37,7 @@ public:
 
 	//Recieve Comment Input data
 	static void recieveCommentTextInput(Comment& newComment);
-	static size_t recieveIdInputForCommentReply();
+	static size_t recieveIdInputForChoosingComment();
 
 	static String& getSocialNetworkDirectoryInput();
 

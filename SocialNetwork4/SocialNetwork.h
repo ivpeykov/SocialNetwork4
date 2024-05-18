@@ -7,7 +7,7 @@
 #include "Topic.h"
 #include "Post.h"
 
-class SocialNetwork
+class SocialNetwork //TODO: reorder methods, as in CommandsHandler cases
 {
 public:
 
@@ -39,10 +39,16 @@ public:
 
 	bool isLoginSuccessful(User& user);
 
-	size_t doesUsernameExist(const String& userName) const;
-	size_t doesCommentExist(const size_t id, const Vector<Comment>& comments) const;
+	size_t getUserPosition(const String& userName) const;
+	size_t getCommentPosition(const size_t id, const Vector<Comment>& comments) const;
 
 	SocialNetwork& operator=(const SocialNetwork& other);
+
+	size_t findCorrespondingUserPosition(const size_t searchedUserId);
+
+	size_t findCorrespondingTopicPosition(const size_t searchedTopicId);
+
+	size_t findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos);
 
 	void signup(const User& newUser);
 
@@ -69,6 +75,10 @@ public:
 	void addComment(const Comment& newComment); //can use move semantics here
 
 	void replyToComment(const size_t parentId);
+
+	void upvoteComment();
+
+	void downvoteComment();
 
 	void quitOpenedPost();
 

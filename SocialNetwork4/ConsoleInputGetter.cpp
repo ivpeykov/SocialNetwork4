@@ -402,7 +402,7 @@ void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
     newComment.setText(comment);
 }
 
-size_t ConsoleInputGetter::recieveIdInputForCommentReply()
+size_t ConsoleInputGetter::recieveIdInputForChoosingComment()
 {
 
     if (isBufferOverfilled()) {
@@ -429,7 +429,7 @@ size_t ConsoleInputGetter::recieveIdInputForCommentReply()
     try {
         id = strInput.toNum();
     }
-    catch (std::exception e) {
+    catch (const std::exception& e) {
         delete[] input;
         throw e;
     }

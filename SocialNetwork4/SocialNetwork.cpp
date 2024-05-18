@@ -116,7 +116,7 @@ bool SocialNetwork::isLoginSuccessful(User& user)
 
 }
 
-size_t SocialNetwork::doesUsernameExist(const String& userName) const
+size_t SocialNetwork::getUserPosition(const String& userName) const 
 {
 	size_t usersSize = currUsers.getSize();
 
@@ -127,7 +127,7 @@ size_t SocialNetwork::doesUsernameExist(const String& userName) const
 	return SIZE_MAX;
 }
 
-size_t SocialNetwork::doesCommentExist(const size_t id, const Vector<Comment>& comments) const
+size_t SocialNetwork::getCommentPosition(const size_t id, const Vector<Comment>& comments) const 
 {
 	size_t commentsSize = comments.getSize();
 
@@ -148,6 +148,47 @@ SocialNetwork& SocialNetwork::operator=(const SocialNetwork& other) {
 	}
 
 	return *this;
+}
+
+size_t SocialNetwork::findCorrespondingUserPosition(const size_t searchedUserId)
+{
+	size_t usersSize = currUsers.getSize();
+	for (size_t userPos = 0; userPos < usersSize; ++userPos) {
+		if (searchedUserId == currUsers[userPos].getId()) {
+			return userPos;
+		}
+	}
+
+	throw std::runtime_error("User not found");
+}
+
+size_t SocialNetwork::findCorrespondingTopicPosition(const size_t searchedTopicId)
+{
+	//Find corresponding topic
+
+	size_t topicsSize = currTopics.getSize();
+
+	
+	for (size_t topicPos = 0; topicPos < topicsSize; ++topicPos) {
+
+		if (searchedTopicId == currTopics[topicPos].getId()) {
+			return topicPos;
+		}
+	}
+	throw std::runtime_error("Topic not found");
+}
+
+size_t SocialNetwork::findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos)
+{
+	//Find corresponding post
+	size_t postsSize = currTopics[topicPos].getPosts().getSize();
+
+	for (size_t postPos = 0; postPos < postsSize; ++postPos) {
+		if (searchedPostId == currTopics[topicPos].getPosts()[postPos].getId()) {
+			return postPos;
+		}
+	}
+	throw std::runtime_error("Post not found");
 }
 
 void SocialNetwork::signup(const User& newUser)
@@ -187,7 +228,7 @@ void SocialNetwork::login()
 	}
 }
 
-void SocialNetwork::logout()
+void SocialNetwork::logout() //TODO : refactor this to use the ObjectFactory
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Couldn't log out! No user is logged in!" << std::endl;
@@ -315,7 +356,7 @@ void SocialNetwork::editLoggedInUser()
 	}
 }
 
-void SocialNetwork::editUserAsModerator()
+void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFactory
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Only logged in moderators can edit profiles! Please login first!" << std::endl;
@@ -461,8 +502,6 @@ void SocialNetwork::editUserAsModerator()
 		default:
 			break;
 		}
-
-
 	}
 
 }
@@ -514,7 +553,7 @@ void SocialNetwork::openTopic(){
 
 	std::cout << "Enter full title name or topic id (Note: If title name is a number, please use its id!): ";
 
-	Topic tempTopic; //optimisation: create an empty topic (no posts, no comments)
+	Topic tempTopic; //optimisation: create an empty topic (no posts, no comments) TODO : create new ctor with size_t PostsSize so it can be 0
 
 	ConsoleInputGetter::recieveTitleInput(tempTopic);
 	if (!InputValidator::isValidTitle(tempTopic.getTitle())) {
@@ -691,6 +730,7 @@ void SocialNetwork::addComment(const Comment& newComment)
 			currTopics[topicPos].getPosts()[postPos].addComment(newComment); // update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
 			postFound = true;
+			break;
 		}
 	}
 
@@ -699,7 +739,7 @@ void SocialNetwork::addComment(const Comment& newComment)
 	}
 
 	openedPost.addComment(newComment); //update static object openedPost
-	openedTopic.getPosts()[postPos - 1].addComment(newComment); //update static object openedTopic
+	openedTopic.getPosts()[postPos].addComment(newComment); //update static object openedTopic
 
 	std::cout << "Successfully commented!" << std::endl;
 }
@@ -710,7 +750,7 @@ void SocialNetwork::replyToComment(const size_t parentId)
 		throw std::runtime_error("Could not reply! Please log in before replying!");
 	}
 
-	if (!isThereOpenedTopic()) {
+	if (!isThereOpenedTopic()) { //TOOD: remove? because we can't have an opened topic if we have an opened post. Remove everywhere else where we don't need this
 		throw std::runtime_error("Could not reply! Please open a topic before replying!");
 	}
 
@@ -718,7 +758,7 @@ void SocialNetwork::replyToComment(const size_t parentId)
 		throw std::runtime_error("Could not reply! Please open a post before replying!");
 	}
 
-	size_t commentPosition = doesCommentExist(parentId, openedPost.getComments());
+	size_t commentPosition = getCommentPosition(parentId, openedPost.getComments());
 
 	if (commentPosition == SIZE_MAX) {
 		throw std::runtime_error("Comment not found!");
@@ -758,6 +798,7 @@ void SocialNetwork::replyToComment(const size_t parentId)
 			currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
 			CurrentData::setChangesMadeStatus(true);
 			postFound = true;
+			break;
 		}
 	}
 
@@ -766,9 +807,239 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	}
 
 	openedPost.getComments()[commentPosition].addReply(newReply); //update static object openedPost
-	openedTopic.getPosts()[postPos - 1].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
+	openedTopic.getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
 
 	std::cout << "Successfully replied!" << std::endl;
+}
+
+void SocialNetwork::upvoteComment()
+{
+	if (!isThereLoggedInUser()) {
+		std::cout << "Could not upvote comment! Please log in first!" << std::endl;
+		return;
+	}
+
+	if (!isThereOpenedPost()) {
+		std::cout << "Could not upvote comment! Please open a topic first!" << std::endl;
+		return;
+	}
+
+	//choose which comment to upvote TODO: extract this into into its own method
+	std::cout << "Choose comment...\n";
+	size_t commentId = SIZE_MAX;
+	try {
+		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+	}
+	catch (const std::exception& e) {
+		std::cout << "Could not upvote comment! " << e.what();
+		return;
+	}
+
+	//check if comment exists
+
+	size_t commentPosition = getCommentPosition(commentId, openedPost.getComments());
+
+	if (commentPosition == SIZE_MAX) {
+		std::cout << "Could not upvote comment! Comment doesn't exist!" << std::endl;
+		return;
+	}
+
+	// check if comment is already reacted to, if downvoted or not reacted - continue, if upvoted - reject operation
+	const Reaction* userReaction = openedPost.getComments()[commentPosition].getUserReaction(loggedInUser.getId());
+	ReactionType reactionType = undefined;
+	if (userReaction != nullptr) { //case 0.0: reaction exists
+		reactionType = userReaction->getReactionType();
+		if (reactionType == upvote) { //case 0.1: reaction is upvote - reject
+			std::cout << "Could not upvote comment! You have already upvoted it!" << std::endl;
+			return;
+		}
+
+		//case 0.2: reaction is downvote - continue
+	}
+
+	size_t topicPos = SIZE_MAX;
+	try {
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId()); //TODO: do this extraction for other methods that use the find
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+	size_t postPos = SIZE_MAX;
+	try{
+		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+	size_t authorId = currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].getAuthorId();
+	size_t userPos = findCorrespondingUserPosition(authorId);
+
+	if (reactionType == downvote) { //Increment by two to compensate for the change from downvote to upvote
+		//update author points
+		currUsers[userPos].incrementPoints(2);
+		if (currUsers[userPos] == loggedInUser) {
+			loggedInUser.incrementPoints(2);
+		}
+
+
+		//update currTopics
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].incrementScore(2);
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
+
+		//update openedTopic
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].incrementScore(2);
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
+
+
+		//update openedPost
+		openedPost.getComments()[commentPosition].incrementScore(2);
+		openedPost.getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
+	}
+
+	else if(reactionType == undefined) { //case 1: reaction doesn't exist
+
+		//update author points
+		if (currUsers[userPos] == loggedInUser) {
+			loggedInUser.incrementPoints(1);
+		}
+		currUsers[userPos].incrementPoints(1);
+
+		Reaction newReaction(loggedInUser.getId(), upvote);
+
+		//update currTopics
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].incrementScore();
+
+		//update openedTopic
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].incrementScore();
+
+		//update openedPost
+		openedPost.getComments()[commentPosition].addReaction(newReaction);
+		openedPost.getComments()[commentPosition].incrementScore();
+	}
+
+	CurrentData::setChangesMadeStatus(true);
+}
+
+void SocialNetwork::downvoteComment()
+{
+	if (!isThereLoggedInUser()) {
+		std::cout << "Could not downvote comment! Please log in first!" << std::endl;
+		return;
+	}
+
+	if (!isThereOpenedPost()) {
+		std::cout << "Could not downvote comment! Please open a topic first!" << std::endl;
+		return;
+	}
+
+	std::cout << "Choose comment...\n";
+	//choose which comment to downvote
+	size_t commentId = SIZE_MAX;
+	try {
+		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+	}
+	catch (const std::exception& e) {
+		std::cout << "Could not downvote comment! " << e.what();
+		return;
+	}
+
+	//check if comment exists
+
+	size_t commentPosition = getCommentPosition(commentId, openedPost.getComments());
+
+	if (commentPosition == SIZE_MAX) {
+		std::cout << "Could not downvote comment! Comment doesn't exist!" << std::endl;
+		return;
+	}
+
+	// check if comment is already reacted to, if upvoted or not reacted - continue, if downvoted - reject operation
+	const Reaction* userReaction = openedPost.getComments()[commentPosition].getUserReaction(loggedInUser.getId());
+	bool reactionType = undefined;
+	if (userReaction != nullptr) { //case 0.0: reaction exists
+		reactionType = userReaction->getReactionType();
+		if (reactionType == downvote) { //case 0.1: reaction is upvote - reject
+			std::cout << "Could not downvoted comment! You have already downvoted it!" << std::endl;
+			return;
+		}
+
+		//case 0.2: reaction is upvoted - continue
+	}
+
+	size_t topicPos = SIZE_MAX;
+	try {
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId()); //TODO: do this extraction for other methods that use the find
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+	size_t postPos = SIZE_MAX;
+	try {
+		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+
+	size_t authorId = currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].getAuthorId();
+	size_t userPos = findCorrespondingUserPosition(authorId);
+
+	if (reactionType == upvote && userReaction != nullptr) { //decrement by two to compensate for the change from upvote to downvote
+		//update author points
+		currUsers[userPos].decrementPoints(2);
+		if (currUsers[userPos] == loggedInUser) {
+			loggedInUser.decrementPoints(2);
+		}
+
+
+		//update currTopics
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].decrementScore(2);
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
+
+		//update openedTopic
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].decrementScore(2);
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
+
+
+		//update openedPost
+		openedPost.getComments()[commentPosition].decrementScore(2);
+		openedPost.getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
+	}
+
+
+	else if(reactionType == undefined){ //case 1 reaction doesn't exist
+
+		//update author points
+		if (currUsers[userPos] == loggedInUser) {
+			loggedInUser.decrementPoints(1);
+		}
+		currUsers[userPos].decrementPoints(1);
+
+		Reaction newReaction(loggedInUser.getId(), upvote);
+
+		//update currTopics
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
+		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].decrementScore();
+
+		//update openedTopic
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
+		openedTopic.getPosts()[postPos].getComments()[commentPosition].decrementScore();
+
+		//update openedPost
+		openedPost.getComments()[commentPosition].addReaction(newReaction);
+		openedPost.getComments()[commentPosition].decrementScore();
+	}
+
+	CurrentData::setChangesMadeStatus(true);
 }
 
 void SocialNetwork::quitOpenedPost() 

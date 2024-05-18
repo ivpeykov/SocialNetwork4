@@ -110,7 +110,7 @@ size_t InputValidator::isValidUserNameSignup(const String& userName)
         return 0;
     }
    
-    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName) != SIZE_MAX)
+    if (CurrentData::getCurrSocialNetwork().getUserPosition(userName) != SIZE_MAX)
         return 2; //userName Exists
         
     return 1;
@@ -125,7 +125,7 @@ bool InputValidator::isValidUserNameLogin(const String& userName) //suggestion: 
         return false;
     }
 
-    if (CurrentData::getCurrSocialNetwork().doesUsernameExist(userName) == SIZE_MAX)
+    if (CurrentData::getCurrSocialNetwork().getUserPosition(userName) == SIZE_MAX)
         return false;
 
     return true;

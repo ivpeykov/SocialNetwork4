@@ -28,6 +28,8 @@ public:
 
 	static void loadReplies(std::fstream& socialNetworkFile, Comment& comment);
 
+	static void loadReactions(std::fstream& socialNetworkFile, Comment& comment);
+
 	static void saveSocialNetwork(const SocialNetwork& socialNetwork);
 
 	static void saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users);
@@ -39,6 +41,8 @@ public:
 	static void saveComments(std::ofstream& socialNetworkFile, const Vector<Comment>& comments);
 
 	static void saveReplies(std::ofstream& socialNetworkFile, const Vector<Reply>& replies);
+
+	static void saveReactions(std::ofstream& socialNetworkFile, const Vector<Reaction>& reactions);
 
 private:
 	FileHandler();

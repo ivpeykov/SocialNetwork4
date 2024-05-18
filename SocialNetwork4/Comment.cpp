@@ -1,23 +1,23 @@
 #include "Comment.h"
 
-Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), postId(SIZE_MAX), replies(1) {
+Comment::Comment() : author(nullptr), text(nullptr), score(0), id(SIZE_MAX), postId(SIZE_MAX), authorId(SIZE_MAX), replies(1), reactions(0) {
     replies.back().setParentCommentId(id);
 }
 
 Comment::Comment(const String& author, const String& text,
-    const int score, const size_t id, const size_t postId) :
-    author(author), text(text), score(score), id(id), postId(postId), replies(1) {
+    const int score, const size_t id, const size_t postId, const size_t authorId) :
+    author(author), text(text), score(score), id(id), postId(postId), authorId(authorId), replies(1), reactions(0) {
 
     replies.back().setParentCommentId(id);
 }
 
 Comment::Comment(const char* author, const char* text,
-    const int score, const size_t id, const size_t postId) :
-    author(author), text(text), score(score), id(id), postId(postId), replies(1) {
+    const int score, const size_t id, const size_t postId, const size_t authorId) :
+    author(author), text(text), score(score), id(id), postId(postId), authorId(authorId), replies(1), reactions(0) {
     replies.back().setParentCommentId(id);
 }
 
-Comment::Comment(const Comment& other) : author(other.author), text(other.text), score(other.score), id(other.id), postId(other.postId), replies(other.replies)
+Comment::Comment(const Comment& other) : author(other.author), text(other.text), score(other.score), id(other.id), postId(other.postId), authorId(other.authorId), replies(other.replies), reactions(other.reactions)
 {
 }
 
@@ -46,6 +46,11 @@ const size_t Comment::getPostId() const
     return postId;
 }
 
+const size_t Comment::getAuthorId() const
+{
+    return authorId;
+}
+
 const Vector<Reply>& Comment::getReplies() const
 {
     return replies;
@@ -54,6 +59,16 @@ const Vector<Reply>& Comment::getReplies() const
 Vector<Reply>& Comment::getReplies()
 {
     return replies;
+}
+
+const Vector<Reaction>& Comment::getReactions() const
+{
+    return reactions;
+}
+
+Vector<Reaction>& Comment::getReactions()
+{
+    return reactions;
 }
 
 void Comment::setAuthor(const char* newAuthor)
@@ -91,6 +106,11 @@ void Comment::setPostId(const size_t newPostId)
     postId = newPostId;
 }
 
+void Comment::setAuthorId(const size_t newId)
+{
+    authorId = newId;
+}
+
 void Comment::setReplies(const Vector<Reply>& newReplies)
 {
     replies = newReplies;
@@ -101,18 +121,72 @@ void Comment::addReply(const Reply& newReply)
     replies.pushBack(newReply);
 }
 
+void Comment::setReactions(const Vector<Reaction>& newReactions)
+{
+    reactions = newReactions;
+}
+
+void Comment::addReaction(Reaction& newReaction)
+{
+    newReaction.setPosition(reactions.getSize());
+    reactions.pushBack(newReaction);
+}
+
 bool Comment::isEqualWithoutId(const Comment& other) const
 {
     return (author == other.author &&
         text == other.text &&
         score == other.score &&
         postId == other.postId &&
-        replies == other.replies);
+        authorId == other.authorId &&
+        replies == other.replies &&
+        reactions == reactions);
 }
 
 bool Comment::isNotEqualWithoutId(const Comment& other) const
 {
     return !isEqualWithoutId(other);
+}
+
+void Comment::incrementScore()
+{
+    ++score;
+}
+
+void Comment::incrementScore(const int amount)
+{
+    score += amount;
+}
+
+void Comment::decrementScore()
+{
+    --score;
+}
+
+void Comment::decrementScore(const int amount)
+{
+    score -= amount;
+}
+
+void Comment::changeReactionType(const size_t reactionPosition, const ReactionType newReactionType)
+{
+    if (reactionPosition >= reactions.getSize()) {
+        throw std::invalid_argument("Index out of bounds");
+    }
+
+    reactions[reactionPosition].setReaction(newReactionType);
+}
+
+const Reaction* Comment::getUserReaction(const size_t userId) const
+{
+    size_t reactionsSize = reactions.getSize();
+    for (int i = 0; i < reactionsSize; ++i) {
+        if (userId == reactions[i].getUserId()) {
+            return &reactions[i];
+        }
+    }
+
+    return nullptr;
 }
 
 void Comment::clear()
@@ -122,8 +196,10 @@ void Comment::clear()
     score = 0;
     id = SIZE_MAX;
     postId = SIZE_MAX;
+    authorId = SIZE_MAX;
 
     replies.clear();
+    reactions.clear();
 }
 
 Comment& Comment::operator=(const Comment& other)
@@ -135,7 +211,9 @@ Comment& Comment::operator=(const Comment& other)
         score = other.score;
         id = other.id;
         postId = other.postId;
-        replies = other.replies; 
+        authorId = other.authorId;
+        replies = other.replies;
+        reactions = other.reactions;
     }
     return *this;
 }

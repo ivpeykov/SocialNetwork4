@@ -152,6 +152,16 @@ bool User::isNotEqualWithoutId(const User& other) const
 	return !isEqualWithoutId(other);
 }
 
+void User::incrementPoints(int amount)
+{
+	points += amount;
+}
+
+void User::decrementPoints(int amount)
+{
+	points -= amount;
+}
+
 User& User::operator=(const User& other)
 {
 	if (this != &other) {

@@ -187,6 +187,7 @@ Comment ObjectFactory::createComment(const SocialNetwork& socialNetwork)
 	newComment.setAuthor(socialNetwork.getLoggedInUser().getUserName());
 	newComment.setScore(0);
 	newComment.setPostId(socialNetwork.getOpenedPost().getId());
+	newComment.setAuthorId(socialNetwork.getLoggedInUser().getId());
 
 	if (socialNetwork.getOpenedPost().getComments().back().getAuthor() != nullptr) {
 		size_t lastCommentId = socialNetwork.getOpenedPost().getComments().back().getId();

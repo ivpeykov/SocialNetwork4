@@ -3,7 +3,7 @@
 #include <iostream>
 
 template<typename T>
-class Vector {
+class Vector { //TODO: make methods const where  they can be
 
 public:
     Vector() : capacity(3), size(0), data(nullptr) {
@@ -13,9 +13,14 @@ public:
     }
 
     Vector(const size_t capacity) : size(0), data(nullptr) {
+        /*OLD way
+          if (capacity == 0) {
+            throw std::invalid_argument("Cannot initialise vector with 0 value!");
+        }*/
 
         if (capacity == 0) {
-            throw std::invalid_argument("Cannot initialise vector with 0 value!");
+            this->capacity = capacity;
+            data = nullptr;
         }
 
         this->capacity = capacity;
@@ -110,7 +115,7 @@ public:
         }
         return data[index];
     }
-
+    
     T& operator[](const size_t index) {
 
         if (index >= size) {

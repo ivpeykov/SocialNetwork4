@@ -136,6 +136,7 @@
     <ClCompile Include="Configuration.cpp" />
     <ClCompile Include="ConsoleInputGetter.cpp" />
     <ClCompile Include="CurrentData.cpp" />
+    <ClCompile Include="Reaction.cpp" />
     <ClCompile Include="String.cpp" />
     <ClCompile Include="Post.cpp" />
     <ClCompile Include="FileHandler.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="Configuration.h" />
     <ClInclude Include="ConsoleInputGetter.h" />
     <ClInclude Include="CurrentData.h" />
+    <ClInclude Include="Reaction.h" />
     <ClInclude Include="String.h" />
     <ClInclude Include="Post.h" />
     <ClInclude Include="FileHandler.h" />

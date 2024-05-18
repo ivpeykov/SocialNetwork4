@@ -56,9 +56,13 @@ public:
 	bool isEqualWithoutId(const User& other) const;
 	bool isNotEqualWithoutId(const User& other) const;
 
+	void incrementPoints(int amount);
+	void decrementPoints(int amount);
+
 	User& operator=(const User& other);
 	bool operator==(const User& other) const;
 	bool operator!=(const User& other) const;
+
 
 private:
 	String firstName;
