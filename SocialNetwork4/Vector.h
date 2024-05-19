@@ -28,7 +28,7 @@ public:
         data = new T[capacity];
     }
 
-    Vector(const T& other) : data(nullptr), size(other.size), capacity(other.capacity + 3) {
+    Vector(const T& other) : data(nullptr), size(other.size), capacity(other.capacity + 3) { //TODO change to const Vector<T>& other
 
         resize(capacity);
 
@@ -73,13 +73,13 @@ public:
         capacity = new_capacity;
     }
 
-    void erase(const int index)
+    void erase(const size_t index) 
     {
         if (index < 0 || index >= size) {
             throw std::out_of_range("Index out of range");
         }
 
-        for (int i = index; i < size - 1; i++) {
+        for (size_t i = index; i < size - 1; ++i) {
             data[i] = data[i + 1];
         }
         --size;
@@ -124,7 +124,7 @@ public:
         return data[index];
     }
 
-    bool operator==(const Vector& rhs) const
+    bool operator==(const Vector& rhs) const //TODO Vector<T>
     {
         if (size != rhs.size) {
             return false;

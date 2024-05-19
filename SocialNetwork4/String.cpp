@@ -38,7 +38,6 @@ String::String(const size_t size) //TODO: don't know if this is ok
 		throw std::out_of_range("Trying allocate String with 0 size");
 	}
 
-	//delete[] string; ?
 	this->size = size;
 	string = new char[size];
 	string[size] = '\0';
@@ -248,6 +247,7 @@ char String::operator[](const size_t index) const {
 
 
 bool String::operator==(const String& other) const {
+
 	if (size != other.size) return false;
 
 	return strcmp(string, other.string) == 0;
@@ -284,4 +284,4 @@ std::ostream& operator<<(std::ostream& os, const String& str)
 		throw std::runtime_error("Trying to output a nullptr String");
 
 	return os;
-}
+}//TODO remove str
