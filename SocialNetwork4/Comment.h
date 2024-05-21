@@ -77,7 +77,7 @@ private:
 	int score;
 	size_t id;
 	size_t postId;
-	size_t authorId; //TODO: authorId needs to be set everywhere
+	size_t authorId;
 
 	Vector<Reaction> reactions;
 	Vector<Reply> replies;

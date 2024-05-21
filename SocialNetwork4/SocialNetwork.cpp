@@ -261,19 +261,12 @@ void SocialNetwork::editLoggedInUser()
 	}
 
 	size_t userPos = 0;
-	bool userFound = false;
-	size_t usersSize = currUsers.getSize();
-	
-	size_t loggedInUserId = loggedInUser.getId();
-	for (userPos; userPos < usersSize; ++userPos) {
-		if (loggedInUserId == currUsers[userPos].getId()) {
-			userFound = true;
-			break;
-		}
-	}
 
-	if (!userFound) {
-		throw std::exception("Logged in user isn't in loaded data!"); //TODO: catch it somewhere
+	try {
+		userPos = findCorrespondingUserPosition(loggedInUser.getId());
+	}
+	catch (const std::runtime_error&) {
+		throw std::exception("Logged in user isn't in loaded data!");
 	}
 
 	short answer = -1;
@@ -369,7 +362,7 @@ void SocialNetwork::editLoggedInUser()
 	}
 }
 
-void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFactory
+void SocialNetwork::editUserAsModerator()
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Only logged in moderators can edit profiles! Please login first!" << std::endl;
@@ -386,27 +379,20 @@ void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFac
 	try {
 		ConsoleInputGetter::recieveIdInputForEditUserAsModerator(id);
 	}
-	catch (std::exception e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 		return;
 	}
 
-	size_t userPos = 0; //TODO use findCorrespondingUserPosition
-	bool userFound = false;
-	bool newModeratorStatus = false;
-	size_t usersSize = currUsers.getSize();
-
-	for (userPos; userPos < usersSize; ++userPos) {
-		if (id == currUsers[userPos].getId()) {
-			userFound = true;
-			break;
-		}
+	size_t userPos = 0;
+	try{
+		userPos = findCorrespondingUserPosition(id);
 	}
-
-	if (!userFound) {
-		std::cout << "No user with such id!" << std::endl; //or throw exception
+	catch (const std::runtime_error& e) {
+		std::cout << "Could not edit user! " << e.what();
 		return;
 	}
+
 
 	short answer = -1;
 
@@ -433,6 +419,7 @@ void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFac
 
 		User newUser;
 		size_t userNameStatus = SIZE_MAX;
+		bool newModeratorStatus = false;
 
 		switch (answer) {
 
