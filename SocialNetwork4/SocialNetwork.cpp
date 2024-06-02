@@ -191,7 +191,7 @@ size_t SocialNetwork::findCorrespondingPostPosition(const size_t searchedPostId,
 	throw std::runtime_error("Post not found");
 }
 
-const size_t SocialNetwork::chooseCommentForReaction() const
+const size_t SocialNetwork::chooseComment() const
 {
 	size_t commentId = SIZE_MAX;
 	try {
@@ -787,7 +787,7 @@ const void SocialNetwork::printOpenedPostComments() const
 	PrintHandler::printComments(openedPost.getComments());
 }
 
-void SocialNetwork::upvoteComment()
+void SocialNetwork::upvoteComment(const size_t commentId)
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Could not upvote comment! Please log in first!" << std::endl;
@@ -796,16 +796,6 @@ void SocialNetwork::upvoteComment()
 
 	if (!isThereOpenedPost()) {
 		std::cout << "Could not upvote comment! Please open a topic first!" << std::endl;
-		return;
-	}
-
-	//choose which comment to upvote
-	size_t commentId = SIZE_MAX;
-	try {
-		commentId = chooseCommentForReaction();
-	}
-	catch (const std::exception&) {
-		std::cout << "Could not upvote comment! " << std::endl;
 		return;
 	}
 
@@ -901,7 +891,7 @@ void SocialNetwork::upvoteComment()
 	std::cout << "Upvoted successfully!" << std::endl;
 }
 
-void SocialNetwork::downvoteComment() 
+void SocialNetwork::downvoteComment(const size_t commentId)
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Could not downvote comment! Please log in first!" << std::endl;
@@ -910,17 +900,6 @@ void SocialNetwork::downvoteComment()
 
 	if (!isThereOpenedPost()) {
 		std::cout << "Could not downvote comment! Please open a topic first!" << std::endl;
-		return;
-	}
-
-
-	//choose which comment to downvote
-	size_t commentId = SIZE_MAX;
-	try {
-		commentId = chooseCommentForReaction();
-	}
-	catch (const std::exception&) {
-		std::cout << "Could not downvote comment! " << std::endl;
 		return;
 	}
 
@@ -1018,7 +997,7 @@ void SocialNetwork::downvoteComment()
 	std::cout << "Downvoted successfully!" << std::endl;
 }
 
-void SocialNetwork::deleteComment() //TODO: this needs refactoring
+void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs refactoring
 {
 	if (!isThereOpenedPost()) {
 		std::cout << "Could not delete comment! Please open a post first!" << std::endl;
@@ -1027,16 +1006,6 @@ void SocialNetwork::deleteComment() //TODO: this needs refactoring
 
 	if (!isThereLoggedInUser()) {
 		std::cout << "Could not delete comment! Please login first!" << std::endl;
-		return;
-	}
-
-	//choose comment
-	size_t commentId = SIZE_MAX;
-	try {
-		commentId = chooseCommentForReaction(); //todo : change method name to chooseComment
-	}
-	catch (const std::exception&) {
-		std::cout << "Could not delete comment! " << std::endl;
 		return;
 	}
 
@@ -1084,7 +1053,6 @@ void SocialNetwork::deleteComment() //TODO: this needs refactoring
 		std::cout << e.what() << std::endl;
 		throw;
 	}
-	//continue..
 
 	//update currUsers	
 	int commentScore = openedTopic.getPosts()[postPos].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...

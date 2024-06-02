@@ -191,44 +191,82 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
         }
         break;
 
-    case Upvote:
+    case Upvote: {
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
+
+        //choose which comment to upvote
+        size_t commentId = SIZE_MAX;
         try {
-            currSocialNetwork.upvoteComment();
+            commentId = currSocialNetwork.chooseComment();
+        }
+        catch (const std::exception&) {
+            std::cout << "Could not upvote comment! " << std::endl;
+            return;
+        }
+
+        try {
+            currSocialNetwork.upvoteComment(commentId);
         }
         catch (const std::runtime_error& e) {
             std::cout << "Could not upvote!" << e.what() << std::endl;
         }
         break;
+    }
 
-    case Downvote:
+    case Downvote: {
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
+
+        //choose which comment to downvote
+        size_t commentId = SIZE_MAX;
         try {
-            currSocialNetwork.downvoteComment();
+            commentId = currSocialNetwork.chooseComment();
+        }
+        catch (const std::exception&) {
+            std::cout << "Could not downvote comment! " << std::endl;
+            return;
+        }
+
+        try {
+            currSocialNetwork.downvoteComment(commentId);
         }
         catch (const std::runtime_error& e) {
             std::cout << "Could not downvote!" << e.what() << std::endl;
         }
         break;
+    }
 
-    case DeleteComment:
+    case DeleteComment: {
         if (!networkLoaded) {
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
+
+
+        //choose comment
+        size_t commentId = SIZE_MAX;
         try {
-            currSocialNetwork.deleteComment();
+            commentId = currSocialNetwork.chooseComment();
+        }
+        catch (const std::exception&) {
+            std::cout << "Could not delete comment! " << std::endl;
+            return;
+        }
+
+        try {
+            currSocialNetwork.deleteComment(commentId);
         }
         catch (const std::runtime_error& e) {
             std::cout << "Could not delete comment!" << e.what() << std::endl;
         }
+
         break;
+    }
 
     case QuitPost:
         if (!networkLoaded) {

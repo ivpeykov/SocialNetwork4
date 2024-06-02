@@ -50,7 +50,7 @@ public:
 
 	size_t findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos);
 
-	const size_t chooseCommentForReaction() const;
+	const size_t chooseComment() const;
 
 	void signup(const User& newUser);
 
@@ -80,11 +80,11 @@ public:
 
 	const void printOpenedPostComments() const;
 
-	void upvoteComment();
+	void upvoteComment(const size_t commentId);
 
-	void downvoteComment();
+	void downvoteComment(const size_t commentId);
 
-	void deleteComment();
+	void deleteComment(const size_t commentId);
 
 	void quitOpenedPost();
 

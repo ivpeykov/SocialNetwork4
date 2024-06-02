@@ -134,13 +134,13 @@ public:
         return true;
     }
 
-    const bool operator!=(const Vector& rhs) const
+    const bool operator!=(const Vector<T>& rhs) const
     {
         return !(*this == rhs);
     }
 
 
-    Vector& operator=(const Vector& rhs)
+    Vector& operator=(const Vector<T>& rhs)
     {
         if (this != &rhs) {
 
