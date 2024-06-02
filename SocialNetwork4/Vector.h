@@ -13,11 +13,7 @@ public:
     }
 
     Vector(const size_t capacity) : size(0), data(nullptr) {
-        /*OLD way
-          if (capacity == 0) {
-            throw std::invalid_argument("Cannot initialise vector with 0 value!");
-        }*/
-
+       
         if (capacity == 0) {
             this->capacity = capacity;
             data = nullptr;
@@ -28,7 +24,7 @@ public:
         data = new T[capacity];
     }
 
-    Vector(const T& other) : data(nullptr), size(other.size), capacity(other.capacity + 3) { //TODO change to const Vector<T>& other
+    Vector(const Vector<T>& other) : data(nullptr), size(other.size), capacity(other.capacity + 3) {
 
         resize(capacity);
 
@@ -124,7 +120,7 @@ public:
         return data[index];
     }
 
-    bool operator==(const Vector& rhs) const //TODO Vector<T>
+    bool operator==(const Vector<T>& rhs) const 
     {
         if (size != rhs.size) {
             return false;
