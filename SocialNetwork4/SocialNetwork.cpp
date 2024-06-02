@@ -261,19 +261,12 @@ void SocialNetwork::editLoggedInUser()
 	}
 
 	size_t userPos = 0;
-	bool userFound = false;
-	size_t usersSize = currUsers.getSize();
-	
-	size_t loggedInUserId = loggedInUser.getId();
-	for (userPos; userPos < usersSize; ++userPos) {
-		if (loggedInUserId == currUsers[userPos].getId()) {
-			userFound = true;
-			break;
-		}
-	}
 
-	if (!userFound) {
-		throw std::exception("Logged in user isn't in loaded data!"); //TODO: catch it somewhere
+	try {
+		userPos = findCorrespondingUserPosition(loggedInUser.getId());
+	}
+	catch (const std::runtime_error&) {
+		throw std::exception("Logged in user isn't in loaded data!");
 	}
 
 	short answer = -1;
@@ -369,7 +362,7 @@ void SocialNetwork::editLoggedInUser()
 	}
 }
 
-void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFactory
+void SocialNetwork::editUserAsModerator()
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Only logged in moderators can edit profiles! Please login first!" << std::endl;
@@ -386,27 +379,20 @@ void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFac
 	try {
 		ConsoleInputGetter::recieveIdInputForEditUserAsModerator(id);
 	}
-	catch (std::exception e) {
+	catch (const std::exception& e) {
 		std::cout << e.what() << std::endl;
 		return;
 	}
 
-	size_t userPos = 0; //TODO use findCorrespondingUserPosition
-	bool userFound = false;
-	bool newModeratorStatus = false;
-	size_t usersSize = currUsers.getSize();
-
-	for (userPos; userPos < usersSize; ++userPos) {
-		if (id == currUsers[userPos].getId()) {
-			userFound = true;
-			break;
-		}
+	size_t userPos = 0;
+	try{
+		userPos = findCorrespondingUserPosition(id);
 	}
-
-	if (!userFound) {
-		std::cout << "No user with such id!" << std::endl; //or throw exception
+	catch (const std::runtime_error& e) {
+		std::cout << "Could not edit user! " << e.what();
 		return;
 	}
+
 
 	short answer = -1;
 
@@ -433,6 +419,7 @@ void SocialNetwork::editUserAsModerator() //todo: refactor this to use objectFac
 
 		User newUser;
 		size_t userNameStatus = SIZE_MAX;
+		bool newModeratorStatus = false;
 
 		switch (answer) {
 
@@ -911,9 +898,10 @@ void SocialNetwork::upvoteComment()
 	}
 
 	CurrentData::setChangesMadeStatus(true);
+	std::cout << "Upvoted successfully!" << std::endl;
 }
 
-void SocialNetwork::downvoteComment()
+void SocialNetwork::downvoteComment() 
 {
 	if (!isThereLoggedInUser()) {
 		std::cout << "Could not downvote comment! Please log in first!" << std::endl;
@@ -980,7 +968,7 @@ void SocialNetwork::downvoteComment()
 	size_t authorId = currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].getAuthorId();
 	size_t userPos = findCorrespondingUserPosition(authorId);
 
-	if (reactionType == upvote && userReaction != nullptr) { //decrement by two to compensate for the change from upvote to downvote
+	if (reactionType == upvote) { //decrement by two to compensate for the change from upvote to downvote
 		//update author points
 		currUsers[userPos].decrementPoints(2);
 		if (currUsers[userPos] == loggedInUser) {
@@ -1011,7 +999,7 @@ void SocialNetwork::downvoteComment()
 		}
 		currUsers[userPos].decrementPoints(1);
 
-		Reaction newReaction(loggedInUser.getId(), upvote);
+		Reaction newReaction(loggedInUser.getId(), downvote);
 
 		//update currTopics
 		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
@@ -1027,6 +1015,98 @@ void SocialNetwork::downvoteComment()
 	}
 
 	CurrentData::setChangesMadeStatus(true);
+	std::cout << "Downvoted successfully!" << std::endl;
+}
+
+void SocialNetwork::deleteComment() //TODO: this needs refactoring
+{
+	if (!isThereOpenedPost()) {
+		std::cout << "Could not delete comment! Please open a post first!" << std::endl;
+		return;
+	}
+
+	if (!isThereLoggedInUser()) {
+		std::cout << "Could not delete comment! Please login first!" << std::endl;
+		return;
+	}
+
+	//choose comment
+	size_t commentId = SIZE_MAX;
+	try {
+		commentId = chooseCommentForReaction(); //todo : change method name to chooseComment
+	}
+	catch (const std::exception&) {
+		std::cout << "Could not delete comment! " << std::endl;
+		return;
+	}
+
+	//check if comment exists //TODO : extract this and use method instead of copying it in upvote, downvote methods too
+
+	size_t commentPosition = getCommentPosition(commentId, openedPost.getComments());
+
+	if (commentPosition == SIZE_MAX) {
+		std::cout << "Could not delete comment! Comment doesn't exist!" << std::endl;
+		return;
+	}
+
+	bool isAuthor = (loggedInUser.getId() == openedPost.getComments()[commentPosition].getAuthorId());
+	bool isModerator = loggedInUser.getModeratorStatus();
+	
+	if (!isAuthor && !isModerator) {
+		std::cout << "Could not delete comment! Only author or moderators can delete comments!" << std::endl;
+
+		return;
+	}
+
+	size_t topicPos = SIZE_MAX;
+	try {
+		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+	size_t postPos = SIZE_MAX;
+	try {
+		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+
+	size_t userPos = SIZE_MAX;
+	try {
+		userPos = findCorrespondingUserPosition(loggedInUser.getId());
+	}
+	catch (const std::runtime_error& e) {
+		std::cout << e.what() << std::endl;
+		throw;
+	}
+	//continue..
+
+	//update currUsers	
+	int commentScore = openedTopic.getPosts()[postPos].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
+	size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[postPos].getComments()[commentPosition].getAuthorId());
+	currUsers[userId].decrementPoints(commentScore);
+
+	//update loggedinuser
+	if (isAuthor) {
+		loggedInUser.decrementPoints(commentScore);
+	}
+
+	//update currTopics
+	currTopics[topicPos].getPosts()[postPos].getComments().erase(commentPosition);
+	
+
+	//update openedTopic
+	openedTopic.getPosts()[postPos].getComments().erase(commentPosition);
+
+	//update openedPost
+	openedPost.getComments().erase(commentPosition);
+
+	std::cout << "Successfully deleted comment!" << std::endl;
 }
 
 void SocialNetwork::quitOpenedPost() 

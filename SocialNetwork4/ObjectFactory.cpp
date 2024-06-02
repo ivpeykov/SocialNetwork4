@@ -68,6 +68,7 @@ User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
 		newUser.setModeratorStatus(false);
 		//ID
 		newUser.setId(lastSignedUpUserId + 1);
+		++lastSignedUpUserId;
 	}
 
 	else {
@@ -109,6 +110,7 @@ Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 	//id
 	if (socialNetwork.getCurrTopics().back().getTitle() != nullptr) {
 		newTopic.setId(lastCreatedTopicId + 1);
+		++lastCreatedTopicId;
 	}
 
 	else {

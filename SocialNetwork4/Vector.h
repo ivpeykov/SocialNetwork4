@@ -98,7 +98,7 @@ public:
         capacity = 0;  
     }
 
-    void printVectorToConsole() {
+    const void printVectorToConsole() const {
         for (size_t i = 0; i < size; ++i) {
             std::cout << data[i] << std::endl;
         }
@@ -120,7 +120,7 @@ public:
         return data[index];
     }
 
-    bool operator==(const Vector<T>& rhs) const 
+    const bool operator==(const Vector<T>& rhs) const
     {
         if (size != rhs.size) {
             return false;
@@ -134,7 +134,7 @@ public:
         return true;
     }
 
-    bool operator!=(const Vector& rhs) const
+    const bool operator!=(const Vector& rhs) const
     {
         return !(*this == rhs);
     }
@@ -180,11 +180,11 @@ public:
     }
 
 
-    size_t getSize() const {
+    const size_t getSize() const {
         return size;
     }
 
-    size_t getCapacity() const {
+    const size_t getCapacity() const {
         return capacity;
     }
 
