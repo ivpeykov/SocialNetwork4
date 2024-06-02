@@ -1,6 +1,7 @@
 #pragma once
 #include <stdexcept>
 #include <iostream>
+#include <type_traits>
 
 template<typename T>
 class Vector { //TODO: make methods const where  they can be
@@ -36,6 +37,7 @@ public:
 
     ~Vector() {
         delete[] data;
+        data = nullptr;
     }
 
     void pushBack(const T& element) {
@@ -69,15 +71,24 @@ public:
         capacity = new_capacity;
     }
 
-    void erase(const size_t index) 
+    void erase(const size_t index)
     {
-        if (index < 0 || index >= size) {
+        if (index >= size) {
             throw std::out_of_range("Index out of range");
         }
 
         for (size_t i = index; i < size - 1; ++i) {
             data[i] = data[i + 1];
         }
+
+        if (size == 0) {
+            data[0].~T();      
+        }
+
+        else {
+            data[size - 1].~T();           
+        }
+  
         --size;
     }
 
@@ -86,7 +97,7 @@ public:
         if (size == 0) {
             throw std::out_of_range("Pop back attempted on an empty vector");
         }
-        delete[] data[size];
+        data[size].~T();
         --size;
     }
 
@@ -106,6 +117,10 @@ public:
 
     const T& operator[](const size_t index) const {
 
+        if (index == 1 && size == 1) {
+            return data[1];
+        }
+
         if (index >= size) {
             throw std::out_of_range("Index out of bounds in operator[]");
         }
@@ -113,6 +128,10 @@ public:
     }
     
     T& operator[](const size_t index) {
+
+        if (index == 1 && size == 1) {
+            return data[1];
+        }
 
         if (index >= size) {
             throw std::out_of_range("Index out of range");

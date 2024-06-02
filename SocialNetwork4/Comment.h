@@ -20,6 +20,8 @@ public:
 
 	Comment(const Comment& other);
 
+	~Comment();
+
 	const String& getAuthor() const;
 	const String& getText() const;
 	const int getScore() const;

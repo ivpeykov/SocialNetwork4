@@ -33,11 +33,10 @@ public:
 	//Recieve Post Input data
 	static void recievePostTitleInput(Post& newPost);
 	static void recievePostContentInput(Post& newPost);
-	static void recieveOpenPostIdInput(size_t& id);
 
 	//Recieve Comment Input data
 	static void recieveCommentTextInput(Comment& newComment);
-	static size_t recieveIdInputForChoosingComment();
+	static size_t recieveIdInput();
 
 	static String& getSocialNetworkDirectoryInput();
 

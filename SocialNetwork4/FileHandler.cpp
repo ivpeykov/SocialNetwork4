@@ -75,8 +75,8 @@ void FileHandler::loadUsers(std::fstream& socialNetworkFile, Vector<User>& users
 	size_t usersCount = 0;
 
 	socialNetworkFile.read(reinterpret_cast<char*>(&usersCount), sizeof(usersCount));
-	users.resize(usersCount + 10);
-	//add 10 more places to save some time/resources
+	users.resize(usersCount);
+	//TODO add 10 more places to save some time/resources
 
 	size_t strLength = 0;
 
@@ -135,8 +135,8 @@ void FileHandler::loadTopics(std::fstream& socialNetworkFile, Vector<Topic>& top
 	size_t topicsCount = 0;
 
 	socialNetworkFile.read(reinterpret_cast<char*>(&topicsCount), sizeof(topicsCount));
-	topics.resize(topicsCount + 10);
-	//add 10 more places to save some time/resources
+	topics.resize(topicsCount);
+	//todo add 10 more places to save some time/resources
 
 	size_t strLength = 0;
 
@@ -189,8 +189,8 @@ void FileHandler::loadPosts(std::fstream& socialNetworkFile, Topic& topic)
 		return;
 	}
 
-	topic.getPosts().resize(postsCount + 10);
-	//add 10 more places to save some time/resources
+	topic.getPosts().resize(postsCount);
+	//todo add 10 more places to save some time/resources
 
 	size_t strLength = 0;
 
@@ -242,8 +242,8 @@ void FileHandler::loadComments(std::fstream& socialNetworkFile, Post& post)
 
 	if (commentsCount == 0) return;
 
-	post.getComments().resize(commentsCount + 10);
-	//add 10 more places to save some time/resources
+	post.getComments().resize(commentsCount);
+	//todo add 10 more places to save some time/resources
 
 	size_t strLength = 0;
 
@@ -300,8 +300,8 @@ void FileHandler::loadReplies(std::fstream& socialNetworkFile, Comment& comment)
 
 	if (repliesCount == 0) return;
 
-	comment.getReplies().resize(repliesCount + 10);
-	//add 10 more places to save some time/resources
+	comment.getReplies().resize(repliesCount);
+	//todo add 10 more places to save some time/resources
 
 	size_t strLength = 0;
 
@@ -349,8 +349,8 @@ void FileHandler::loadReactions(std::fstream& socialNetworkFile, Comment& commen
 
 	if (reactionsCount == 0) return;
 
-	comment.getReactions().resize(reactionsCount + 10);
-	//add 10 more places to save some time/resources
+	comment.getReactions().resize(reactionsCount);
+	//todo add 10 more places to save some time/resources
 
 	Reaction newReaction;
 	size_t userId = SIZE_MAX, position = SIZE_MAX;

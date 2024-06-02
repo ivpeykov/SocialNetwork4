@@ -348,40 +348,6 @@ void ConsoleInputGetter::recievePostContentInput(Post& newPost)
     delete[] newContent;
 }
 
-void ConsoleInputGetter::recieveOpenPostIdInput(size_t& id)
-{
-    if (isBufferOverfilled()) {
-        flushInputBuffer();
-    }
-
-    short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
-    
-    size_t tempId = 0;
-
-    std::cout << "Enter ID: ";
-
-    char* input = new char[inputBuffer]; //Potential optimisation? : dynamic because Configuration::MAX_DIGITS_INPUT cannot be used as const, can it ?
-
-    std::cin.getline(input, inputBuffer);
-    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
-        delete[] input;
-        input = nullptr;
-        throw std::exception("Invalid Id input!");
-    }
-
-    String strInput = input;
-
-    try {
-        tempId = strInput.toNum();
-    }
-    catch (std::exception e) {
-        delete[] input;
-        throw e;
-    }
-
-    delete[] input;
-    id = tempId;
-}
 
 void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
 {
@@ -402,7 +368,7 @@ void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
     newComment.setText(comment);
 }
 
-size_t ConsoleInputGetter::recieveIdInputForChoosingComment()
+size_t ConsoleInputGetter::recieveIdInput()
 {
 
     if (isBufferOverfilled()) {
@@ -413,7 +379,7 @@ size_t ConsoleInputGetter::recieveIdInputForChoosingComment()
 
     size_t id = SIZE_MAX;
 
-    std::cout << "Enter comment ID: ";
+    std::cout << "Enter object ID: ";
 
     char* input = new char[inputBuffer]; //Potential optimisation? : dynamic because Configuration::MAX_DIGITS_INPUT cannot be used as const, can it ?
 

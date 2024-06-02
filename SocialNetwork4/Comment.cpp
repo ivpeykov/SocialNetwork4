@@ -21,6 +21,11 @@ Comment::Comment(const Comment& other) : author(other.author), text(other.text),
 {
 }
 
+Comment::~Comment()
+{
+
+}
+
 const String& Comment::getAuthor() const
 {
     return author;

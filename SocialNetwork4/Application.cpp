@@ -26,19 +26,21 @@ void Application::run()
 
 	//Debugging prints...
 
+
 	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
 
 	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
 
+	/*
+	std::cout << "Opened Topic: " << std::endl;
+	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
 
-	//std::cout << "Opened Topic: " << std::endl;
-	//PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
-
-	//std::cout << "Opened Post: " << std::endl;
-	//PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
+	std::cout << "Opened Post: " << std::endl;
+	PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
 
 	std::cout << "Logged in user: " << std::endl;
 	PrintHandler::printUser(CurrentData::getCurrSocialNetwork().getLoggedInUser());
+	*/
 }
 
 Application::Application() {}

@@ -50,7 +50,7 @@ public:
 
 	size_t findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos);
 
-	const size_t chooseComment() const;
+	const size_t chooseObject() const;
 
 	void signup(const User& newUser);
 
@@ -86,6 +86,8 @@ public:
 
 	void deleteComment(const size_t commentId);
 
+	void deletePost(const size_t postId);
+
 	void quitOpenedPost();
 
 	void quitOpenedTopic();
@@ -99,4 +101,8 @@ private:
 	static User loggedInUser;
 	static Topic openedTopic;
 	static Post openedPost;
+
+	static size_t loggedInUserPos;
+	static size_t openedTopicPos;
+	static size_t openedPostPos;
 };

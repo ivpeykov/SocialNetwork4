@@ -4,6 +4,10 @@ User SocialNetwork::loggedInUser;
 Topic SocialNetwork::openedTopic;
 Post SocialNetwork::openedPost;
 
+size_t SocialNetwork::loggedInUserPos = SIZE_MAX;
+size_t SocialNetwork::openedTopicPos = SIZE_MAX;
+size_t SocialNetwork::openedPostPos = SIZE_MAX;
+
 SocialNetwork::SocialNetwork(String& directory) : directory(directory),
 currUsers(1), currTopics(1) {}
 
@@ -191,17 +195,17 @@ size_t SocialNetwork::findCorrespondingPostPosition(const size_t searchedPostId,
 	throw std::runtime_error("Post not found");
 }
 
-const size_t SocialNetwork::chooseComment() const
+const size_t SocialNetwork::chooseObject() const
 {
-	size_t commentId = SIZE_MAX;
+	size_t objectId = SIZE_MAX;
 	try {
-		commentId = ConsoleInputGetter::recieveIdInputForChoosingComment();
+		objectId = ConsoleInputGetter::recieveIdInput();
 	}
 	catch (const std::exception& e) {
-		std::cout << "Could not choose comment! " << e.what() << std::endl;
+		std::cout << "Could not choose object! " << e.what() << std::endl;
 		throw;
 	}
-	return commentId;
+	return objectId;
 }
 
 void SocialNetwork::signup(const User& newUser)
@@ -232,6 +236,7 @@ void SocialNetwork::login()
 
 	if (isLoginSuccessful(newUser)) {
 		loggedInUser = newUser;
+		loggedInUserPos = findCorrespondingUserPosition(loggedInUser.getId());
 		std::cout << "Login Successful!" << std::endl;
 		return;
 	}
@@ -249,6 +254,7 @@ void SocialNetwork::logout()
 	}
 
 	loggedInUser.clearUser();
+	loggedInUserPos = SIZE_MAX;
 
 	std::cout << "Logged out successfully!" << std::endl;
 }
@@ -258,15 +264,6 @@ void SocialNetwork::editLoggedInUser()
 	if (!isThereLoggedInUser()) {
 		std::cout << "Only logged in users can edit their profiles! Please login first!" << std::endl;
 		return;
-	}
-
-	size_t userPos = 0;
-
-	try {
-		userPos = findCorrespondingUserPosition(loggedInUser.getId());
-	}
-	catch (const std::runtime_error&) {
-		throw std::exception("Logged in user isn't in loaded data!");
 	}
 
 	short answer = -1;
@@ -312,7 +309,7 @@ void SocialNetwork::editLoggedInUser()
 			}
 
 			loggedInUser.setUserName(newUser.getUserName());
-			currUsers[userPos].setUserName(newUser.getUserName());
+			currUsers[loggedInUserPos].setUserName(newUser.getUserName());
 			CurrentData::setChangesMadeStatus(true);
 			break;
 
@@ -324,7 +321,7 @@ void SocialNetwork::editLoggedInUser()
 				return;
 			}
 			loggedInUser.setPassword(newUser.getPassword());
-			currUsers[userPos].setPassword(newUser.getPassword());
+			currUsers[loggedInUserPos].setPassword(newUser.getPassword());
 			CurrentData::setChangesMadeStatus(true);
 			break;
 
@@ -336,7 +333,7 @@ void SocialNetwork::editLoggedInUser()
 				return;
 			}
 			loggedInUser.setFirstName(newUser.getFirstName());
-			currUsers[userPos].setFirstName(newUser.getFirstName());
+			currUsers[loggedInUserPos].setFirstName(newUser.getFirstName());
 			CurrentData::setChangesMadeStatus(true);
 			break;
 
@@ -348,7 +345,7 @@ void SocialNetwork::editLoggedInUser()
 				return;
 			}
 			loggedInUser.setLastName(newUser.getLastName());
-			currUsers[userPos].setLastName(newUser.getLastName());
+			currUsers[loggedInUserPos].setLastName(newUser.getLastName());
 			CurrentData::setChangesMadeStatus(true);
 			break;
 
@@ -576,6 +573,8 @@ void SocialNetwork::openTopic(){
 			if (queryId == currTopics[i].getId()) {
 				openedTopic = currTopics[i];
 				openedPost.clear();
+				openedPostPos = SIZE_MAX;
+				openedTopicPos = findCorrespondingTopicPosition(openedTopic.getId());
 				std::cout << "Opened Topic:\nName: "
 					<< currTopics[i].getTitle() << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -590,6 +589,8 @@ void SocialNetwork::openTopic(){
 			if (query == currTopics[i].getTitle()) {
 				openedTopic = currTopics[i];
 				openedPost.clear();
+				openedPostPos = SIZE_MAX;
+				openedTopicPos = findCorrespondingTopicPosition(openedTopic.getId());
 				std::cout << "Opened Topic:\nName: "
 					<< query << "\nID: " << currTopics[i].getId() << std::endl;
 				return;
@@ -649,13 +650,12 @@ void SocialNetwork::openPost()
 		return;
 	}
 
-	//remove...
 	std::cout << "Current opened Topic: " << openedTopic.getTitle() << std::endl;
 
-	size_t id = 0;
+	size_t id = SIZE_MAX;
 
 	try {
-		ConsoleInputGetter::recieveOpenPostIdInput(id);
+		id = ConsoleInputGetter::recieveIdInput();
 	}
 
 	catch (const std::exception&) {
@@ -671,6 +671,7 @@ void SocialNetwork::openPost()
 
 		if (id == openedTopic.getPosts()[i].getId()) {
 			openedPost = openedTopic.getPosts()[i];
+			openedPostPos = findCorrespondingPostPosition(openedPost.getId(), openedTopicPos);
 			postOpened = true;
 			std::cout << "Successfully opened post ''" << openedPost.getTitle() << "''!" << std::endl
 				<< openedPost.getContent() << std::endl
@@ -702,26 +703,9 @@ void SocialNetwork::addComment(const Comment& newComment)
 	}
 
 
-	size_t topicPos = SIZE_MAX;
-	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-	size_t postPos = SIZE_MAX;
-	try {
-		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}	
-
-	currTopics[topicPos].getPosts()[postPos].addComment(newComment); // update currTopics vector
+	currTopics[openedTopicPos].getPosts()[openedPostPos].addComment(newComment); // update currTopics vector
 	openedPost.addComment(newComment); //update static object openedPost
-	openedTopic.getPosts()[postPos].addComment(newComment); //update static object openedTopic
+	openedTopic.getPosts()[openedPostPos].addComment(newComment); //update static object openedTopic
 	CurrentData::setChangesMadeStatus(true);
 
 	std::cout << "Successfully commented!" << std::endl;
@@ -751,27 +735,9 @@ void SocialNetwork::replyToComment(const size_t parentId)
 	Reply newReply = ObjectFactory::createReply(*this, parentCommentLastReply, parentId);
 
 
-	size_t topicPos = SIZE_MAX;
-	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t postPos = SIZE_MAX;
-	try {
-		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
+	currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].addReply(newReply); //update currTopics vector
 	openedPost.getComments()[commentPosition].addReply(newReply); //update static object openedPost
-	openedTopic.getPosts()[postPos].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
+	openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].addReply(newReply); //update static object openedTopic
 	CurrentData::setChangesMadeStatus(true);
 
 	std::cout << "Successfully replied!" << std::endl;
@@ -821,25 +787,7 @@ void SocialNetwork::upvoteComment(const size_t commentId)
 		//case 0.2: reaction is downvote - continue
 	}
 
-	size_t topicPos = SIZE_MAX;
-	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t postPos = SIZE_MAX;
-	try{
-		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t authorId = currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].getAuthorId();
+	size_t authorId = currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].getAuthorId();
 	size_t userPos = findCorrespondingUserPosition(authorId);
 
 	if (reactionType == downvote) { //Increment by two to compensate for the change from downvote to upvote
@@ -851,12 +799,12 @@ void SocialNetwork::upvoteComment(const size_t commentId)
 
 
 		//update currTopics
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].incrementScore(2);
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].incrementScore(2);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
 
 		//update openedTopic
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].incrementScore(2);
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].incrementScore(2);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), upvote);
 
 
 		//update openedPost
@@ -875,12 +823,12 @@ void SocialNetwork::upvoteComment(const size_t commentId)
 		Reaction newReaction(loggedInUser.getId(), upvote);
 
 		//update currTopics
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].incrementScore();
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].addReaction(newReaction);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].incrementScore();
 
 		//update openedTopic
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].incrementScore();
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].addReaction(newReaction);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].incrementScore();
 
 		//update openedPost
 		openedPost.getComments()[commentPosition].addReaction(newReaction);
@@ -925,43 +873,24 @@ void SocialNetwork::downvoteComment(const size_t commentId)
 		//case 0.2: reaction is upvoted - continue
 	}
 
-	size_t topicPos = SIZE_MAX;
-	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t postPos = SIZE_MAX;
-	try {
-		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-
-	size_t authorId = currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].getAuthorId();
+	size_t authorId = currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].getAuthorId();
 	size_t userPos = findCorrespondingUserPosition(authorId);
 
 	if (reactionType == upvote) { //decrement by two to compensate for the change from upvote to downvote
 		//update author points
-		currUsers[userPos].decrementPoints(2);
 		if (currUsers[userPos] == loggedInUser) {
 			loggedInUser.decrementPoints(2);
 		}
+		currUsers[userPos].decrementPoints(2);
 
 
 		//update currTopics
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].decrementScore(2);
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].decrementScore(2);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
 
 		//update openedTopic
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].decrementScore(2);
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].decrementScore(2);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].changeReactionType(userReaction->getPosition(), downvote);
 
 
 		//update openedPost
@@ -981,12 +910,12 @@ void SocialNetwork::downvoteComment(const size_t commentId)
 		Reaction newReaction(loggedInUser.getId(), downvote);
 
 		//update currTopics
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
-		currTopics[topicPos].getPosts()[postPos].getComments()[commentPosition].decrementScore();
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].addReaction(newReaction);
+		currTopics[openedTopicPos].getPosts()[openedPostPos].getComments()[commentPosition].decrementScore();
 
 		//update openedTopic
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].addReaction(newReaction);
-		openedTopic.getPosts()[postPos].getComments()[commentPosition].decrementScore();
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].addReaction(newReaction);
+		openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].decrementScore();
 
 		//update openedPost
 		openedPost.getComments()[commentPosition].addReaction(newReaction);
@@ -999,17 +928,7 @@ void SocialNetwork::downvoteComment(const size_t commentId)
 
 void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs refactoring
 {
-	if (!isThereOpenedPost()) {
-		std::cout << "Could not delete comment! Please open a post first!" << std::endl;
-		return;
-	}
-
-	if (!isThereLoggedInUser()) {
-		std::cout << "Could not delete comment! Please login first!" << std::endl;
-		return;
-	}
-
-	//check if comment exists //TODO : extract this and use method instead of copying it in upvote, downvote methods too
+	//check if comment exists
 
 	size_t commentPosition = getCommentPosition(commentId, openedPost.getComments());
 
@@ -1027,36 +946,9 @@ void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs ref
 		return;
 	}
 
-	size_t topicPos = SIZE_MAX;
-	try {
-		topicPos = findCorrespondingTopicPosition(openedTopic.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t postPos = SIZE_MAX;
-	try {
-		postPos = findCorrespondingPostPosition(openedPost.getId(), topicPos);
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
-	size_t userPos = SIZE_MAX;
-	try {
-		userPos = findCorrespondingUserPosition(loggedInUser.getId());
-	}
-	catch (const std::runtime_error& e) {
-		std::cout << e.what() << std::endl;
-		throw;
-	}
-
 	//update currUsers	
-	int commentScore = openedTopic.getPosts()[postPos].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
-	size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[postPos].getComments()[commentPosition].getAuthorId());
+	int commentScore = openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
+	size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].getAuthorId());
 	currUsers[userId].decrementPoints(commentScore);
 
 	//update loggedinuser
@@ -1065,16 +957,66 @@ void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs ref
 	}
 
 	//update currTopics
-	currTopics[topicPos].getPosts()[postPos].getComments().erase(commentPosition);
+	currTopics[openedTopicPos].getPosts()[openedPostPos].getComments().erase(commentPosition);
 	
 
 	//update openedTopic
-	openedTopic.getPosts()[postPos].getComments().erase(commentPosition);
+	openedTopic.getPosts()[openedPostPos].getComments().erase(commentPosition);
 
 	//update openedPost
 	openedPost.getComments().erase(commentPosition);
 
 	std::cout << "Successfully deleted comment!" << std::endl;
+}
+
+void SocialNetwork::deletePost(const size_t postId)
+{
+	//check if post exists
+	size_t postPosition = SIZE_MAX;
+
+	try {
+		postPosition = findCorrespondingPostPosition(postId, openedTopicPos);
+	}
+	catch (const std::runtime_error&) {
+		std::cout << "Could not delete post! Post doesn't exist!" << std::endl;
+		return;
+	}
+	
+	if (openedPostPos == postPosition) {
+		openedPost.clear();
+		openedPostPos = SIZE_MAX;
+	}
+
+	size_t commentsSize = currTopics[openedTopicPos].getPosts()[postPosition].getComments().getSize();
+	for (size_t i = 0; i < commentsSize; ++i) {
+		size_t commentId = currTopics[openedTopicPos].getPosts()[postPosition].getComments()[i].getId();
+		size_t commentPosition = getCommentPosition(commentId, currTopics[openedTopicPos].getPosts()[postPosition].getComments());
+		//update currUsers	
+		int commentScore = openedTopic.getPosts()[postPosition].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
+		size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
+		currUsers[userId].decrementPoints(commentScore);
+
+		//update loggedinuser
+		bool isAuthor = (loggedInUser.getId() == openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
+		if (isAuthor) {
+			loggedInUser.decrementPoints(commentScore);
+		}
+
+		//update currTopics
+		currTopics[openedTopicPos].getPosts()[postPosition].getComments().erase(commentPosition);
+
+
+		//update openedTopic
+		openedTopic.getPosts()[postPosition].getComments().erase(commentPosition);
+	}
+
+	//update currTopics
+	currTopics[openedTopicPos].getPosts().erase(postPosition);
+
+	//update openedTopic
+	openedTopic.getPosts().erase(postPosition);
+
+	std::cout << "Post deleted successfully!" << std::endl;
 }
 
 void SocialNetwork::quitOpenedPost() 
@@ -1086,7 +1028,7 @@ void SocialNetwork::quitOpenedPost()
 
 	std::cout << "Post with title: " << openedPost.getTitle() << " - closed!" << std::endl;
 	openedPost.clear();
-	
+	openedPostPos = SIZE_MAX;
 }
 
 void SocialNetwork::quitOpenedTopic()
@@ -1098,4 +1040,7 @@ void SocialNetwork::quitOpenedTopic()
 
 	std::cout << "Topic with title: " << openedTopic.getTitle() << " - closed!" << std::endl;
 	openedTopic.clear();
+	openedTopicPos = SIZE_MAX;
+	openedPost.clear();
+	openedPostPos = SIZE_MAX;
 }
