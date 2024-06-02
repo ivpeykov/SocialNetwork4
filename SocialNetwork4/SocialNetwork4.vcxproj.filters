@@ -84,6 +84,9 @@
     <ClCompile Include="ObjectFactory.cpp">
       <Filter>Source Files\Services</Filter>
     </ClCompile>
+    <ClCompile Include="Reaction.cpp">
+      <Filter>Source Files\Business Classes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="String.h">
@@ -136,6 +139,9 @@
     </ClInclude>
     <ClInclude Include="ObjectFactory.h">
       <Filter>Header Files\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="Reaction.h">
+      <Filter>Header Files\Business Classes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

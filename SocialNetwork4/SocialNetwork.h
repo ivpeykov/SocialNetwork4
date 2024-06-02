@@ -84,6 +84,8 @@ public:
 
 	void downvoteComment();
 
+	void deleteComment();
+
 	void quitOpenedPost();
 
 	void quitOpenedTopic();
