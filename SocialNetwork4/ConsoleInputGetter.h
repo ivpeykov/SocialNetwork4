@@ -42,6 +42,8 @@ public:
 
 	static String& getCommandInput();
 
+	static bool getExitSavingAnswer();
+
 	static void resetCommandInput();
 
 	static void resetSocialNetworkDirectoryInput();

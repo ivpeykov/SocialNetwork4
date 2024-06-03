@@ -415,6 +415,30 @@ String& ConsoleInputGetter::getCommandInput()
     return commandInput;
 }
 
+bool ConsoleInputGetter::getExitSavingAnswer()
+{
+    std::cout << "There are unsaved changes. Do you wish to save them before exiting? Y/N: ";
+    char answer;
+
+    while (true) {
+        std::cin.get(answer);
+
+        if (answer == 'y' || answer == 'Y') {
+            return true;
+        }
+
+        else if (answer == 'n' || answer == 'N') {
+            return false;
+        }
+
+        else {
+            std::cout << "Invalid input! Please answer with either Y or N: ";       
+            flushInputBuffer();
+            
+        }
+    }
+}
+
 void ConsoleInputGetter::resetCommandInput()
 {
     commandInput.clearString();

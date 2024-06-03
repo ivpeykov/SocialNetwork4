@@ -1090,3 +1090,20 @@ void SocialNetwork::quitOpenedTopic()
 	openedPost.clear();
 	openedPostPos = SIZE_MAX;
 }
+
+const void SocialNetwork::exitProgram() const
+{
+	if (CurrentData::getChangesMadeStatus() == true) {
+
+		bool answer = ConsoleInputGetter::getExitSavingAnswer();
+
+		if (answer == true) {
+			FileHandler::saveSocialNetwork(*this);
+		}
+
+		else {
+			std::cout << "Exiting without saving." << std::endl;
+			exit(0);
+		}
+	}
+}

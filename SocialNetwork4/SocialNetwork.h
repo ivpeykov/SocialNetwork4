@@ -93,6 +93,8 @@ public:
 	void quitOpenedPost();
 
 	void quitOpenedTopic();
+
+	const void exitProgram() const;
 	//add other commands down here....
 
 private:
