@@ -4,14 +4,15 @@ unsigned short CommandsHandler::currCommand = Undefined;
 
 //Adjust COMMAND_INPUT_MAX_LENGTH in Configuration.h if adding longer commands.
 const String CommandsHandler::commandsList[CommandsCount] = { "load", "signup", "login", "logout", "edit", "edit id", "create", "save", "save as", "search", 
-"open", "post", "list", "post_open", "print_comments", "comment", "reply", "upvote", "downvote", "delete_comment", "delete_post", "post_quit", "quit", "help", "exit" }; //TODO: change order to be more grouped
+"open", "post", "list", "post_open", "print_comments", "comment", "reply", "upvote", "downvote", "delete_comment", "delete_post", "delete_topic", "post_quit", "quit", "help", "exit" }; //TODO: change order to be more grouped
 
 const String CommandsHandler::commandsDescriptions[CommandsCount] = { "Load data from file into the program" , "Sign user up", "Log user in",
 "Log user out", "Edit user data", "Edit selected user data",
 "Create a topic", "Save data" , "Save data as",
 "Search for a topic by title", "Open a topic", "Post a post",
 "List available posts in a topic", "Open a post", "Print comments and replies of an opened post", "Comment on a post",
-"Reply to a comment in a post", "Upvote a selected comment", "Downvote a selected comment", "Delete a selected comment", "Delete a selected post", "Close opened post", "Close opened topic", "List available commands", "Exit from program" };
+"Reply to a comment in a post", "Upvote a selected comment", "Downvote a selected comment", "Delete a selected comment", "Delete a selected post", "Delete a selected topic",
+"Close opened post", "Close opened topic", "List available commands", "Exit from program"};
 
 bool CommandsHandler::networkLoaded = false;
 
@@ -298,7 +299,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             return;
         }
 
-        //choose topic
+        //choose post
         size_t postId = SIZE_MAX;
         try {
             postId = currSocialNetwork.chooseObject();
@@ -317,6 +318,42 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
 
         break;
     }
+
+    case DeleteTopic: {
+        if (!networkLoaded) {
+            std::cout << "Please load a Social Network first!" << std::endl;
+            break;
+        }
+        if (!currSocialNetwork.isThereLoggedInUser()) {
+            std::cout << "Could not delete Topic! Please login first!" << std::endl;
+            break;
+        }
+
+        if (SocialNetwork::getLoggedInUser().getModeratorStatus() == false) {
+            std::cout << "Could not delete Topic! No admin privileges!";
+            return;
+        }
+
+        //choose topic
+        size_t topicId = SIZE_MAX;
+        try {
+            topicId = currSocialNetwork.chooseObject();
+        }
+        catch (const std::exception&) {
+            std::cout << "Could not delete topic! " << std::endl;
+            return;
+        }
+
+        try {
+            currSocialNetwork.deleteTopic(topicId);
+        }
+        catch (const std::runtime_error& e) {
+            std::cout << "Could not delete topic!" << e.what() << std::endl;
+        }
+
+        break;
+    }
+
 
     case QuitPost:
         if (!networkLoaded) {

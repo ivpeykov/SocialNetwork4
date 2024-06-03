@@ -29,6 +29,7 @@ enum Command { //don't change order!
 	Downvote,
 	DeleteComment,
 	DeletePost,
+	DeleteTopic,
 	QuitPost,
 	QuitTopic,
 	Help,

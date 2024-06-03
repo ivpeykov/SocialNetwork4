@@ -948,8 +948,8 @@ void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs ref
 
 	//update currUsers	
 	int commentScore = openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
-	size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].getAuthorId());
-	currUsers[userId].decrementPoints(commentScore);
+	size_t userPos = findCorrespondingUserPosition(openedTopic.getPosts()[openedPostPos].getComments()[commentPosition].getAuthorId());
+	currUsers[userPos].decrementPoints(commentScore);
 
 	//update loggedinuser
 	if (isAuthor) {
@@ -958,7 +958,6 @@ void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs ref
 
 	//update currTopics
 	currTopics[openedTopicPos].getPosts()[openedPostPos].getComments().erase(commentPosition);
-	
 
 	//update openedTopic
 	openedTopic.getPosts()[openedPostPos].getComments().erase(commentPosition);
@@ -966,6 +965,7 @@ void SocialNetwork::deleteComment(const size_t commentId) //TODO: this needs ref
 	//update openedPost
 	openedPost.getComments().erase(commentPosition);
 
+	CurrentData::setChangesMadeStatus(true);
 	std::cout << "Successfully deleted comment!" << std::endl;
 }
 
@@ -987,14 +987,15 @@ void SocialNetwork::deletePost(const size_t postId)
 		openedPostPos = SIZE_MAX;
 	}
 
-	size_t commentsSize = currTopics[openedTopicPos].getPosts()[postPosition].getComments().getSize();
+	//delete comments, replies, reactions
+	size_t commentsSize = currTopics[openedTopicPos].getPosts()[postPosition].getComments().getSize(); //TOOD : shouldnt we just use i instead of commentPosition?
 	for (size_t i = 0; i < commentsSize; ++i) {
 		size_t commentId = currTopics[openedTopicPos].getPosts()[postPosition].getComments()[i].getId();
 		size_t commentPosition = getCommentPosition(commentId, currTopics[openedTopicPos].getPosts()[postPosition].getComments());
 		//update currUsers	
 		int commentScore = openedTopic.getPosts()[postPosition].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
-		size_t userId = findCorrespondingUserPosition(openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
-		currUsers[userId].decrementPoints(commentScore);
+		size_t userPos = findCorrespondingUserPosition(openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
+		currUsers[userPos].decrementPoints(commentScore);
 
 		//update loggedinuser
 		bool isAuthor = (loggedInUser.getId() == openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
@@ -1010,13 +1011,63 @@ void SocialNetwork::deletePost(const size_t postId)
 		openedTopic.getPosts()[postPosition].getComments().erase(commentPosition);
 	}
 
+	//delete Post
+
 	//update currTopics
 	currTopics[openedTopicPos].getPosts().erase(postPosition);
 
 	//update openedTopic
 	openedTopic.getPosts().erase(postPosition);
 
+	CurrentData::setChangesMadeStatus(true);
 	std::cout << "Post deleted successfully!" << std::endl;
+}
+
+void SocialNetwork::deleteTopic(const size_t topicId)
+{
+	//check if topic exists
+	size_t topicPosition = SIZE_MAX;
+
+	try {
+		topicPosition = findCorrespondingTopicPosition(topicId);
+	}
+	catch (const std::runtime_error&) {
+		std::cout << "Could not delete topic! Topic doesn't exist!" << std::endl;
+		return;
+	}
+
+	if (openedTopicPos == topicPosition) {
+
+		if (openedPost.getTopicId() == openedTopic.getId()) {
+			openedPost.clear();
+			openedPostPos = SIZE_MAX;
+		}
+
+		openedTopic.clear();
+		openedTopicPos = SIZE_MAX;	
+	}
+	
+	size_t postsSize = currTopics[topicPosition].getPosts().getSize();
+	for (size_t i = 0; i < postsSize; ++i) {
+
+		//calculate commentsScores
+		size_t commentsSize = currTopics[topicPosition].getPosts()[i].getComments().getSize();
+		for (size_t j = 0; j < commentsSize; ++j) {
+			int commentScore = currTopics[topicPosition].getPosts()[i].getComments()[j].getScore();
+			size_t userPos = findCorrespondingUserPosition(currTopics[topicPosition].getPosts()[i].getComments()[j].getAuthorId());
+
+			//update currUsers
+			currUsers[userPos].decrementPoints(commentScore);
+
+			//update loggedinuser
+			bool isAuthor = (loggedInUser.getId() == currTopics[topicPosition].getPosts()[i].getComments()[j].getAuthorId());
+			if (isAuthor) {
+				loggedInUser.decrementPoints(commentScore);
+			}
+		}
+	}
+	currTopics.erase(topicPosition);
+	std::cout << "Topic deleted successfully!" << std::endl;
 }
 
 void SocialNetwork::quitOpenedPost() 

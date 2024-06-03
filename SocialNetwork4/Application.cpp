@@ -8,7 +8,6 @@ Application& Application::getInstance()
 
 void Application::run()
 {
-	//big optimisation: instead of searching for user,topic,post, position, keep the opened positions as variables and directly use them, update them when they change.
 
 	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 

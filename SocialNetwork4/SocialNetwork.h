@@ -88,6 +88,8 @@ public:
 
 	void deletePost(const size_t postId);
 
+	void deleteTopic(const size_t topicId);
+
 	void quitOpenedPost();
 
 	void quitOpenedTopic();

@@ -1,7 +1,6 @@
 #pragma once
 #include <stdexcept>
 #include <iostream>
-#include <type_traits>
 
 template<typename T>
 class Vector { //TODO: make methods const where  they can be
