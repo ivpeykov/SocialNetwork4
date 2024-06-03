@@ -987,28 +987,20 @@ void SocialNetwork::deletePost(const size_t postId)
 		openedPostPos = SIZE_MAX;
 	}
 
-	//delete comments, replies, reactions
+	//calculate comments Scores
 	size_t commentsSize = currTopics[openedTopicPos].getPosts()[postPosition].getComments().getSize(); //TOOD : shouldnt we just use i instead of commentPosition?
 	for (size_t i = 0; i < commentsSize; ++i) {
-		size_t commentId = currTopics[openedTopicPos].getPosts()[postPosition].getComments()[i].getId();
-		size_t commentPosition = getCommentPosition(commentId, currTopics[openedTopicPos].getPosts()[postPosition].getComments());
-		//update currUsers	
-		int commentScore = openedTopic.getPosts()[postPosition].getComments()[commentPosition].getScore(); //TODO: refactor method to not use get.get.get...
-		size_t userPos = findCorrespondingUserPosition(openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
+		
+		//update currUsers
+		int commentScore = openedTopic.getPosts()[postPosition].getComments()[i].getScore(); //TODO: refactor method to not use get.get.get...
+		size_t userPos = findCorrespondingUserPosition(openedTopic.getPosts()[postPosition].getComments()[i].getAuthorId());
 		currUsers[userPos].decrementPoints(commentScore);
 
 		//update loggedinuser
-		bool isAuthor = (loggedInUser.getId() == openedTopic.getPosts()[postPosition].getComments()[commentPosition].getAuthorId());
+		bool isAuthor = (loggedInUser.getId() == openedTopic.getPosts()[postPosition].getComments()[i].getAuthorId());
 		if (isAuthor) {
 			loggedInUser.decrementPoints(commentScore);
 		}
-
-		//update currTopics
-		currTopics[openedTopicPos].getPosts()[postPosition].getComments().erase(commentPosition);
-
-
-		//update openedTopic
-		openedTopic.getPosts()[postPosition].getComments().erase(commentPosition);
 	}
 
 	//delete Post
@@ -1066,7 +1058,10 @@ void SocialNetwork::deleteTopic(const size_t topicId)
 			}
 		}
 	}
+	//delete topic
 	currTopics.erase(topicPosition);
+
+	CurrentData::setChangesMadeStatus(true);
 	std::cout << "Topic deleted successfully!" << std::endl;
 }
 
