@@ -42,7 +42,7 @@ void ConsoleInputGetter::recieveCommandInput()
 }
 
 
-void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
+String ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
 {
     std::cout << "Enter social network directory: ";
 
@@ -53,13 +53,13 @@ void ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
     char input[128];
     std::cin.getline(input, 128, '\n');
 
-    socialNetworkDirectoryInput.setString(input);
+    String dir = input;
 
-    if (isBufferOverfilled()) {
-        resetSocialNetworkDirectoryInput();
+    if (isBufferOverfilled()) {       
         flushInputBuffer();
     }
 
+    return dir;
 }
 
 void ConsoleInputGetter::recieveFirstNameInput(User& newUser)

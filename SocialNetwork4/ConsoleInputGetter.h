@@ -15,7 +15,7 @@ public:
 
 	static void recieveCommandInput();
 
-	static void recieveSocialNetworkDirectoryInput();
+	static String recieveSocialNetworkDirectoryInput();
 
 	//Recieve User Input data
 	static void recieveFirstNameInput(User& newUser);

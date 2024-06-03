@@ -104,7 +104,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork) //TODO :: AD
             std::cout << "Please load a Social Network first!" << std::endl;
             break;
         }
-        //FileHandler::saveAsSocialNetwork();
+        FileHandler::saveSocialNetworkAs(currSocialNetwork);
         break;
 
     case Search:

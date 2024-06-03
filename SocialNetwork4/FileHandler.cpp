@@ -16,17 +16,15 @@ bool FileHandler::isFileEmpty(const char* fileName)
 void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& loadedStatus)
 {
 
-	ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
-	if (!InputValidator::isValidSocialNetworkDirectoryInput(ConsoleInputGetter::getSocialNetworkDirectoryInput())) {
-
-		ConsoleInputGetter::resetSocialNetworkDirectoryInput();
+	String tempDir = ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
+	if (!InputValidator::isValidSocialNetworkDirectoryInput(tempDir)) {
 
 		return;
 	}
 
-	socialNetworkToLoad.setDirectory(ConsoleInputGetter::getSocialNetworkDirectoryInput());
+	socialNetworkToLoad.setDirectory(tempDir);
 
-	const char* filePath = ConsoleInputGetter::getSocialNetworkDirectoryInput().getString();
+	const char* filePath = tempDir.getString();
 
 	std::fstream socialNetworkFile(filePath, std::ios::binary | std::ios::in);
 
@@ -371,11 +369,11 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 		return;
 	}
 	
-	const char* filepath = socialNetwork.getDirectory().getString();
+	const char* filePath = socialNetwork.getDirectory().getString();
 
-	std::ofstream socialNetworkFile(filepath, std::ios::binary | std::ios::trunc);
+	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
-		std::cout << "Error opening users file for saving!" << std::endl;
+		std::cout << "Error opening file for saving!" << std::endl;
 		//TODO: exception? handle this somehow
 		return;
 	}
@@ -390,6 +388,37 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	socialNetworkFile.close();
 
 	std::cout << "Successfully saved " << socialNetwork.getDirectory() << std::endl;
+}
+
+void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
+{
+
+	String tempDir = ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
+	if (!InputValidator::isValidSocialNetworkDirectoryInput(tempDir)) {
+		std::cout << "Could not save social network!" << std::endl;
+		return;
+	}
+
+	const char* filePath = tempDir.getString();
+
+	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
+	if (!socialNetworkFile.is_open()) {
+		std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
+		//TODO: exception? handle this somehow
+		return;
+	}
+
+	//SAVE USERS
+	saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
+
+	//SAVE TOPICS
+
+	saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
+
+	socialNetworkFile.close();
+
+	std::cout << "Successfully saved " << filePath << std::endl;
+
 }
 
 void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)
