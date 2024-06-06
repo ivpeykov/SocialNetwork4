@@ -109,4 +109,6 @@ private:
 	static size_t loggedInUserPos;
 	static size_t openedTopicPos;
 	static size_t openedPostPos;
+
+	//test
 };
