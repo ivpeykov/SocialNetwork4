@@ -1,8 +1,8 @@
-#include "Application.h"
+#include <iostream>
 
-int main(){
+int main() {
 
-	Application::getInstance().run();
+
 
 	return 0;
 }
