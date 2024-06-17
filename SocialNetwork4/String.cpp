@@ -281,3 +281,8 @@ bool String::isDigit() const
 
 	return true;
 }
+
+bool String::isEmpty() const
+{
+	return string == nullptr;
+}

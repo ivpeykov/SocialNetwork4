@@ -54,6 +54,8 @@ public:
 
 	bool isDigit() const;
 
+	bool isEmpty() const;
+
 private:
 
 	char* string;
