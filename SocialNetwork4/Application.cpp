@@ -8,27 +8,25 @@ Application& Application::getInstance()
 
 void Application::run()
 {
-	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
+	try {
+		PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
-	while (CommandsHandler::getCurrCommand() != Command::Exit) {
-		PrintHandler::printEnterCommandPrompt();
+		while (CommandsHandler::getCurrCommand() != Command::Exit) {
+			PrintHandler::printEnterCommandPrompt();
 
-		ConsoleInputGetter::recieveCommandInput();
-		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
-			ConsoleInputGetter::resetCommandInput();
-			CommandsHandler::setCurrCommand(Undefined);
+			ConsoleInputGetter::recieveCommandInput();
+			if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
+				ConsoleInputGetter::resetCommandInput();
+				CommandsHandler::setCurrCommand(Undefined);
+			}
+			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 		}
-		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 	}
-
-
-	//Debugging prints...
-
-
-	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
-
-	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
-	
+	catch (const std::bad_alloc& e) {
+		std::cout << "Critical error! " << std::endl << "Memory allocation fail! Saving and terminating program...." << std::endl;
+		FileHandler::saveSocialNetworkPostCriticalError(e, CurrentData::getCurrSocialNetwork());
+		exit(0);
+	}
 }
 
 Application::Application() {}

@@ -34,6 +34,8 @@ public:
 
 	static void saveSocialNetworkAs(const SocialNetwork& socialNetwork);
 
+	static void saveSocialNetworkPostCriticalError(const std::exception& e, const SocialNetwork& socialNetwork);
+
 	static void saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users);
 
 	static void saveTopics(std::ofstream& socialNetworkFile, const Vector<Topic>& topics);

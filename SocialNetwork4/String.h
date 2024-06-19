@@ -1,6 +1,6 @@
 #pragma once
 #include <iostream>
-#include <stdexcept> //TODO: needed? test at the end
+#include <stdexcept>
 
 class String
 {

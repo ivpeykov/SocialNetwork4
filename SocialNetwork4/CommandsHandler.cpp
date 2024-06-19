@@ -20,7 +20,7 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 {
 	switch (currCommand) {
 
-	case Load: //TOOD: finish this. Dont forget to check for exception handling
+	case Load:
 		if (networkLoaded) {
 			std::cout << "Network already loaded! Please restart program and load again!"
 				<< std::endl;
@@ -45,7 +45,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 		break;
 
@@ -59,7 +60,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 		break;
 
@@ -82,7 +84,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 
 		catch (const std::logic_error& e) {
 			std::cout << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 		break;
 
@@ -96,7 +99,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 		break;
 
@@ -131,7 +135,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 		break;
 
@@ -288,7 +293,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << "Could not delete comment!" << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 
 		break;
@@ -333,7 +339,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << "Could not delete post!" << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 
 		break;
@@ -373,7 +380,8 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		}
 		catch (const std::logic_error& e) {
 			std::cout << "Could not delete topic!" << e.what() << std::endl;
-			//TODO: critical exception. Terminate program.
+			FileHandler::saveSocialNetworkPostCriticalError(e, currSocialNetwork);
+			exit(0);
 		}
 
 		break;

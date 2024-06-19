@@ -373,7 +373,6 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "Error opening file for saving!" << std::endl;
-		//TODO: exception? handle this somehow
 		return;
 	}
 
@@ -405,7 +404,6 @@ void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
 	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
-		//TODO: exception? handle this somehow
 		return;
 	}
 
@@ -420,6 +418,54 @@ void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
 
 	std::cout << "Successfully saved " << filePath << std::endl;
 
+}
+
+void FileHandler::saveSocialNetworkPostCriticalError(const std::exception& e, const SocialNetwork& socialNetwork)
+{
+	try {
+		throw; // Re-throw the exception to handle it
+	}
+	catch (const std::bad_alloc&) {
+		const char* filePath = "SavedDataPostBadAlloc.dat";
+
+		std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
+		if (!socialNetworkFile.is_open()) {
+			std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
+		}
+
+		//SAVE USERS
+		saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
+
+		//SAVE TOPICS
+
+		saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
+
+		socialNetworkFile.close();
+
+		std::cout << "Successfully saved " << filePath << std::endl;
+		exit(0);
+	}
+	catch (const std::logic_error&) {
+		const char* filePath = "SavedDataPostLogicError.dat";
+
+		std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
+		if (!socialNetworkFile.is_open()) {
+			std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
+			exit(0);
+		}
+
+		//SAVE USERS
+		saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
+
+		//SAVE TOPICS
+
+		saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
+
+		socialNetworkFile.close();
+
+		std::cout << "Successfully saved " << filePath << std::endl;
+	}
+	
 }
 
 void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)
