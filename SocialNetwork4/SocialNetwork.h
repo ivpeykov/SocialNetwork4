@@ -100,8 +100,6 @@ public:
 
 	void quitOpenedTopic();
 
-	const void exitProgram() const;
-
 private:
 	String directory;
 	Vector<User> currUsers;

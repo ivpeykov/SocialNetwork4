@@ -424,8 +424,23 @@ void CommandsHandler::runCommands(SocialNetwork& currSocialNetwork)
 		FileHandler::saveSocialNetworkAs(currSocialNetwork);
 		break;
 
-	case Exit:
-		currSocialNetwork.exitProgram();
+	case Exit: {
+		if (CurrentData::getChangesMadeStatus() == true) {
+
+			bool answer = ConsoleInputGetter::getExitSavingAnswer();
+
+			if (answer == true) {
+				FileHandler::saveSocialNetwork(currSocialNetwork);
+			}
+
+			else {
+				std::cout << "Exiting without saving." << std::endl;
+				exit(0);
+			}
+		}
+		break;
+	}
+	default:
 		break;
 	}
 }
