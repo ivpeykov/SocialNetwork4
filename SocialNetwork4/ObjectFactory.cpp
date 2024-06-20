@@ -34,7 +34,7 @@ User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
 	switch (userNameStatus) {
 
 	case 0:
-		throw std::runtime_error("Error creating User! Invalid Username!!");
+		throw std::runtime_error("Error creating User! Invalid Username!");
 		break;
 	case 1:
 		break;

@@ -214,6 +214,7 @@ void SocialNetwork::signup(const User& newUser)
 {
 	currUsers.pushBack(newUser);
 	CurrentData::setChangesMadeStatus(true);
+	std::cout << "\nSignup successful!" << std::endl;
 }
 
 void SocialNetwork::login()
@@ -249,7 +250,7 @@ void SocialNetwork::login()
 			std::cout << e.what();
 			throw std::logic_error("Critical error during login!");
 		}
-		std::cout << "Login Successful!" << std::endl;
+		std::cout << "\nLogin Successful!" << std::endl;
 		return;
 	}
 
@@ -539,6 +540,8 @@ void SocialNetwork::addTopic(const Topic& newTopic)
 	currTopics.pushBack(newTopic);
 
 	CurrentData::setChangesMadeStatus(true);
+
+	std::cout << "\nTopic added successfully!" << std::endl;
 }
 
 void SocialNetwork::searchTopic()
@@ -650,7 +653,7 @@ void SocialNetwork::addPost(const Post& newPost)
 	currTopics[openedTopicPos].addPost(newPost); //update currTopics
 	CurrentData::setChangesMadeStatus(true);
 	openedTopic.addPost(newPost); //update static object openedTopic
-	std::cout << "Added Post: ''" << newPost.getTitle() << "'' successfully!" << std::endl;
+	std::cout << "\nAdded Post: ''" << newPost.getTitle() << "'' successfully!" << std::endl;
 }
 
 void SocialNetwork::listPostsInOpenedTopic() const
@@ -745,15 +748,15 @@ void SocialNetwork::addComment(const Comment& newComment)
 void SocialNetwork::replyToComment(const size_t parentId)
 {
 	if (!isThereLoggedInUser()) {
-		throw std::runtime_error("Could not reply! Please log in before replying!");
+		throw std::runtime_error("Please log in before replying!");
 	}
 
 	if (!isThereOpenedTopic()) {
-		throw std::runtime_error("Could not reply! Please open a topic before replying!");
+		throw std::runtime_error("Please open a topic before replying!");
 	}
 
 	if (!isThereOpenedPost()) {
-		throw std::runtime_error("Could not reply! Please open a post before replying!");
+		throw std::runtime_error("Please open a post before replying!");
 	}
 
 	size_t commentPosition = getCommentPosition(parentId, openedPost.getComments());
@@ -782,7 +785,7 @@ void SocialNetwork::upvoteComment(const size_t commentId)
 	}
 
 	if (!isThereOpenedPost()) {
-		std::cout << "Could not upvote comment! Please open a topic first!" << std::endl;
+		std::cout << "Could not upvote comment! Please open a post first!" << std::endl;
 		return;
 	}
 
@@ -868,7 +871,7 @@ void SocialNetwork::downvoteComment(const size_t commentId)
 	}
 
 	if (!isThereOpenedPost()) {
-		std::cout << "Could not downvote comment! Please open a topic first!" << std::endl;
+		std::cout << "Could not downvote comment! Please open a post first!" << std::endl;
 		return;
 	}
 

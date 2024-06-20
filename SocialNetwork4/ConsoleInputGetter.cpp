@@ -300,7 +300,7 @@ void ConsoleInputGetter::recieveDescriptionInput(String& description)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Description: ";
+    std::cout << "\nEnter description: ";
 
     char newDescription[Configuration::TOPIC_DESCRIPTION_MAX_LENGTH];
 
@@ -338,7 +338,7 @@ void ConsoleInputGetter::recievePostContentInput(String& content)
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Content: ";
+    std::cout << "\nEnter content: ";
 
     char* newContent = new char[Configuration::POST_CONTENT_MAX_LENGTH];
 
