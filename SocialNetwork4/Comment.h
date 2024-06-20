@@ -1,7 +1,7 @@
 #pragma once
 #include "String.h"
-#include "Reply.h"
 #include "Vector.h"
+#include "Reply.h"
 #include "Reaction.h"
 
 class Reply;
@@ -10,6 +10,7 @@ class Comment
 {
 public:
 
+	//constructors and destructor
 	Comment();
 
 	Comment(const String& author, const String& text,
@@ -22,6 +23,16 @@ public:
 
 	~Comment();
 
+	//operators
+	Comment& operator=(const Comment& other);
+	bool operator==(const Comment& other) const;
+	bool operator!=(const Comment& other) const;
+
+	//methods tied to operators
+	bool isEqualWithoutId(const Comment& other) const;
+	bool isNotEqualWithoutId(const Comment& other) const;
+
+	//getters
 	const String& getAuthor() const;
 	const String& getText() const;
 	const int getScore() const;
@@ -35,6 +46,7 @@ public:
 	const Vector<Reaction>& getReactions() const;
 	Vector<Reaction>& getReactions();
 
+	//setters
 	void setAuthor(const char* newAuthor);
 	void setAuthor(const String& newAuthor);
 
@@ -45,33 +57,24 @@ public:
 	void setId(const size_t newId);
 	void setPostId(const size_t newPostId);
 	void setAuthorId(const size_t newId);
-
 	void setReplies(const Vector<Reply>& newReplies);
-	void addReply(const Reply& newReply);
-
 	void setReactions(const Vector<Reaction>& newReactions);
-	void addReaction(Reaction& newReaction);
 
-	bool isEqualWithoutId(const Comment& other) const;
-	bool isNotEqualWithoutId(const Comment& other) const;
+	//methods
+	void clear();
 
-	void incrementScore();
+	void changeReactionType(const size_t reactionPosition, const ReactionType newReactionType);	
+
 	void incrementScore(const int amount);
-	void decrementScore();
 	void decrementScore(const int amount);
-
-	void changeReactionType(const size_t reactionPosition, const ReactionType newReactionType);
 
 	const Reaction* getUserReaction(const size_t userId) const;
 
-	void clear();
-
-	Comment& operator=(const Comment& other);
-	bool operator==(const Comment& other) const;
-	bool operator!=(const Comment& other) const;
+	void addReply(const Reply& newReply);
+	void addReaction(Reaction& newReaction);
 
 private:
-	
+
 	friend class Reply;
 
 	String author;
@@ -84,3 +87,4 @@ private:
 	Vector<Reaction> reactions;
 	Vector<Reply> replies;
 };
+

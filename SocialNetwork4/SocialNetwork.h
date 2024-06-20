@@ -1,19 +1,24 @@
 #pragma once
-#include "ConsoleInputGetter.h"
-#include "InputValidator.h"
-#include "PrintHandler.h"
-#include "CurrentData.h"
+#include "String.h"
+#include "Vector.h"
 #include "User.h"
 #include "Topic.h"
 #include "Post.h"
+#include "ConsoleInputGetter.h"
+#include "CurrentData.h"
+#include "PrintHandler.h"
 
-class SocialNetwork //TODO: reorder methods, as in CommandsHandler cases
+class SocialNetwork
 {
 public:
-
+	//constructors
 	SocialNetwork(String& directory);
 	SocialNetwork(const char* directory);
 
+	//operators
+	SocialNetwork& operator=(const SocialNetwork& other);
+
+	//getters
 	const String& getDirectory() const;
 	Vector<User>& getCurrUsers();
 	const Vector<User>& getCurrUsers() const;
@@ -24,6 +29,7 @@ public:
 	static Topic& getOpenedTopic();
 	static Post& getOpenedPost();
 
+	//setters
 	void setDirectory(const String& newDirectory);
 	void setDirectory(const char* newDirectory);
 	void setCurrUsers(const Vector<User>& newUsers);
@@ -33,16 +39,10 @@ public:
 	static void setOpenedTopic(const Topic& newTopic);
 	static void setOpenedPost(const Post& newPost);
 
+	//methods
 	static bool isThereLoggedInUser();
 	static bool isThereOpenedTopic();
 	static bool isThereOpenedPost();
-
-	bool isLoginSuccessful(User& user);
-
-	size_t getUserPosition(const String& userName) const;
-	size_t getCommentPosition(const size_t id, const Vector<Comment>& comments) const;
-
-	SocialNetwork& operator=(const SocialNetwork& other);
 
 	size_t findCorrespondingUserPosition(const size_t searchedUserId);
 
@@ -50,8 +50,14 @@ public:
 
 	size_t findCorrespondingPostPosition(const size_t searchedPostId, const size_t topicPos);
 
+	bool isLoginSuccessful(User& user);
+
+	size_t getUserPosition(const String& userName) const;
+	size_t getCommentPosition(const size_t id, const Vector<Comment>& comments) const;
+
 	const size_t chooseObject() const;
 
+	//commands
 	void signup(const User& newUser);
 
 	void login();
@@ -68,17 +74,17 @@ public:
 
 	void openTopic();
 
-	void addPost(const Post& newPost); //can use move semantics here
+	void addPost(const Post& newPost);
 
 	void listPostsInOpenedTopic() const;
 
 	void openPost();
 
-	void addComment(const Comment& newComment); //can use move semantics here
+	const void printOpenedPostComments() const;
+
+	void addComment(const Comment& newComment);
 
 	void replyToComment(const size_t parentId);
-
-	const void printOpenedPostComments() const;
 
 	void upvoteComment(const size_t commentId);
 
@@ -94,9 +100,6 @@ public:
 
 	void quitOpenedTopic();
 
-	const void exitProgram() const;
-	//add other commands down here....
-
 private:
 	String directory;
 	Vector<User> currUsers;
@@ -109,6 +112,4 @@ private:
 	static size_t loggedInUserPos;
 	static size_t openedTopicPos;
 	static size_t openedPostPos;
-
-	//test
 };

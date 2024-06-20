@@ -7,14 +7,14 @@
 #include "Post.h"
 #include "Comment.h"
 #include "Vector.h"
- 
+
 class SocialNetwork;
 
 class FileHandler
 {
 public:
 
-	static bool isFileEmpty(const char* fileName); 
+	static bool isFileEmpty(const char* fileName);
 
 	static void loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& loadedStatus);
 
@@ -34,11 +34,13 @@ public:
 
 	static void saveSocialNetworkAs(const SocialNetwork& socialNetwork);
 
+	static void saveSocialNetworkPostCriticalError(const std::exception& e, const SocialNetwork& socialNetwork);
+
 	static void saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users);
 
 	static void saveTopics(std::ofstream& socialNetworkFile, const Vector<Topic>& topics);
 
-	static void savePosts(std::ofstream& socialNetworkFile,const Vector<Post>& posts);
+	static void savePosts(std::ofstream& socialNetworkFile, const Vector<Post>& posts);
 
 	static void saveComments(std::ofstream& socialNetworkFile, const Vector<Comment>& comments);
 

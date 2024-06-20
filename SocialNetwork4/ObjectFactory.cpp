@@ -25,16 +25,16 @@ void ObjectFactory::setLastCreatedTopicId(const size_t newId)
 
 User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
 {
-	User newUser;
+	String userName;
 
 	//UserName
-	ConsoleInputGetter::recieveUserNameInput(newUser);
-	size_t userNameStatus = InputValidator::isValidUserNameSignup(newUser.getUserName());
+	ConsoleInputGetter::recieveUserNameInput(userName);
+	size_t userNameStatus = InputValidator::isValidUserNameSignup(userName);
 
 	switch (userNameStatus) {
 
 	case 0:
-		throw std::runtime_error("Error creating User! Invalid Username!!");
+		throw std::runtime_error("Error creating User! Invalid Username!");
 		break;
 	case 1:
 		break;
@@ -42,26 +42,34 @@ User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
 		throw std::runtime_error("Error creating User! User already exists!");
 		break;
 	default:
-		throw std::exception("Error with usersStatus when signing up!");
+		throw std::logic_error("Error with usersStatus when signing up!");
 	}
 
 	//Password
-	ConsoleInputGetter::recievePasswordInput(newUser);
-	if (!InputValidator::isValidPassword(newUser.getPassword())) {
+	String password;
+
+	ConsoleInputGetter::recievePasswordInput(password);
+	if (!InputValidator::isValidPassword(password)) {
 		throw std::runtime_error("Error creating User! Invalid Password!");
 	}
 
 	//FirstName
-	ConsoleInputGetter::recieveFirstNameInput(newUser);
-	if (!InputValidator::isValidFirstName(newUser.getFirstName())) {
+	String firstName;
+
+	ConsoleInputGetter::recieveFirstNameInput(firstName);
+	if (!InputValidator::isValidFirstName(firstName)) {
 		throw std::runtime_error("Error creating User! Invalid First Name!");
 	}
 
 	//LastName
-	ConsoleInputGetter::recieveLastNameInput(newUser);
-	if (!InputValidator::isValidLastName(newUser.getLastName())) {
+	String lastName;
+
+	ConsoleInputGetter::recieveLastNameInput(lastName);
+	if (!InputValidator::isValidLastName(lastName)) {
 		throw std::runtime_error("Error creating User! Invalid Last Name!");
 	}
+
+	User newUser(firstName, lastName, userName, password, 0);
 
 	//Moderator Status
 	if (socialNetwork.getCurrUsers().back().getFirstName() != nullptr) {
@@ -70,8 +78,7 @@ User ObjectFactory::createUser(const SocialNetwork& socialNetwork)
 		++lastSignedUpUserId;
 	}
 
-	else {
-		newUser.setId(0);
+	else {		
 		newUser.setModeratorStatus(true);
 		lastSignedUpUserId = 0;
 	}
@@ -88,21 +95,21 @@ Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 		throw std::runtime_error("Topic could not be created! Please log in before creating!");
 	}
 
-	//advice recieved: get input for all the metadata and create a topic, then add it to the currTopics vector
-
-	Topic newTopic;
-
 	//Title
-	ConsoleInputGetter::recieveTitleInput(newTopic);
-	if (!InputValidator::isValidTitle(newTopic.getTitle())) {
+	String title;
+	ConsoleInputGetter::recieveTitleInput(title);
+	if (!InputValidator::isValidTitle(title)) {
 		throw std::runtime_error("Topic could not be created! Invalid Title!");
 	}
 
 	//Description
-	ConsoleInputGetter::recieveDescriptionInput(newTopic);
-	if (!InputValidator::isValidDescription(newTopic.getDescription())) {
+	String description;
+	ConsoleInputGetter::recieveDescriptionInput(description);
+	if (!InputValidator::isValidDescription(description)) {
 		throw std::runtime_error("Topic could not be created! Invalid Description!");
 	}
+
+	Topic newTopic(title, description, 0, 0);
 
 	//CreatorId
 	newTopic.setCreatorId(socialNetwork.getLoggedInUser().getId());
@@ -113,8 +120,7 @@ Topic ObjectFactory::createTopic(const SocialNetwork& socialNetwork)
 		++lastCreatedTopicId;
 	}
 
-	else {
-		newTopic.setId(0);
+	else {		
 		lastCreatedTopicId = 0;
 	}
 
@@ -131,20 +137,21 @@ Post ObjectFactory::createPost(const SocialNetwork& socialNetwork)
 		throw std::runtime_error("Post could not be created! Please open a topic before posting!");
 	}
 
-
-	Post newPost; //optimisation: create an empty post ( no comments)
-
 	//Title
-	ConsoleInputGetter::recievePostTitleInput(newPost);
-	if (!InputValidator::isValidTitle(newPost.getTitle())) {
+	String title;
+	ConsoleInputGetter::recievePostTitleInput(title);
+	if (!InputValidator::isValidTitle(title)) {
 		throw std::runtime_error("Post could not be created! Invalid Title!");
 	}
 
 	//Content
-	ConsoleInputGetter::recievePostContentInput(newPost);
-	if (!InputValidator::isValidContent(newPost.getContent())) {
+	String content;
+	ConsoleInputGetter::recievePostContentInput(content);
+	if (!InputValidator::isValidContent(content)) {
 		throw std::runtime_error("Post could not be created! Invalid Content!");
 	}
+
+	Post newPost(title, content, 0, 0, 0);
 
 	//topicId
 	newPost.setTopicId(socialNetwork.getOpenedTopic().getId());
@@ -153,13 +160,9 @@ Post ObjectFactory::createPost(const SocialNetwork& socialNetwork)
 	newPost.setCreatorId(socialNetwork.getLoggedInUser().getId());
 
 	//id
-	if (socialNetwork.getOpenedTopic().getPosts().back().getTitle() != nullptr) { 
+	if (socialNetwork.getOpenedTopic().getPosts().back().getTitle() != nullptr) {
 		size_t lastPostId = socialNetwork.getOpenedTopic().getPosts().back().getId();
 		newPost.setId(lastPostId + 1);
-	}
-
-	else {
-		newPost.setId(0);
 	}
 
 	return newPost;
@@ -179,14 +182,18 @@ Comment ObjectFactory::createComment(const SocialNetwork& socialNetwork)
 		throw std::runtime_error("Comment could not be created! Please open a post before commenting!");
 	}
 
-	Comment newComment;
+	//text
+	String text;
 
-	ConsoleInputGetter::recieveCommentTextInput(newComment);
-	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
+	ConsoleInputGetter::recieveCommentTextInput(text);
+	if (!InputValidator::isValidCommentTextInput(text)) {
 		throw std::runtime_error("Comment could not be created! Invalid input!");
 	}
 
+	Comment newComment;
+
 	newComment.setAuthor(socialNetwork.getLoggedInUser().getUserName());
+	newComment.setText(text);
 	newComment.setScore(0);
 	newComment.setPostId(socialNetwork.getOpenedPost().getId());
 	newComment.setAuthorId(socialNetwork.getLoggedInUser().getId());
@@ -214,17 +221,20 @@ Reply ObjectFactory::createReply(const SocialNetwork& socialNetwork, const Reply
 	}
 
 	if (!socialNetwork.isThereOpenedPost()) {
-		throw std::runtime_error("Comment could not be created! Please open a post before replying!");
+		throw std::runtime_error("Reply could not be created! Please open a post before replying!");
+	}
+
+	String text;
+
+	ConsoleInputGetter::recieveCommentTextInput(text);
+	if (!InputValidator::isValidCommentTextInput(text)) {
+		throw std::runtime_error("Reply could not be created! Invalid input!");
 	}
 
 	Comment newComment;
 
-	ConsoleInputGetter::recieveCommentTextInput(newComment);
-	if (!InputValidator::isValidCommentTextInput(newComment.getText())) {
-		throw std::runtime_error("Comment could not be created! Invalid input!");
-	}
-
 	newComment.setAuthor(socialNetwork.getLoggedInUser().getUserName());
+	newComment.setText(text);
 	newComment.setScore(0);
 	newComment.setPostId(socialNetwork.getOpenedPost().getId());
 

@@ -3,17 +3,19 @@
 #include <iostream>
 
 template<typename T>
-class Vector { //TODO: make methods const where  they can be
+class Vector
+{
 
 public:
+
     Vector() : capacity(3), size(0), data(nullptr) {
 
-      data = new T[capacity];
-       
+        data = new T[capacity];
+
     }
 
     Vector(const size_t capacity) : size(0), data(nullptr) {
-       
+
         if (capacity == 0) {
             this->capacity = capacity;
             data = nullptr;
@@ -32,7 +34,6 @@ public:
             data[i] = other.data[i];
         }
     }
-
 
     ~Vector() {
         delete[] data;
@@ -57,9 +58,17 @@ public:
     void resize(const size_t new_capacity) {
 
         if (new_capacity == 0) {
-            throw std::invalid_argument("Cannot resize vector with new capacity equal to 0");
+            throw std::invalid_argument("Vector - Cannot resize with new capacity equal to 0");
         }
-        T* new_data = new T[new_capacity];
+        T* new_data = nullptr;
+
+        try {
+            new_data = new T[new_capacity];
+        }
+        catch (const std::bad_alloc&) {
+            delete[] new_data;
+            throw;
+        }
 
         for (size_t i = 0; i < size; ++i) {
             new_data[i] = data[i];
@@ -73,7 +82,7 @@ public:
     void erase(const size_t index)
     {
         if (index >= size) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Vector - Requested index out of range");
         }
 
         for (size_t i = index; i < size - 1; ++i) {
@@ -81,13 +90,13 @@ public:
         }
 
         if (size == 0) {
-            data[0].~T();      
+            data[0].~T();
         }
 
         else {
-            data[size - 1].~T();           
+            data[size - 1].~T();
         }
-  
+
         --size;
     }
 
@@ -105,7 +114,7 @@ public:
         delete[] data;
         data = nullptr;
         size = 0;
-        capacity = 0;  
+        capacity = 0;
     }
 
     const void printVectorToConsole() const {
@@ -121,11 +130,11 @@ public:
         }
 
         if (index >= size) {
-            throw std::out_of_range("Index out of bounds in operator[]");
+            throw std::out_of_range("Vector - Index out of bounds in operator[]");
         }
         return data[index];
     }
-    
+
     T& operator[](const size_t index) {
 
         if (index == 1 && size == 1) {
@@ -133,7 +142,7 @@ public:
         }
 
         if (index >= size) {
-            throw std::out_of_range("Index out of range");
+            throw std::out_of_range("Vector - Requested index out of range");
         }
         return data[index];
     }
@@ -157,31 +166,39 @@ public:
         return !(*this == rhs);
     }
 
-
     Vector& operator=(const Vector<T>& rhs)
     {
         if (this != &rhs) {
 
             if (rhs.size == 0) {
                 this->clear();
-                data = new T[1];
+                try {
+                    data = new T[1];
+                }
+                catch (const std::bad_alloc&) {
+                    data = nullptr;
+                    throw;
+                }
                 capacity = 1;
                 return *this;
             }
 
             else {
+
+                T* temp_data = new T[rhs.capacity];
+
                 delete[] data;
 
                 capacity = rhs.capacity;
                 size = rhs.size;
-                data = new T[capacity];
+                data = temp_data;
 
                 for (size_t i = 0; i < rhs.size; ++i) {
                     data[i] = rhs.data[i];
                 }
             }
         }
-        return *this;    
+        return *this;
     }
 
     T& front() const
@@ -206,9 +223,9 @@ public:
         return capacity;
     }
 
-private:
-    T* data;
-    size_t capacity;
-    size_t size; // Number of elements currently stored
+    private:
+        T* data;
+        size_t capacity;
+        size_t size; // Number of elements currently stored
 };
 

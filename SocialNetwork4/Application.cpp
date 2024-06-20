@@ -8,38 +8,25 @@ Application& Application::getInstance()
 
 void Application::run()
 {
+	try {
+		PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
 
-	PrintHandler::printCommands(CommandsHandler::commandsList, CommandsHandler::commandsDescriptions, CommandsCount);
+		while (CommandsHandler::getCurrCommand() != Command::Exit) {
+			PrintHandler::printEnterCommandPrompt();
 
-	while (CommandsHandler::getCurrCommand() != Command::Exit) {
-		PrintHandler::printEnterCommandPrompt();
-
-		ConsoleInputGetter::recieveCommandInput();
-		if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
-			ConsoleInputGetter::resetCommandInput();
-			CommandsHandler::setCurrCommand(Undefined);
+			ConsoleInputGetter::recieveCommandInput();
+			if (!InputValidator::isValidCommandInput(ConsoleInputGetter::getCommandInput())) {
+				ConsoleInputGetter::resetCommandInput();
+				CommandsHandler::setCurrCommand(Undefined);
+			}
+			CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 		}
-		CommandsHandler::runCommands(CurrentData::getCurrSocialNetwork());
 	}
-
-
-	//Debugging prints...
-
-
-	PrintHandler::printUsers(CurrentData::getCurrSocialNetwork().getCurrUsers()); //remove
-
-	PrintHandler::printTopics(CurrentData::getCurrSocialNetwork().getCurrTopics()); //remove
-
-	/*
-	std::cout << "Opened Topic: " << std::endl;
-	PrintHandler::printTopic(CurrentData::getCurrSocialNetwork().getOpenedTopic());
-
-	std::cout << "Opened Post: " << std::endl;
-	PrintHandler::printPost(CurrentData::getCurrSocialNetwork().getOpenedPost());
-
-	std::cout << "Logged in user: " << std::endl;
-	PrintHandler::printUser(CurrentData::getCurrSocialNetwork().getLoggedInUser());
-	*/
+	catch (const std::bad_alloc& e) {
+		std::cout << "Critical error! " << std::endl << "Memory allocation fail! Saving and terminating program...." << std::endl;
+		FileHandler::saveSocialNetworkPostCriticalError(e, CurrentData::getCurrSocialNetwork());
+		exit(0);
+	}
 }
 
 Application::Application() {}

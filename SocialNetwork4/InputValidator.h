@@ -42,3 +42,5 @@ public:
 private:
 	InputValidator();
 };
+
+

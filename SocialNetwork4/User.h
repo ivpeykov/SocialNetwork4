@@ -4,6 +4,9 @@
 class User
 {
 public:
+
+
+	//constructors and destructor
 	User(); //for initialisation
 
 	User(const String& firstName, const String& lastName,
@@ -26,6 +29,16 @@ public:
 
 	~User();
 
+	//operators
+	User& operator=(const User& other);
+	bool operator==(const User& other) const;
+	bool operator!=(const User& other) const;
+
+	//methods tied to operators
+	bool isEqualWithoutId(const User& other) const;
+	bool isNotEqualWithoutId(const User& other) const;
+
+	//getters
 	const String& getFirstName() const;
 	const String& getLastName() const;
 	const String& getUserName() const;
@@ -34,8 +47,7 @@ public:
 	const int getPoints() const;
 	const bool getModeratorStatus() const;
 
-	void clearUser();
-
+	//setters
 	void setFirstName(const String& newFirstName);
 	void setFirstName(const char* newFirstName);
 
@@ -52,17 +64,10 @@ public:
 	void setPoints(const int newPoints);
 	void setModeratorStatus(const bool newStatus);
 
-
-	bool isEqualWithoutId(const User& other) const;
-	bool isNotEqualWithoutId(const User& other) const;
-
+	//methods
+	void clearUser();
 	void incrementPoints(int amount);
 	void decrementPoints(int amount);
-
-	User& operator=(const User& other);
-	bool operator==(const User& other) const;
-	bool operator!=(const User& other) const;
-
 
 private:
 	String firstName;
@@ -73,3 +78,4 @@ private:
 	int points;
 	bool isModerator;
 };
+

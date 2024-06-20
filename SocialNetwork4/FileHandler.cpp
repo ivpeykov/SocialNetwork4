@@ -18,7 +18,6 @@ void FileHandler::loadSocialNetwork(SocialNetwork& socialNetworkToLoad, bool& lo
 
 	String tempDir = ConsoleInputGetter::recieveSocialNetworkDirectoryInput();
 	if (!InputValidator::isValidSocialNetworkDirectoryInput(tempDir)) {
-
 		return;
 	}
 
@@ -349,12 +348,12 @@ void FileHandler::loadReactions(std::fstream& socialNetworkFile, Comment& commen
 	bool reactionType = false;
 
 	for (size_t i = 0; i < reactionsCount; i++) {
-	
+
 		//load score, id, postsId, parentCommentId
 		socialNetworkFile.read(reinterpret_cast<char*>(&userId), sizeof(userId));
 		socialNetworkFile.read(reinterpret_cast<char*>(&reactionType), sizeof(reactionType));
 		socialNetworkFile.read(reinterpret_cast<char*>(&position), sizeof(position));
-		
+
 		newReaction.setUserId(userId);
 		newReaction.setReaction(ReactionType(reactionType));
 		newReaction.setPosition(position);
@@ -368,13 +367,12 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 		std::cout << "No changes to save!" << std::endl;
 		return;
 	}
-	
+
 	const char* filePath = socialNetwork.getDirectory().getString();
 
 	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "Error opening file for saving!" << std::endl;
-		//TODO: exception? handle this somehow
 		return;
 	}
 
@@ -388,6 +386,8 @@ void FileHandler::saveSocialNetwork(const SocialNetwork& socialNetwork)
 	socialNetworkFile.close();
 
 	std::cout << "Successfully saved " << socialNetwork.getDirectory() << std::endl;
+
+	CurrentData::setChangesMadeStatus(false);
 }
 
 void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
@@ -404,7 +404,6 @@ void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
 	std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
 	if (!socialNetworkFile.is_open()) {
 		std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
-		//TODO: exception? handle this somehow
 		return;
 	}
 
@@ -419,6 +418,54 @@ void FileHandler::saveSocialNetworkAs(const SocialNetwork& socialNetwork)
 
 	std::cout << "Successfully saved " << filePath << std::endl;
 
+}
+
+void FileHandler::saveSocialNetworkPostCriticalError(const std::exception& e, const SocialNetwork& socialNetwork)
+{
+	try {
+		throw; // Re-throw the exception to handle it
+	}
+	catch (const std::bad_alloc&) {
+		const char* filePath = "SavedDataPostBadAlloc.dat";
+
+		std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
+		if (!socialNetworkFile.is_open()) {
+			std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
+		}
+
+		//SAVE USERS
+		saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
+
+		//SAVE TOPICS
+
+		saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
+
+		socialNetworkFile.close();
+
+		std::cout << "Successfully saved " << filePath << std::endl;
+		exit(0);
+	}
+	catch (const std::logic_error&) {
+		const char* filePath = "SavedDataPostLogicError.dat";
+
+		std::ofstream socialNetworkFile(filePath, std::ios::binary | std::ios::trunc);
+		if (!socialNetworkFile.is_open()) {
+			std::cout << "Could not save social network! Error opening file for saving!" << std::endl;
+			exit(0);
+		}
+
+		//SAVE USERS
+		saveUsers(socialNetworkFile, socialNetwork.getCurrUsers());
+
+		//SAVE TOPICS
+
+		saveTopics(socialNetworkFile, socialNetwork.getCurrTopics());
+
+		socialNetworkFile.close();
+
+		std::cout << "Successfully saved " << filePath << std::endl;
+	}
+	
 }
 
 void FileHandler::saveUsers(std::ofstream& socialNetworkFile, const Vector<User>& users)
@@ -604,7 +651,7 @@ void FileHandler::saveReactions(std::ofstream& socialNetworkFile, const Vector<R
 	socialNetworkFile.write(reinterpret_cast<const char*>(&reactionsCount), sizeof(reactionsCount));
 
 	for (size_t i = 0; i < reactionsCount; i++) {
-	
+
 		size_t userId = reactions[i].getUserId();
 		bool reaction = reactions[i].getReactionType();
 		size_t position = reactions[i].getPosition();

@@ -18,6 +18,46 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Application.cpp" />
+    <ClCompile Include="CommandsHandler.cpp" />
+    <ClCompile Include="Comment.cpp" />
+    <ClCompile Include="Configuration.cpp" />
+    <ClCompile Include="ConsoleInputGetter.cpp" />
+    <ClCompile Include="CurrentData.cpp" />
+    <ClCompile Include="FileHandler.cpp" />
+    <ClCompile Include="InputValidator.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ObjectFactory.cpp" />
+    <ClCompile Include="Post.cpp" />
+    <ClCompile Include="PrintHandler.cpp" />
+    <ClCompile Include="Reaction.cpp" />
+    <ClCompile Include="Reply.cpp" />
+    <ClCompile Include="SocialNetwork.cpp" />
+    <ClCompile Include="String.cpp" />
+    <ClCompile Include="Topic.cpp" />
+    <ClCompile Include="User.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Application.h" />
+    <ClInclude Include="CommandsHandler.h" />
+    <ClInclude Include="Comment.h" />
+    <ClInclude Include="Configuration.h" />
+    <ClInclude Include="ConsoleInputGetter.h" />
+    <ClInclude Include="CurrentData.h" />
+    <ClInclude Include="FileHandler.h" />
+    <ClInclude Include="InputValidator.h" />
+    <ClInclude Include="ObjectFactory.h" />
+    <ClInclude Include="Post.h" />
+    <ClInclude Include="PrintHandler.h" />
+    <ClInclude Include="Reaction.h" />
+    <ClInclude Include="Reply.h" />
+    <ClInclude Include="SocialNetwork.h" />
+    <ClInclude Include="String.h" />
+    <ClInclude Include="Topic.h" />
+    <ClInclude Include="User.h" />
+    <ClInclude Include="Vector.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
@@ -129,46 +169,6 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="Application.cpp" />
-    <ClCompile Include="CommandsHandler.cpp" />
-    <ClCompile Include="Comment.cpp" />
-    <ClCompile Include="Configuration.cpp" />
-    <ClCompile Include="ConsoleInputGetter.cpp" />
-    <ClCompile Include="CurrentData.cpp" />
-    <ClCompile Include="Reaction.cpp" />
-    <ClCompile Include="String.cpp" />
-    <ClCompile Include="Post.cpp" />
-    <ClCompile Include="FileHandler.cpp" />
-    <ClCompile Include="InputValidator.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ObjectFactory.cpp" />
-    <ClCompile Include="PrintHandler.cpp" />
-    <ClCompile Include="Reply.cpp" />
-    <ClCompile Include="SocialNetwork.cpp" />
-    <ClCompile Include="Topic.cpp" />
-    <ClCompile Include="User.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Application.h" />
-    <ClInclude Include="CommandsHandler.h" />
-    <ClInclude Include="Comment.h" />
-    <ClInclude Include="Configuration.h" />
-    <ClInclude Include="ConsoleInputGetter.h" />
-    <ClInclude Include="CurrentData.h" />
-    <ClInclude Include="Reaction.h" />
-    <ClInclude Include="String.h" />
-    <ClInclude Include="Post.h" />
-    <ClInclude Include="FileHandler.h" />
-    <ClInclude Include="InputValidator.h" />
-    <ClInclude Include="ObjectFactory.h" />
-    <ClInclude Include="PrintHandler.h" />
-    <ClInclude Include="Reply.h" />
-    <ClInclude Include="SocialNetwork.h" />
-    <ClInclude Include="Topic.h" />
-    <ClInclude Include="User.h" />
-    <ClInclude Include="Vector.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

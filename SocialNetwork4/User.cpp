@@ -1,5 +1,6 @@
 #include "User.h"
 
+//constructors and destructor
 User::User() : firstName(nullptr), lastName(nullptr),
 userName(nullptr), password(nullptr), id(SIZE_MAX), points(0), isModerator(false) {} //for initialisation
 
@@ -34,7 +35,49 @@ User::~User()
 {
 }
 
+//operators
+User& User::operator=(const User& other)
+{
+	if (this != &other) {
 
+		firstName = other.firstName;
+		lastName = other.lastName;
+		userName = other.userName;
+		password = other.password;
+		id = other.id;
+		points = other.points;
+		isModerator = other.isModerator;
+	}
+	return *this;
+}
+
+bool User::operator==(const User& other) const
+{
+	return (id == other.id && isEqualWithoutId(other));
+}
+
+bool User::operator!=(const User& other) const
+{
+	return !(*this == other);
+}
+
+//methods tied to operators
+bool User::isEqualWithoutId(const User& other) const
+{
+	return (firstName == other.firstName &&
+		lastName == other.lastName &&
+		userName == other.userName &&
+		password == other.password &&
+		points == other.points &&
+		isModerator == other.isModerator);
+}
+
+bool User::isNotEqualWithoutId(const User& other) const
+{
+	return !isEqualWithoutId(other);
+}
+
+//getters
 const String& User::getFirstName() const
 {
 	return firstName;
@@ -70,18 +113,7 @@ const bool User::getModeratorStatus() const
 	return isModerator;
 }
 
-void User::clearUser()
-{
-	firstName.clearString();
-	lastName.clearString();
-	userName.clearString();
-	password.clearString();
-
-	id = 0;
-	points = 0;
-	isModerator = false;
-}
-
+//setters
 void User::setFirstName(const String& newFirstName)
 {
 	firstName = newFirstName;
@@ -137,19 +169,17 @@ void User::setModeratorStatus(const bool newStatus)
 	isModerator = newStatus;
 }
 
-bool User::isEqualWithoutId(const User& other) const
+//methods
+void User::clearUser()
 {
-	return (firstName == other.firstName &&
-		lastName == other.lastName &&
-		userName == other.userName &&
-		password == other.password &&
-		points == other.points &&
-		isModerator == other.isModerator);
-}
+	firstName.clearString();
+	lastName.clearString();
+	userName.clearString();
+	password.clearString();
 
-bool User::isNotEqualWithoutId(const User& other) const
-{
-	return !isEqualWithoutId(other);
+	id = 0;
+	points = 0;
+	isModerator = false;
 }
 
 void User::incrementPoints(int amount)
@@ -160,29 +190,4 @@ void User::incrementPoints(int amount)
 void User::decrementPoints(int amount)
 {
 	points -= amount;
-}
-
-User& User::operator=(const User& other)
-{
-	if (this != &other) {
-
-		firstName = other.firstName;
-		lastName = other.lastName;
-		userName = other.userName;
-		password = other.password;
-		id = other.id;
-		points = other.points;
-		isModerator = other.isModerator;
-	}
-	return *this;
-}
-
-bool User::operator==(const User& other) const
-{
-	return (id == other.id && isEqualWithoutId(other));
-}
-
-bool User::operator!=(const User& other) const
-{
-	return !(*this == other);
 }

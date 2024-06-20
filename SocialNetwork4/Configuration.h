@@ -6,11 +6,11 @@ class Configuration
 
 public:
 
-	
+
 	//all contain \0 char
 	static const unsigned short FIRST_NAME_MAX_LENGTH = 128;
-	static const unsigned short LAST_NAME_MAX_LENGTH = 128; 
-	static const unsigned short USER_NAME_MAX_LENGTH = 128; 
+	static const unsigned short LAST_NAME_MAX_LENGTH = 128;
+	static const unsigned short USER_NAME_MAX_LENGTH = 128;
 	static const unsigned short PASSWORD_MAX_LENGTH = 64;
 	static const unsigned short TOPIC_TITLE_MAX_LENGTH = 128;
 	static const unsigned TOPIC_DESCRIPTION_MAX_LENGTH = 2048;
@@ -26,4 +26,3 @@ public:
 private:
 	Configuration();
 };
-

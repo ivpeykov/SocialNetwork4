@@ -1,5 +1,6 @@
 #include "Topic.h"
 
+//constructors and destructor
 Topic::Topic() : title(nullptr), description(nullptr), creatorId(SIZE_MAX), id(SIZE_MAX), posts(1) {}
 
 Topic::Topic(const String& title, const String& description,
@@ -10,7 +11,7 @@ Topic::Topic(const char* title, const char* description,
     const size_t creatorId, const size_t id) :
     title(title), description(description), creatorId(creatorId), id(id), posts(1) {}
 
-Topic::Topic(const char* title, const char* description, 
+Topic::Topic(const char* title, const char* description,
     const size_t creatorId, const size_t id, const Vector<Post>& posts) : title(title), description(description), creatorId(creatorId), id(id), posts(posts)
 {
 }
@@ -23,6 +24,45 @@ Topic::~Topic()
 {
 }
 
+//operators
+Topic& Topic::operator=(const Topic& other)
+{
+    if (this != &other) {
+        title = other.title;
+        description = other.description;
+        creatorId = other.creatorId;
+        id = other.id;
+        posts = other.posts;
+    }
+
+    return *this;
+}
+
+bool Topic::operator==(const Topic& other) const
+{
+    return (id == other.id && isEqualWithoutId(other));
+}
+
+bool Topic::operator!=(const Topic& other) const
+{
+    return !(*this == other);
+}
+
+//methods tied to operators
+bool Topic::isEqualWithoutId(const Topic& other) const
+{
+    return (title == other.title &&
+        description == other.description &&
+        creatorId == other.creatorId &&
+        posts == other.posts);
+}
+
+bool Topic::isNotEqualWithoutId(const Topic& other) const
+{
+    return !isEqualWithoutId(other);
+}
+
+//getters
 const String& Topic::getTitle() const
 {
     return title;
@@ -53,6 +93,7 @@ const Vector<Post>& Topic::getPosts() const
     return posts;
 }
 
+//setters
 void Topic::setTitle(const char* newTitle)
 {
     title = newTitle;
@@ -83,24 +124,7 @@ void Topic::setId(const size_t newId)
     id = newId;
 }
 
-void Topic::addPost(const Post& newPost)
-{
-    posts.pushBack(newPost);
-}
-
-bool Topic::isEqualWithoutId(const Topic& other) const
-{
-    return (title == other.title &&
-        description == other.description &&
-        creatorId == other.creatorId &&
-        posts == other.posts);
-}
-
-bool Topic::isNotEqualWithoutId(const Topic& other) const
-{
-    return !isEqualWithoutId(other);
-}
-
+//methods
 void Topic::clear()
 {
     title.clearString();
@@ -110,25 +134,7 @@ void Topic::clear()
     posts.clear();
 }
 
-Topic& Topic::operator=(const Topic& other)
+void Topic::addPost(const Post& newPost)
 {
-    if (this != &other) {
-        title = other.title;
-        description = other.description;
-        creatorId = other.creatorId;
-        id = other.id;
-        posts = other.posts;
-    }
-
-    return *this;
-}
-
-bool Topic::operator==(const Topic& other) const
-{
-    return (id == other.id && isEqualWithoutId(other));
-}
-
-bool Topic::operator!=(const Topic& other) const
-{
-    return !(*this == other);
+    posts.pushBack(newPost);
 }

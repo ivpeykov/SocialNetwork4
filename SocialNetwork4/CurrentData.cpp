@@ -6,7 +6,7 @@ bool CurrentData::changesMade = false;
 
 SocialNetwork& CurrentData::getCurrSocialNetwork()
 {
-    return currSocialNetwork;
+	return currSocialNetwork;
 }
 
 bool CurrentData::getChangesMadeStatus()
@@ -16,7 +16,7 @@ bool CurrentData::getChangesMadeStatus()
 
 void CurrentData::setCurrSocialNetwork(const SocialNetwork& newSocialNetwork)
 {
-    currSocialNetwork = newSocialNetwork;
+	currSocialNetwork = newSocialNetwork;
 }
 
 void CurrentData::setChangesMadeStatus(const bool newStatus)

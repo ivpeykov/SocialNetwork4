@@ -109,14 +109,14 @@ size_t InputValidator::isValidUserNameSignup(const String& userName)
     if (userName[0] == '\0') {
         return 0;
     }
-   
+
     if (CurrentData::getCurrSocialNetwork().getUserPosition(userName) != SIZE_MAX)
         return 2; //userName Exists
-        
+
     return 1;
 }
 
-bool InputValidator::isValidUserNameLogin(const String& userName) //suggestion: check for existance elsewhere
+bool InputValidator::isValidUserNameLogin(const String& userName)
 {
     if (doesStringContainNonAsciiChars(userName))
         return false;

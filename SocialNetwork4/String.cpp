@@ -1,12 +1,10 @@
 #include "String.h"
 
-//constructors & destructor
-String::String() : size(0), string(nullptr) {
-}
+String::String() : size(0), string(nullptr) {}
 
-String::String(const char* inputString) :
-	size(0), string(nullptr) {
-
+String::String(const char* const inputString) :
+	size(0), string(nullptr)
+{
 	if (inputString == nullptr) {
 		return;
 	}
@@ -26,21 +24,12 @@ String::String(const String& other) :
 	strncpy_s(string, size, other.string, other.size - 1);
 }
 
-String::String(String&& other) noexcept
-	: String()
+String::String(const size_t size) : size(size), string(nullptr)
 {
-	swap(*this, other);
-}
-
-String::String(const size_t size) //TODO: don't know if this is ok
-{
-	if (size == 0) {
-		throw std::out_of_range("Trying allocate String with 0 size");
+	if (size != 0) {
+		string = new char[size];
+		string[size] = '\0';
 	}
-
-	this->size = size;
-	string = new char[size];
-	string[size] = '\0';
 }
 
 String::~String() {
@@ -48,23 +37,109 @@ String::~String() {
 	string = nullptr;
 }
 
+//operators
+String& String::operator=(const String& other) {
 
-void swap(String& lhs, String& rhs) noexcept
+	if (this != &other) {
+
+		if (other.string == nullptr) {
+			delete[] string;
+			string = nullptr;
+			size = 0;
+		}
+
+		else {
+
+			char* tempString = new char[other.size];
+
+			delete[] string;
+			string = tempString;
+			size = other.size;
+			strncpy_s(string, size, other.string, other.size - 1);
+		}
+	}
+
+	return *this;
+}
+
+String& String::operator=(const char* str)
 {
-	using std::swap;
-	swap(lhs.size, rhs.size);
-	swap(lhs.string, rhs.string);
+	if (str == nullptr) {
+		delete[] string;
+		string = nullptr;
+		size = 0;
+	}
+
+	else {
+		size_t strSize = strlen(str) + 1;
+
+		if (size != strSize) {
+
+			char* tempStr = new char[strSize];
+
+			delete[] string;
+			string = tempStr;
+			size = strSize;			
+		}
+
+		for (size_t i = 0; i < strSize; i++) {
+			string[i] = str[i];
+		}
+	}
+	return *this;
 }
 
 
-//methods
-void String::clearString() {
+char String::operator[](const size_t index) const
+{
+	if (index >= size) {
+		throw std::out_of_range("Requested string index is out of range");
+	}
 
-	delete[] string;
-	string = nullptr;
-	size = 0;
-
+	return string[index];
 }
+
+bool String::operator==(const String& other) const {
+
+	if (size != other.size) return false;
+
+	return strcmp(string, other.string) == 0;
+}
+
+bool String::operator==(const char* str) const {
+
+	if (str == nullptr) {
+		if (string == nullptr)
+			return true;
+		else return false;
+	}
+
+	if (size != strlen(str) + 1) return false;
+
+	return strcmp(string, str) == 0;
+}
+
+bool String::operator!=(const String& other) const
+{
+	return !(*this == other);
+}
+
+bool String::operator!=(const char* str) const
+{
+	return !(*this == str);
+}
+
+std::ostream& operator<<(std::ostream& os, const String& str)
+{
+	if (str.getString() != nullptr)
+		os << str.getString();
+	else
+		throw std::runtime_error("Trying to output a string set as nullptr");
+
+	return os;
+}
+
+//getters and setters
 
 const size_t String::length() const {
 	return size;
@@ -80,7 +155,7 @@ void String::setLength(const size_t inputLenght) {
 
 void String::setString(const char* inputString) {
 	delete[] string;
-	string = nullptr; //QUESTION: should I do that?
+	string = nullptr;
 
 	size_t newSize = strlen(inputString) + 1;
 
@@ -89,6 +164,22 @@ void String::setString(const char* inputString) {
 	for (size_t i = 0; i < newSize; i++) {
 		string[i] = inputString[i];
 	}
+}
+
+//methods
+
+void swap(String& lhs, String& rhs) noexcept
+{
+	using std::swap;
+	swap(lhs.size, rhs.size);
+	swap(lhs.string, rhs.string);
+}
+
+void String::clearString() {
+
+	delete[] string;
+	string = nullptr;
+	size = 0;
 }
 
 bool String::find(const char* substr) const //Boyer Moore Horspool Algorithm
@@ -188,100 +279,10 @@ bool String::isDigit() const
 			return false;
 	}
 
-	return true; 
+	return true;
 }
 
-//operators
-String& String::operator=(const String& other) {
-
-	if (this != &other) {
-		delete[] string;
-		string = nullptr;
-
-		size = other.size;
-
-		if (other.string != nullptr) {
-			string = new char[size];
-			strncpy_s(string, size, other.string, other.size - 1);
-		}
-	}
-
-	return *this;
-}
-
-String& String::operator=(String&& other) noexcept
+bool String::isEmpty() const
 {
-	if (this != &other) {
-		swap(*this, other);
-	}
-	return *this;
+	return string == nullptr;
 }
-
-String& String::operator=(const char* str)
-{
-	size_t strSize = strlen(str) + 1;
-
-	if (size != strSize) {
-		delete[] string;
-		string = nullptr;
-		size = strSize;
-
-		string = new char[size];
-	}
-
-	for (size_t i = 0; i < strSize; i++) {
-		string[i] = str[i];
-	}
-	return *this;
-}
-
-char& String::operator[](const size_t index) {
-
-	return string[index];
-}
-
-char String::operator[](const size_t index) const {
-
-	return string[index];
-}
-
-
-bool String::operator==(const String& other) const {
-
-	if (size != other.size) return false;
-
-	return strcmp(string, other.string) == 0;
-}
-
-bool String::operator==(const char* str) const {
-
-	if (str == nullptr) {
-		if (string == nullptr)
-			return true;
-		else return false;
-	}
-
-	if (size != strlen(str) + 1) return false;
-
-	return strcmp(string, str) == 0;
-}
-
-bool String::operator!=(const String& other) const
-{
-	return !(*this == other);
-}
-
-bool String::operator!=(const char* str) const
-{
-	return !(*this == str);
-}
-
-std::ostream& operator<<(std::ostream& os, const String& str)
-{
-	if (str.getString() != nullptr)
-		os << str.getString();
-	else
-		throw std::runtime_error("Trying to output a nullptr String");
-
-	return os;
-}//TODO remove str

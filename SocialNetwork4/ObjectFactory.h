@@ -1,7 +1,7 @@
 #pragma once
 #include "ConsoleInputGetter.h"
 #include "InputValidator.h"
-#include "Topic.h"
+
 
 class SocialNetwork;
 
@@ -30,4 +30,3 @@ private:
 	static size_t lastSignedUpUserId;
 	static size_t lastCreatedTopicId;
 };
-

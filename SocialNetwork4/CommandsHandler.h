@@ -1,12 +1,10 @@
 #pragma once
-#include "ConsoleInputGetter.h"
-#include "InputValidator.h"
-#include "FileHandler.h"
 #include "SocialNetwork.h"
 #include "ObjectFactory.h"
-
+#include "FileHandler.h"
 //Adjust COMMAND_INPUT_MAX_LENGTH in Configuration.h if adding longer commands.
-enum Command { //don't change order!
+
+enum Command { //Don't change order!
 
 	Load,
 	Signup,
@@ -15,8 +13,6 @@ enum Command { //don't change order!
 	Edit,
 	EditAsModerator,
 	Create,
-	Save,
-	SaveAs,
 	Search,
 	Open,
 	AddPost,
@@ -33,17 +29,18 @@ enum Command { //don't change order!
 	QuitPost,
 	QuitTopic,
 	Help,
+	Save,
+	SaveAs,
 	Exit,
 	CommandsCount,
 
 	Undefined = 999
 };
 
-//class SocialNetwork;
-
 class CommandsHandler
 {
 public:
+
 	static void runCommands(SocialNetwork& currSocialNetwork);
 
 	static void setCurrCommand(unsigned short newCommand);
@@ -54,11 +51,11 @@ public:
 
 	static const String commandsDescriptions[CommandsCount];
 
-	static bool networkLoaded;
-
 private:
-
 	CommandsHandler();
 
 	static unsigned short currCommand;
+
+	static bool networkLoaded;
 };
+

@@ -12,57 +12,73 @@ void PrintHandler::printCommands(const String* commandsList, const String* comma
 	}
 }
 
+void PrintHandler::safePrint(const char* label, const String& value)
+{
+    if (!value.isEmpty()) {
+        std::cout << label << value << std::endl;
+    }
+    else {
+        std::cout << label << "[Not available]" << std::endl;
+    }
+}
+
 void PrintHandler::printUser(const User& user)
 {
-	std::cout << "\nFirst name:" << user.getFirstName() << std::endl
-		<< "Last name:" << user.getLastName() << std::endl
-		<< "User name:" << user.getUserName() << std::endl
-		<< "Password:" << user.getPassword() << std::endl
-		<< "ID:" << user.getId() << std::endl
-		<< "Points:" << user.getPoints() << std::endl
-		<< "Is moderator:" << std::boolalpha << user.getModeratorStatus() << std::endl;
+    std::cout << "\nUser details:\n";
+    safePrint("First name: ", user.getFirstName());
+    safePrint("Last name: ", user.getLastName());
+    safePrint("User name: ", user.getUserName());
+    safePrint("Password: ", user.getPassword());
+
+    std::cout << "ID: " << user.getId() << std::endl;
+    std::cout << "Points: " << user.getPoints() << std::endl;
+    std::cout << "Is moderator: " << std::boolalpha << user.getModeratorStatus() << std::endl;
 }
 
 void PrintHandler::printTopic(const Topic& topic)
 {
-	std::cout << "\nTOPIC\nTitle:" << topic.getTitle() << std::endl
-		<< "Description:" << topic.getDescription() << std::endl
-		<< "Creator Id:" << topic.getCreatorId() << std::endl
-		<< "ID:" << topic.getId() << std::endl
-		<< "Posts:... " << std::endl;
-	printPosts(topic.getPosts());
+    std::cout << "\nTOPIC\n";
+    safePrint("Title: ", topic.getTitle());
+    safePrint("Description: ", topic.getDescription());
+    std::cout << "Creator Id: " << topic.getCreatorId() << std::endl;
+    std::cout << "ID: " << topic.getId() << std::endl;
+    std::cout << "Posts:... " << std::endl;
+    printPosts(topic.getPosts());
 }
 
 void PrintHandler::printPost(const Post& post)
 {
-	std::cout << "\nPOST\nTitle:" << post.getTitle() << std::endl
-		<< "Content:" << post.getContent() << std::endl
-		<< "Topic Id:" << post.getTopicId() << std::endl
-		<< "Creator Id: " << post.getCreatorId() << std::endl
-		<< "ID:" << post.getId() << std::endl
-		<< "Comments:... " << std::endl;
-	printComments(post.getComments());
+    std::cout << "\nPOST\n";
+    safePrint("Title: ", post.getTitle());
+    safePrint("Content: ", post.getContent());
+    std::cout << "Topic Id: " << post.getTopicId() << std::endl;
+    std::cout << "Creator Id: " << post.getCreatorId() << std::endl;
+    std::cout << "ID: " << post.getId() << std::endl;
+    std::cout << "Comments:... " << std::endl;
+    printComments(post.getComments());
 }
 
 void PrintHandler::printComment(const Comment& comment)
 {
-	std::cout << "\nCOMMENT\nAuthor:" << comment.getAuthor() << std::endl
-		<< "Text:" << comment.getText() << std::endl
-		<< "Score:" << comment.getScore() << std::endl
-		<< "ID:" << comment.getId() << std::endl
-		<< "Post ID: " << comment.getPostId() << std::endl
-		<< "Replies..." << std::endl;
-	printReplies(comment.getReplies());
+    std::cout << "\nCOMMENT\n";
+    safePrint("Author: ", comment.getAuthor());
+    safePrint("Text: ", comment.getText());
+    std::cout << "Score: " << comment.getScore() << std::endl;
+    std::cout << "ID: " << comment.getId() << std::endl;
+    std::cout << "Post ID: " << comment.getPostId() << std::endl;
+    std::cout << "Replies:... " << std::endl;
+    printReplies(comment.getReplies());
 }
 
 void PrintHandler::printReply(const Reply& reply)
 {
-	std::cout << "\nREPLY\nAuthor:" << reply.getAuthor() << std::endl
-		<< "Text:" << reply.getText() << std::endl
-		<< "Score:" << reply.getScore() << std::endl
-		<< "ID:" << reply.getId() << std::endl
-		<< "Post ID: " << reply.getPostId() << std::endl
-		<< "Parent comment ID: " << reply.getParentCommentId() << std::endl;
+    std::cout << "\nREPLY\n";
+    safePrint("Author: ", reply.getAuthor());
+    safePrint("Text: ", reply.getText());
+    std::cout << "Score: " << reply.getScore() << std::endl;
+    std::cout << "ID: " << reply.getId() << std::endl;
+    std::cout << "Post ID: " << reply.getPostId() << std::endl;
+    std::cout << "Parent comment ID: " << reply.getParentCommentId() << std::endl;
 }
 
 void PrintHandler::printUsers(const Vector<User>& users)
@@ -147,7 +163,6 @@ void PrintHandler::printTopicsForSearch(const Vector<Topic>& topics)
 	if (topicsSize == 0) {
 		std::cout << "No topics found containing that title!" << std::endl;
 	}
-
 
 	for (size_t i = 0; i < topicsSize; i++) {
 		std::cout << topics[i].getTitle() << " {id: " << topics[i].getId() << "}" << std::endl;

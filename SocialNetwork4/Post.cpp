@@ -1,5 +1,6 @@
 #include "Post.h"
 
+//constructors and destructor
 Post::Post() : title(nullptr), content(nullptr), topicId(SIZE_MAX), creatorId(SIZE_MAX), id(SIZE_MAX), comments(1) {}
 
 Post::Post(String& title,
@@ -19,6 +20,47 @@ Post::~Post()
 {
 }
 
+//operators
+Post& Post::operator=(const Post& other)
+{
+	if (this != &other) {
+		title = other.title;
+		content = other.content;
+		topicId = other.topicId;
+		creatorId = other.creatorId;
+		id = other.id;
+		comments = other.comments;
+	}
+
+	return *this;
+}
+
+bool Post::operator==(const Post& other) const
+{
+	return (id == other.id && isEqualWithoutId(other));
+}
+
+bool Post::operator!=(const Post& other) const
+{
+	return !(*this == other);
+}
+
+//methods tied to operators
+bool Post::isEqualWithoutId(const Post& other) const
+{
+	return (title == other.title &&
+		content == other.content &&
+		topicId == other.topicId &&
+		creatorId == other.creatorId &&
+		comments == other.comments);
+}
+
+bool Post::isNotEqualWithoutId(const Post& other) const
+{
+	return !isEqualWithoutId(other);
+}
+
+//getters
 const String& Post::getTitle() const
 {
 	return title;
@@ -54,6 +96,7 @@ const Vector<Comment>& Post::getComments() const
 	return comments;
 }
 
+//setters
 void Post::setTitle(const char* title)
 {
 	this->title = title;
@@ -89,25 +132,7 @@ void Post::setId(size_t id)
 	this->id = id;
 }
 
-void Post::addComment(const Comment& newComment)
-{
-	comments.pushBack(newComment);
-}
-
-bool Post::isEqualWithoutId(const Post& other) const
-{
-	return (title == other.title &&
-		content == other.content &&
-		topicId == other.topicId &&
-		creatorId == other.creatorId &&
-		comments == other.comments);
-}
-
-bool Post::isNotEqualWithoutId(const Post& other) const
-{
-	return !isEqualWithoutId(other);
-}
-
+//methods
 void Post::clear()
 {
 	title.clearString();
@@ -118,26 +143,7 @@ void Post::clear()
 	comments.clear();
 }
 
-Post& Post::operator=(const Post& other)
+void Post::addComment(const Comment& newComment)
 {
-	if (this != &other) {
-		title = other.title;
-		content = other.content;
-		topicId = other.topicId;
-		creatorId = other.creatorId;
-		id = other.id;
-		comments = other.comments;
-	}
-
-	return *this;
-}
-
-bool Post::operator==(const Post& other) const
-{
-	return (id == other.id && isEqualWithoutId(other));
-}
-
-bool Post::operator!=(const Post& other) const
-{
-	return !(*this == other);
+	comments.pushBack(newComment);
 }

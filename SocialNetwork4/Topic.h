@@ -7,6 +7,7 @@ class Topic
 {
 public:
 
+	//constructors and destructor
 	Topic();
 
 	Topic(const String& title, const String& description,
@@ -22,6 +23,16 @@ public:
 
 	~Topic();
 
+	//operators
+	Topic& operator=(const Topic& other);
+	bool operator==(const Topic& other) const;
+	bool operator!=(const Topic& other) const;
+
+	//methods tied to operators
+	bool isEqualWithoutId(const Topic& other) const;
+	bool isNotEqualWithoutId(const Topic& other) const;
+
+	//getters
 	const String& getTitle() const;
 	const String& getDescription() const;
 	const size_t getCreatorId() const;
@@ -29,6 +40,7 @@ public:
 	Vector<Post>& getPosts();
 	const Vector<Post>& getPosts() const;
 
+	//setters
 	void setTitle(const char* newTitle);
 	void setTitle(const String& newTitle);
 
@@ -37,16 +49,10 @@ public:
 
 	void setCreatorId(const size_t newCreatorId);
 	void setId(const size_t newId);
-	void addPost(const Post& newPost); // possible move semantics here
 
-	bool isEqualWithoutId(const Topic& other) const;
-	bool isNotEqualWithoutId(const Topic& other) const;
-
+	//methods
 	void clear();
-
-	Topic& operator=(const Topic& other);
-	bool operator==(const Topic& other) const;
-	bool operator!=(const Topic& other) const;
+	void addPost(const Post& newPost);
 
 private:
 	String title;

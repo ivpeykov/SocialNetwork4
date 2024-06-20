@@ -8,6 +8,7 @@ class Reply
 
 public:
 
+	//constructors and destructor
 	Reply();
 
 	Reply(const String& author, const String& text,
@@ -24,6 +25,16 @@ public:
 
 	~Reply();
 
+	//operators
+	Reply& operator=(const Reply& other);
+	bool operator==(const Reply& other) const;
+	bool operator!=(const Reply& other) const;
+
+	//methods tied to operators
+	bool isEqualWithoutId(const Reply& other) const;
+	bool isNotEqualWithoutId(const Reply& other) const;
+
+	//getters
 	const String& getAuthor() const;
 	const String& getText() const;
 	const int getScore() const;
@@ -31,6 +42,7 @@ public:
 	const size_t getPostId() const;
 	const size_t getParentCommentId() const;
 
+	//setters
 	void setAuthor(const char* newAuthor);
 	void setAuthor(const String& newAuthor);
 
@@ -42,13 +54,6 @@ public:
 	void setPostId(const size_t newPostId);
 	void setParentCommentId(const size_t newId);
 
-	bool isEqualWithoutId(const Reply& other) const;
-	bool isNotEqualWithoutId(const Reply& other) const;
-
-	Reply& operator=(const Reply& other);
-	bool operator==(const Reply& other) const;
-	bool operator!=(const Reply& other) const;
-
 private:
 	String author;
 	String text;
@@ -57,5 +62,6 @@ private:
 	size_t postId;
 
 	size_t parentCommentId;
+
 };
 

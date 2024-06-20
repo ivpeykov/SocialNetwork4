@@ -1,19 +1,17 @@
 #pragma once
+#include "String.h"
 #include "User.h"
 #include "Topic.h"
 #include "Post.h"
 #include "Comment.h"
-#include "CurrentData.h"
 
 class PrintHandler
 {
 public:
-
-	//TODO :: Add exception handling for everything that tries to print nullptr
-
 	static void printEnterCommandPrompt();
 	static void printCommands(const String* commandsList, const String* commandsDescriptions, const size_t commandsCount);
 
+	static void safePrint(const char* label, const String& value);
 	static void printUser(const User& user);
 	static void printTopic(const Topic& topic);
 	static void printPost(const Post& post);
@@ -32,3 +30,4 @@ public:
 private:
 	PrintHandler();
 };
+

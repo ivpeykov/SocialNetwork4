@@ -14,6 +14,7 @@ class Reaction
 {
 public:
 
+	//constructors
 	Reaction();
 
 	Reaction(const size_t userId, const ReactionType reaction);
@@ -22,18 +23,20 @@ public:
 
 	Reaction(const Reaction& other);
 
+	//operators
+	Reaction& operator=(const Reaction& other);
+	bool operator==(const Reaction& other) const;
+	bool operator!=(const Reaction& other) const;
+
+	//getters
 	const size_t getUserId() const;
 	const ReactionType getReactionType() const;
 	const size_t getPosition() const;
 
+	//setters
 	void setUserId(const size_t newUserId);
 	void setReaction(const ReactionType newReaction);
 	void setPosition(const size_t newPosition);
-
-	Reaction& operator=(const Reaction& other);
-
-	bool operator==(const Reaction& other) const;
-	bool operator!=(const Reaction& other) const;
 
 private:
 	size_t userId;

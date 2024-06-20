@@ -7,6 +7,7 @@ class Post
 {
 public:
 
+	//constructors and destructor
 	Post();
 
 	Post(String& title, String& content,
@@ -19,6 +20,16 @@ public:
 
 	~Post();
 
+	//operators
+	Post& operator=(const Post& other);
+	bool operator==(const Post& other) const;
+	bool operator!=(const Post& other) const;
+
+	//methods tied to operators
+	bool isEqualWithoutId(const Post& other) const;
+	bool isNotEqualWithoutId(const Post& other) const;
+
+	//getters
 	const String& getTitle() const;
 	const String& getContent() const;
 	const size_t getTopicId() const;
@@ -27,6 +38,7 @@ public:
 	Vector<Comment>& getComments();
 	const Vector<Comment>& getComments() const;
 
+	//setters
 	void setTitle(const char* title);
 	void setTitle(const String& title);
 
@@ -36,17 +48,10 @@ public:
 	void setTopicId(const size_t topicId);
 	void setCreatorId(const size_t creatorId);
 	void setId(const size_t id);
-	void addComment(const Comment& newComment);
 
-	bool isEqualWithoutId(const Post& other) const;
-	bool isNotEqualWithoutId(const Post& other) const;
-
+	//methods
 	void clear();
-
-	Post& operator=(const Post& other);
-	bool operator==(const Post& other) const;
-	bool operator!=(const Post& other) const;
-
+	void addComment(const Comment& newComment);
 
 private:
 	String title;
@@ -55,5 +60,5 @@ private:
 	size_t creatorId;
 	size_t id;
 	Vector<Comment> comments;
-
 };
+

@@ -3,6 +3,26 @@
 String ConsoleInputGetter::commandInput;
 String ConsoleInputGetter::socialNetworkDirectoryInput;
 
+String& ConsoleInputGetter::getSocialNetworkDirectoryInput()
+{
+    return socialNetworkDirectoryInput;
+}
+
+String& ConsoleInputGetter::getCommandInput()
+{
+    return commandInput;
+}
+
+void ConsoleInputGetter::resetCommandInput()
+{
+    commandInput.clearString();
+}
+
+void ConsoleInputGetter::resetSocialNetworkDirectoryInput()
+{
+    socialNetworkDirectoryInput.clearString();
+}
+
 bool ConsoleInputGetter::isBufferOverfilled()
 {
     return std::cin.rdbuf()->in_avail() > 0;
@@ -41,7 +61,6 @@ void ConsoleInputGetter::recieveCommandInput()
     }
 }
 
-
 String ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
 {
     std::cout << "Enter social network directory: ";
@@ -55,20 +74,20 @@ String ConsoleInputGetter::recieveSocialNetworkDirectoryInput()
 
     String dir = input;
 
-    if (isBufferOverfilled()) {       
+    if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
     return dir;
 }
 
-void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
+void ConsoleInputGetter::recieveFirstNameInput(String& firstName)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter user first name: "; 
+    std::cout << "\nEnter user first name: ";
 
     char newName[Configuration::FIRST_NAME_MAX_LENGTH];
 
@@ -78,10 +97,10 @@ void ConsoleInputGetter::recieveFirstNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    newUser.setFirstName(newName);
+    firstName = newName;
 }
 
-void ConsoleInputGetter::recieveLastNameInput(User& newUser)
+void ConsoleInputGetter::recieveLastNameInput(String& lastName)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -97,16 +116,16 @@ void ConsoleInputGetter::recieveLastNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    newUser.setLastName(newName);
+    lastName = newName;
 }
 
-void ConsoleInputGetter::recieveUserNameInput(User& newUser)
+void ConsoleInputGetter::recieveUserNameInput(String& userName)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter username: "; 
+    std::cout << "\nEnter username: ";
 
     char newName[Configuration::USER_NAME_MAX_LENGTH];
 
@@ -116,10 +135,10 @@ void ConsoleInputGetter::recieveUserNameInput(User& newUser)
         flushInputBuffer();
     }
 
-    newUser.setUserName(newName);
+    userName = newName;
 }
 
-void ConsoleInputGetter::recievePasswordInput(User& newUser)
+void ConsoleInputGetter::recievePasswordInput(String& password)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -135,7 +154,7 @@ void ConsoleInputGetter::recievePasswordInput(User& newUser)
         flushInputBuffer();
     }
 
-    newUser.setPassword(newPass);
+    password = newPass;
 }
 
 void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer, const short optionsCount)
@@ -155,7 +174,7 @@ void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer, const short
     if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
         delete[] input;
         input = nullptr;
-        throw std::exception("Invalid answer input!");
+        throw std::invalid_argument("Invalid answer input!");
     }
 
     String strInput = input;
@@ -163,60 +182,54 @@ void ConsoleInputGetter::recieveAnswerInputForEditing(short& answer, const short
     try {
         tempAnswer = strInput.toNum();
     }
-    catch (std::exception e) {
+    catch (const std::invalid_argument&) {
         delete[] input;
-        throw e;
+        throw;
     }
 
     delete[] input;
     answer = tempAnswer;
 }
 
-void ConsoleInputGetter::recieveIdInputForEditUserAsModerator(size_t& id)
+size_t ConsoleInputGetter::recieveIdInput()
 {
+
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
     short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
 
-    size_t tempId = 0;
+    size_t id = SIZE_MAX;
 
     std::cout << "Enter ID: ";
 
     char* input = new char[inputBuffer];
 
-    std::cin.getline(input, inputBuffer); 
+    std::cin.getline(input, inputBuffer);
     if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
         delete[] input;
         input = nullptr;
-        throw std::exception("Invalid Id input!");
+        throw std::invalid_argument("Invalid Id input!");
     }
 
     String strInput = input;
 
     try {
-        tempId = strInput.toNum();
+        id = strInput.toNum();
     }
-    catch (std::exception e) {
+    catch (const std::invalid_argument&) {
         delete[] input;
-        throw e;
+        throw;
     }
-
-    if (tempId == 0) {
-        delete[] input;
-        throw std::exception("Invalid input! Cannot change moderator status of the root admin!");
-    }
-
 
     delete[] input;
-    id = tempId;
 
+    return id;
 }
 
-void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool& newModeratorStatus)
+void ConsoleInputGetter::recieveModeratorStatusInput(bool& newModeratorStatus)
 {
-
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
@@ -231,7 +244,7 @@ void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool&
     if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
         delete[] input;
         input = nullptr;
-        throw std::exception("Invalid moderator status input!");
+        throw std::invalid_argument("Invalid moderator status input!");
     }
 
     String strInput = input;
@@ -239,15 +252,15 @@ void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool&
     try {
         tempStatus = strInput.toNum();
     }
-    catch (std::exception e) {
+    catch (const std::invalid_argument&) {
         delete[] input;
-        throw e;
+        throw;
     }
 
     if (tempStatus == 0) {
         newModeratorStatus = 0;
         delete[] input;
-        
+
     }
 
     else if (tempStatus == 1) {
@@ -258,12 +271,11 @@ void ConsoleInputGetter::recieveModeratorStatusInputForEditUserAsModerator(bool&
 
     else {
         delete[] input;
-        throw std::exception("Invalid status input!");
+        throw std::invalid_argument("Invalid status input!");
     }
-
 }
 
-void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
+void ConsoleInputGetter::recieveTitleInput(String& title)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -279,17 +291,16 @@ void ConsoleInputGetter::recieveTitleInput(Topic& newTopic)
         flushInputBuffer();
     }
 
-    newTopic.setTitle(newTitle);
-
+    title = newTitle;
 }
 
-void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
+void ConsoleInputGetter::recieveDescriptionInput(String& description)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Description: ";
+    std::cout << "\nEnter description: ";
 
     char newDescription[Configuration::TOPIC_DESCRIPTION_MAX_LENGTH];
 
@@ -299,10 +310,10 @@ void ConsoleInputGetter::recieveDescriptionInput(Topic& newTopic)
         flushInputBuffer();
     }
 
-    newTopic.setDescription(newDescription);
+    description = newDescription;
 }
 
-void ConsoleInputGetter::recievePostTitleInput(Post& newPost)
+void ConsoleInputGetter::recievePostTitleInput(String& title)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -318,18 +329,18 @@ void ConsoleInputGetter::recievePostTitleInput(Post& newPost)
         flushInputBuffer();
     }
 
-    newPost.setTitle(newTitle);
+    title = newTitle;
 }
 
-void ConsoleInputGetter::recievePostContentInput(Post& newPost)
+void ConsoleInputGetter::recievePostContentInput(String& content)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    std::cout << "\nEnter Content: ";
+    std::cout << "\nEnter content: ";
 
-    char* newContent = new char[Configuration::POST_CONTENT_MAX_LENGTH]; //add exception handling
+    char* newContent = new char[Configuration::POST_CONTENT_MAX_LENGTH];
 
     std::cin.getline(newContent, Configuration::POST_CONTENT_MAX_LENGTH);
 
@@ -338,9 +349,9 @@ void ConsoleInputGetter::recievePostContentInput(Post& newPost)
     }
 
     try {
-        newPost.setContent(newContent);
+        content = newContent;
     }
-    catch (...) {
+    catch (const std::bad_alloc&) {
         delete[] newContent;
         throw;
     }
@@ -348,8 +359,7 @@ void ConsoleInputGetter::recievePostContentInput(Post& newPost)
     delete[] newContent;
 }
 
-
-void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
+void ConsoleInputGetter::recieveCommentTextInput(String& text)
 {
     if (isBufferOverfilled()) {
         flushInputBuffer();
@@ -357,62 +367,15 @@ void ConsoleInputGetter::recieveCommentTextInput(Comment& newComment)
 
     std::cout << "\nEnter comment: ";
 
-    char comment[Configuration::COMMENT_TEXT_MAX_LENGTH]; //add exception handling
+    char newText[Configuration::COMMENT_TEXT_MAX_LENGTH]; //add exception handling
 
-    std::cin.getline(comment, Configuration::COMMENT_TEXT_MAX_LENGTH);
-
-    if (isBufferOverfilled()) {
-        flushInputBuffer();
-    }
-
-    newComment.setText(comment);
-}
-
-size_t ConsoleInputGetter::recieveIdInput()
-{
+    std::cin.getline(newText, Configuration::COMMENT_TEXT_MAX_LENGTH);
 
     if (isBufferOverfilled()) {
         flushInputBuffer();
     }
 
-    short inputBuffer = Configuration::MAX_DIGITS_INPUT + 1;
-
-    size_t id = SIZE_MAX;
-
-    std::cout << "Enter object ID: ";
-
-    char* input = new char[inputBuffer]; //Potential optimisation? : dynamic because Configuration::MAX_DIGITS_INPUT cannot be used as const, can it ?
-
-    std::cin.getline(input, inputBuffer);
-    if (InputValidator::doesStringContainNonAsciiChars(input) || input[0] == '\0') {
-        delete[] input;
-        input = nullptr;
-        throw std::exception("Invalid Id input!");
-    }
-
-    String strInput = input;
-
-    try {
-        id = strInput.toNum();
-    }
-    catch (const std::exception& e) {
-        delete[] input;
-        throw e;
-    }
-
-    delete[] input;
-
-    return id;
-}
-
-String& ConsoleInputGetter::getSocialNetworkDirectoryInput()
-{
-    return socialNetworkDirectoryInput;
-}
-
-String& ConsoleInputGetter::getCommandInput()
-{
-    return commandInput;
+    text = newText;
 }
 
 bool ConsoleInputGetter::getExitSavingAnswer()
@@ -432,19 +395,9 @@ bool ConsoleInputGetter::getExitSavingAnswer()
         }
 
         else {
-            std::cout << "Invalid input! Please answer with either Y or N: ";       
+            std::cout << "Invalid input! Please answer with either Y or N: ";
             flushInputBuffer();
-            
+
         }
     }
-}
-
-void ConsoleInputGetter::resetCommandInput()
-{
-    commandInput.clearString();
-}
-
-void ConsoleInputGetter::resetSocialNetworkDirectoryInput()
-{
-    socialNetworkDirectoryInput.clearString();
 }

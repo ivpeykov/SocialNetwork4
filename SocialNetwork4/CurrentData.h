@@ -1,15 +1,10 @@
 #pragma once
 #include "SocialNetwork.h"
 
-//class User;
-//class Topic;
-//class Post;
-//class Comment;
 class SocialNetwork;
 
 class CurrentData
 {
-
 public:
 
 	static SocialNetwork& getCurrSocialNetwork();
@@ -24,5 +19,5 @@ private:
 
 	static SocialNetwork currSocialNetwork;
 	static bool changesMade;
-
 };
+

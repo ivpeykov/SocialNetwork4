@@ -7,48 +7,21 @@ class String
 
 public:
 
-	//constructors & destructor
+	//constructors and destructor
 	String();
 
 	String(const char* const inputString);
 
 	String(const String& other);
 
-	String(String&& string) noexcept;
-
 	String(const size_t size);
 
 	~String();
 
-
-	//methods
-	friend void swap(String& lhs, String& rhs) noexcept;
-
-	void clearString();
-
-	const size_t length() const;
-
-	const char* getString() const;
-
-	void setLength(const size_t inputLenght);
-
-	void setString(const char* inputString);
-
-	bool find(const char* substr) const;
-
-	bool find(const String& substr) const;
-
-	size_t toNum() const;
-
-	bool isDigit() const;
-
 	//operators
 	String& operator=(const String& other);
-	String& operator=(String&& _other) noexcept;
 	String& operator=(const char* str);
-
-	char& operator[](const size_t index); //do we need both?
-
+	
 	char operator[](const size_t index) const;
 
 	bool operator==(const String& other) const;
@@ -59,9 +32,33 @@ public:
 
 	friend std::ostream& operator<<(std::ostream& os, const String& str);
 
+	//getters and setters
+	const size_t length() const;
+
+	const char* getString() const;
+
+	void setLength(const size_t inputLenght);
+
+	void setString(const char* inputString);
+
+	//methods
+	friend void swap(String& lhs, String& rhs) noexcept;
+
+	void clearString();
+
+	bool find(const char* substr) const;
+
+	bool find(const String& substr) const;
+
+	size_t toNum() const;
+
+	bool isDigit() const;
+
+	bool isEmpty() const;
+
 private:
 
 	char* string;
-	size_t size; //By default contains the null terminator
-
+	size_t size; //contains the null terminator
 };
+
